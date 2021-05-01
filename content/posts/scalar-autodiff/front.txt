@@ -1,0 +1,4 @@
+---
+title: "Scalar Autodiff"
+date: 2021-05-01
+---
