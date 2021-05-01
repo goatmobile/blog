@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  <meta name="generator" content="Hugo 0.80.0" /> 
+  <meta name="description" content="Some description" />
+   
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="https://example.com/apple-touch-icon.png"
+  />
+
+  <meta
+    name="msapplication-TileColor"
+    content="#da532c"
+  />
+
+  <meta name="theme-color" content="#ffffff" />
+
+  
+  <link rel="stylesheet" href="https://example.com/css/bootstrap.min.css" />
+
+  <link
+    href="http://fonts.googleapis.com/css?family=Gentium+Book+Basic"
+    rel="stylesheet"
+    type="text/css"
+  />
+  <link
+    href="http://fonts.googleapis.com/css?family=Ubuntu+Mono"
+    rel="stylesheet"
+    type="text/css"
+  />
+
+  <title>Some Title</title>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
+        messageStyle: "none"
+    });
+  </script>
+  <script
+    type="text/javascript"
+    async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
+  ></script>
+
+  <style>
+  body {
+    min-width: 300px;
+  }
+
+  .custom-navbar {
+    margin-bottom: 1em;
+    height: 60px;
+  }
+
+  .custom-navbar a {
+    display: inline-block;
+    padding: 18px 0;
+    margin-right: 1em;
+    font-weight: bold;
+  }
+
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    text-decoration: none;
+  }
+
+  @media print {
+    .custom-navbar {
+      display: none;
+    }
+  }
+
+  article {
+    padding-bottom: 1em;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  
+  body {
+    background-color: #fff;
+  }
+  
+
+  
+  body {
+    color: #212529;
+  }
+  
+
+  
+  a {
+    color: #007bff;
+  }
+  
+
+  
+  a:hover,
+  a:focus {
+    color: #0056b3;
+  }
+  
+
+  
+  .custom-navbar {
+    background-color: #212529;
+  }
+  
+
+  
+  .custom-navbar a {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  
+
+  
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    color: rgba(255, 255, 255, 1);
+  }
+  
+
+  
+  .container {
+    max-width: 800px;
+  }
+  
+
+  
+  pre {
+    display: block;
+    padding: 9.5px;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  pre code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  code {
+    padding: 2px 4px;
+    color: inherit;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: .9em;
+  }
+  
+
+  article {
+    font-family: 'Gentium Book Basic script=all rev=2', Georgia, serif;
+    font-size: 1.1em;
+  }
+
+  code {
+    font-family: 'Ubuntu Mono', monospace, serif;
+    font-size: 1.09em;
+  }
+
+  
+  blockquote,
+  .blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 1em;
+    border-left: 5px solid #6c757d;
+  }
+  
+</style>
+
+</head>
+
+
+<body>
+  <nav class="custom-navbar">
+  <div class="container">
+    
+    <a href="/">Home</a>
+    
+    <a href="/posts/">Posts</a>
+    
+  </div>
+</nav>
+  
+  <div class="container">
+    <article>
+      <h1>Scalar Autodiff</h1>
+<p><a href="https://en.wikipedia.org/wiki/Automatic_differentiation">Automatic differentiation</a> (or autodiff) underlies many modern machine learning frameworks and mathematical models. This post demonstrates a from-scratch implemention on scalar values (in contrast to tensors a.k.a. ndarrays that are common in machine learning) and shows how we can use it to implement gradient descent, eventually learning some linear function (i.e. a function looks like <code>y = m * x + b</code>). Rest assured the explanations here are much more complicated than the code itself.</p>
+<p>To train a machine learning model, some model (read: a program) will run through a series of computations based on some relevant inputs to the question at hand (i.e. the picture for a model that determines whether a picture is of a dog or cat) as well as some other data called weights. These weights are just numbers (like <code>6</code>), and their values are what the model &ldquo;learns&rdquo; during the training process.</p>
+<p><a href="https://en.wikipedia.org/wiki/Gradient_descent">Gradient descent</a> is the method we will use to &ldquo;learn&rdquo; values. There are many intuitive explanations online, but in a nutshell we will pick random starting numbers for our weights, feed them in addition to some input to a model, and then see how we need to change the weights. This last part of &ldquo;how we need to change the weights&rdquo; is where autodiff comes in. It tells us whether we should increase or decrease our weights, and by how much. Then we repeat the process over and over until our model can guess the right result.</p>
+<p>Most autodiff capable frameworks work in one of two ways: eagerly or via graph-building. The differences between the two will become evident in a bit, but for now just keep in mind that eager mode autodiff is what we&rsquo;ll be implementing here. Either way, the idea is that we will create a graph of the computations in the model. This graph records every computation (e.g. an add or multiple operation) as well as their inputs. It&rsquo;s pretty easy to differentiate simple operations like add or multiply. For example, consder a function called $f$ that just multiplies its elements:</p>
+<p>$$f(x, y) = x * y$$</p>
+<p>But what&rsquo;s the derivative? Any why do we even need it? The derivative tells us which way each input &ldquo;nudged&rdquo; the result. Another way to think of it is how much each input affects the output (i.e. if $x$ was to change, how much would the result $f(x, y)$ change?). As for what the derivative is, well, it&rsquo;s been a while since school so I don&rsquo;t remember how to do these things anymore. Thankfully it&rsquo;s the age of computers, so <a href="https://www.wolframalpha.com/input/?i=derivative+of+x+*+y">Wolfram Alpha</a> can help out here.</p>
+<p><img src="image.png" alt="image.png"></p>
+<p>So we see now there are actually two derivatives, one with respect to $x$ and the other to $y$. The actual value itself is pretty simple too, the derivative of $f(x, y)$ with respect to $x$ is $y$. These derivatives can be combined via the chain rule to find the derivatives of more complex functions (like $f(x) = mx + b$, as we will see below).</p>
+<p>This is all well and good, but let&rsquo;s see some code. It will help cement a bunch of the ideas above. The end goal here is to learn a simple function (i.e. for $f(x) = mx + b$, figure out $m$ and $b$). First we need a class to wrap scalar values (scalar meaning a plain-ol' number) so we can track inputs and outputs to build a graph via eager computations.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Scalar</span>:
+    <span style="color:#66d9ef">def</span> __init__(self, num, inputs<span style="color:#f92672">=</span>None, backward<span style="color:#f92672">=</span>None):
+        self<span style="color:#f92672">.</span>num <span style="color:#f92672">=</span> num
+        self<span style="color:#f92672">.</span>backward_fn <span style="color:#f92672">=</span> backward
+
+        <span style="color:#75715e"># If this scalar is the last node in a graph (i.e. has no inputs),</span>
+        <span style="color:#75715e"># call it a leaf</span>
+        self<span style="color:#f92672">.</span>is_leaf <span style="color:#f92672">=</span> inputs <span style="color:#f92672">is</span> None
+        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>is_leaf:
+            self<span style="color:#f92672">.</span>inputs <span style="color:#f92672">=</span> []
+        <span style="color:#66d9ef">else</span>:
+            self<span style="color:#f92672">.</span>inputs <span style="color:#f92672">=</span> inputs
+
+        <span style="color:#75715e"># Set a slot for the derivative</span>
+        self<span style="color:#f92672">.</span>derivative <span style="color:#f92672">=</span> None
+</code></pre></div><p>This class takes in <code>num</code> which is the value it is wrapping. <code>name</code> is just for illustration purposes, so we can print out graphs and see what the operations involved are. <code>inputs</code> is blank for any <code>Scalar</code>s we create, but operations will use this to record themselves on results. <code>Scalar</code>s therefore reference other <code>Scalar</code>s, creating a graph of operations. Lastly, <code>backward</code> is a callback we will see later. Next let&rsquo;s define a multiply operation by overriding the <code>__mul__</code> magic method.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Scalar</span>(Scalar):
+    <span style="color:#66d9ef">def</span> __mul__(self, x):
+        <span style="color:#75715e"># Do the actual multiplication</span>
+        scalar_result <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>num <span style="color:#f92672">*</span> x<span style="color:#f92672">.</span>num
+
+        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">backward</span>(b_in):
+            <span style="color:#66d9ef">return</span> (x<span style="color:#f92672">.</span>num, self<span style="color:#f92672">.</span>num)
+
+        <span style="color:#66d9ef">return</span> Scalar(num<span style="color:#f92672">=</span>scalar_result, inputs<span style="color:#f92672">=</span>(self, x), backward<span style="color:#f92672">=</span>backward)
+</code></pre></div><p>The multiply operation looks a little different than what we talked out above. First off, it only takes in one input since the first input is the <code>Scalar</code> in <code>self</code>. <code>backward</code> is a function (really a closure since it&rsquo;s grabbing variables from the outer scope like <code>x</code> and <code>self</code>) that takes in the previous gradient (via the chain rule) as <code>b_in</code> and returns partial derivatives for each inputs. Just like the Wolfram Alpha result above, we return <code>x</code> as the derivative with respect to <code>self</code> and vice-versa. We do something similar for all other operations we need, which are subtraction, square, and add.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Scalar</span>(Scalar):
+    <span style="color:#66d9ef">def</span> __add__(self, x):
+        scalar_result <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>num <span style="color:#f92672">+</span> x<span style="color:#f92672">.</span>num
+
+        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">backward</span>(b_in):
+            <span style="color:#66d9ef">return</span> (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)
+
+        <span style="color:#66d9ef">return</span> Scalar(scalar_result, [self, x], backward)
+    
+    <span style="color:#66d9ef">def</span> __sub__(self, x):
+        scalar_result <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>num <span style="color:#f92672">-</span> x<span style="color:#f92672">.</span>num
+
+        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">backward</span>(b_in):
+            <span style="color:#66d9ef">return</span> (<span style="color:#ae81ff">1</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+
+        <span style="color:#66d9ef">return</span> Scalar(scalar_result, [self, x], backward)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">square</span>(self):
+        scalar_result <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>num <span style="color:#f92672">**</span> <span style="color:#ae81ff">2</span>
+
+        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">backward</span>(b_in):
+            <span style="color:#66d9ef">return</span> (<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> self<span style="color:#f92672">.</span>num,)
+
+        <span style="color:#66d9ef">return</span> Scalar(scalar_result, [self], backward)
+</code></pre></div><p>Now we have all the operations we need to train a model (we&rsquo;ll see what that looks like in a minute) but how do we actually do the chain rule (i.e. what&rsquo;s the deal with all these <code>backward</code> functions)?</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Scalar</span>(Scalar):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">backward</span>(self, b_in<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>):
+        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>is_leaf:
+            <span style="color:#75715e"># If this Scalar is a leaf, there are no further derivatives to compute, so</span>
+            <span style="color:#75715e"># set the derivative on this node</span>
+            self<span style="color:#f92672">.</span>derivative <span style="color:#f92672">=</span> b_in
+            <span style="color:#66d9ef">return</span>
+
+        backward_results <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>backward_fn(self<span style="color:#f92672">.</span>num)
+        
+        <span style="color:#75715e"># Send gradient to each of the inputs</span>
+        <span style="color:#66d9ef">for</span> backward_result, input <span style="color:#f92672">in</span> zip(backward_results, self<span style="color:#f92672">.</span>inputs):
+            input<span style="color:#f92672">.</span>backward(backward_result <span style="color:#f92672">*</span> b_in)
+</code></pre></div><p>Now our <code>Scalar</code> class is fully defined and our machine learning &ldquo;library&rdquo; is done! Now we can use it in a real example. We will define a function <code>goal_function</code> that does some computation (here we happen to know exactly what it does since we wrote it, but it illustrates the principles). We use this to create some training data, examples for our model to learn from (since it doesn&rsquo;t know anything about <code>goal_function</code> directly.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">goal_function</span>(x):
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">5</span> <span style="color:#f92672">*</span> x <span style="color:#f92672">+</span> <span style="color:#ae81ff">10</span>
+
+<span style="color:#75715e"># Scaling the data to be small is important!</span>
+training_data <span style="color:#f92672">=</span> [(i <span style="color:#f92672">/</span> <span style="color:#ae81ff">100</span>, goal_function(i <span style="color:#f92672">/</span> <span style="color:#ae81ff">100</span>)) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">100</span>)]
+</code></pre></div><p>Finally we can train the model. We want to figure out the $m$ and $b$ in $y = mx + b$, so we set up <code>Scalar</code>s for both of those. We also set two &ldquo;hyperparameters&rdquo; that dictate how we will scale the &ldquo;nudges&rdquo; produced by our training (<code>learning_rate</code>), as well as how many times to run through the training process (<code>epochs</code>).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Arbitrary initialization for our weights</span>
+m <span style="color:#f92672">=</span> Scalar(<span style="color:#ae81ff">0</span>)
+b <span style="color:#f92672">=</span> Scalar(<span style="color:#ae81ff">0</span>)
+
+<span style="color:#75715e"># Hyperparameters</span>
+learning_rate <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.001</span>
+epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">30</span>
+</code></pre></div><p>The training loop creates a <code>Scalar</code> and uses it to predict a value. It then calculates the <code>loss</code>, which represents the distance from the prediction to the actual value. Lastly it updates <code>m</code> and <code>b</code> with a new value from the derivatives of each (filled out via the <code>backward</code> function call).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Training loop</span>
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(epochs):
+    <span style="color:#66d9ef">for</span> input_x, actual_y <span style="color:#f92672">in</span> training_data:
+        <span style="color:#75715e"># Make prediction</span>
+        predicted_y <span style="color:#f92672">=</span> m <span style="color:#f92672">*</span> Scalar(input_x) <span style="color:#f92672">+</span> b
+
+        <span style="color:#75715e"># Calculate MSE loss</span>
+        loss <span style="color:#f92672">=</span> (Scalar(actual_y) <span style="color:#f92672">-</span> predicted_y)<span style="color:#f92672">.</span>square()
+        loss<span style="color:#f92672">.</span>backward()
+        <span style="color:#75715e"># Update m and b via gradient descent</span>
+        m <span style="color:#f92672">=</span> Scalar(m<span style="color:#f92672">.</span>num <span style="color:#f92672">-</span> learning_rate <span style="color:#f92672">*</span> m<span style="color:#f92672">.</span>derivative)
+        b <span style="color:#f92672">=</span> Scalar(b<span style="color:#f92672">.</span>num <span style="color:#f92672">-</span> learning_rate <span style="color:#f92672">*</span> b<span style="color:#f92672">.</span>derivative)
+
+    <span style="color:#66d9ef">if</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+        <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34;[epoch {i}] Estimated that m={round(m.num, 2)} and b={round(b.num, 2)}&#34;</span>)
+</code></pre></div><pre><code>[epoch 0] Estimated that m=1.13 and b=2.23
+[epoch 4] Estimated that m=3.63 and b=7.15
+[epoch 8] Estimated that m=4.54 and b=8.94
+[epoch 12] Estimated that m=4.87 and b=9.6
+[epoch 16] Estimated that m=4.99 and b=9.83
+[epoch 20] Estimated that m=5.03 and b=9.92
+[epoch 24] Estimated that m=5.04 and b=9.95
+[epoch 28] Estimated that m=5.04 and b=9.97
+</code></pre>
+<p>Pretty close, if you ask me! The model correctly figured out the <code>m</code> is 5-ish and <code>b</code> is 10-ish, which matches up with <code>goal_function</code> above. So we&rsquo;ve created a simple framework for learning scalar linear functions, and validated that it works! Wow!</p>
+
+    </article>
+  </div>
+</body>
+
+</html>
