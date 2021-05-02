@@ -1,4 +1,4 @@
 ---
-title: "Scalar Autodiff"
+title: "Scalar Autodiff From Scratch"
 date: 2021-05-01
 ---

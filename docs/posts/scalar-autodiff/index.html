@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1, shrink-to-fit=no"
   />
 
-  <meta name="generator" content="Hugo 0.80.0" /> 
+  <meta name="generator" content="Hugo 0.83.1" /> 
   <meta name="description" content="Some description" />
    
   <link
@@ -25,15 +25,15 @@
   <meta name="theme-color" content="#ffffff" />
 
   
-  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
 
   <link
-    href="http://fonts.googleapis.com/css?family=Gentium+Book+Basic"
+    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
     rel="stylesheet"
     type="text/css"
   />
   <link
-    href="http://fonts.googleapis.com/css?family=Ubuntu+Mono"
+    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
     rel="stylesheet"
     type="text/css"
   />
@@ -207,7 +207,7 @@
   
   <div class="container">
     <article>
-      <h1>Scalar Autodiff</h1>
+      <h1>Scalar Autodiff From Scratch</h1>
 <p><a href="https://en.wikipedia.org/wiki/Automatic_differentiation">Automatic differentiation</a> (or autodiff) underlies many modern machine learning frameworks and mathematical models. This post demonstrates a from-scratch implemention on scalar values (in contrast to tensors a.k.a. ndarrays that are common in machine learning) and shows how we can use it to implement gradient descent, eventually learning some linear function (i.e. a function looks like <code>y = m * x + b</code>). Rest assured the explanations here are much more complicated than the code itself.</p>
 <p>To train a machine learning model, some model (read: a program) will run through a series of computations based on some relevant inputs to the question at hand (i.e. the picture for a model that determines whether a picture is of a dog or cat) as well as some other data called weights. These weights are just numbers (like <code>6</code>), and their values are what the model &ldquo;learns&rdquo; during the training process.</p>
 <p><a href="https://en.wikipedia.org/wiki/Gradient_descent">Gradient descent</a> is the method we will use to &ldquo;learn&rdquo; values. There are many intuitive explanations online, but in a nutshell we will pick random starting numbers for our weights, feed them in addition to some input to a model, and then see how we need to change the weights. This last part of &ldquo;how we need to change the weights&rdquo; is where autodiff comes in. It tells us whether we should increase or decrease our weights, and by how much. Then we repeat the process over and over until our model can guess the right result.</p>
@@ -216,7 +216,7 @@
 <p>But what&rsquo;s the derivative? Any why do we even need it? The derivative tells us which way each input &ldquo;nudged&rdquo; the result. Another way to think of it is how much each input affects the output (i.e. if $x$ was to change, how much would the result $f(x, y)$ change?). As for what the derivative is, well, it&rsquo;s been a while since school so I don&rsquo;t remember how to do these things anymore. Thankfully it&rsquo;s the age of computers, so <a href="https://www.wolframalpha.com/input/?i=derivative+of+x+*+y">Wolfram Alpha</a> can help out here.</p>
 <p><img src="image.png" alt="image.png"></p>
 <p>So we see now there are actually two derivatives, one with respect to $x$ and the other to $y$. The actual value itself is pretty simple too, the derivative of $f(x, y)$ with respect to $x$ is $y$. These derivatives can be combined via the chain rule to find the derivatives of more complex functions (like $f(x) = mx + b$, as we will see below).</p>
-<p>This is all well and good, but let&rsquo;s see some code. It will help cement a bunch of the ideas above. The end goal here is to learn a simple function (i.e. for $f(x) = mx + b$, figure out $m$ and $b$). First we need a class to wrap scalar values (scalar meaning a plain-ol' number) so we can track inputs and outputs to build a graph via eager computations.</p>
+<p>This is all well and good, but let&rsquo;s see some code. It will help cement a bunch of the ideas above. The end goal here is to learn a simple function (i.e. for $f(x) = mx + b$, figure out $m$ and $b$ from only a list of values fo $x$ and the corresponding value of $f(x)$). First we need a class to wrap scalar values (scalar meaning a plain-ol' number) so we can track inputs and outputs to build a graph via eager computations.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Scalar</span>:
     <span style="color:#66d9ef">def</span> __init__(self, num, inputs<span style="color:#f92672">=</span>None, backward<span style="color:#f92672">=</span>None):
         self<span style="color:#f92672">.</span>num <span style="color:#f92672">=</span> num
@@ -232,7 +232,7 @@
 
         <span style="color:#75715e"># Set a slot for the derivative</span>
         self<span style="color:#f92672">.</span>derivative <span style="color:#f92672">=</span> None
-</code></pre></div><p>This class takes in <code>num</code> which is the value it is wrapping. <code>name</code> is just for illustration purposes, so we can print out graphs and see what the operations involved are. <code>inputs</code> is blank for any <code>Scalar</code>s we create, but operations will use this to record themselves on results. <code>Scalar</code>s therefore reference other <code>Scalar</code>s, creating a graph of operations. Lastly, <code>backward</code> is a callback we will see later. Next let&rsquo;s define a multiply operation by overriding the <code>__mul__</code> magic method.</p>
+</code></pre></div><p>This class takes in <code>num</code> which is the value it is wrapping. <code>inputs</code> is blank for any <code>Scalar</code>s we create, but operations will use this to record themselves on results. <code>Scalar</code>s therefore reference other <code>Scalar</code>s, creating a directed graph of operations. Lastly, <code>backward</code> is a callback we will see later. Next let&rsquo;s define a multiply operation by overriding the <code>__mul__</code> magic method.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Scalar</span>(Scalar):
     <span style="color:#66d9ef">def</span> __mul__(self, x):
         <span style="color:#75715e"># Do the actual multiplication</span>

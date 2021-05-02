@@ -1,8 +1,9 @@
 dev: images notebooks
-	hugo -F server -D
+	/snap/bin/hugo -F server -D
 
-dist: images
-	hugo -D
+dist: images notebooks
+	rm -rf docs
+	/snap/bin/hugo -D
 
 notebooks:
 	python make_notebooks.py
