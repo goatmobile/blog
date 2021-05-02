@@ -4,6 +4,7 @@ dev: images notebooks
 dist: images notebooks
 	rm -rf docs
 	/snap/bin/hugo -D
+	cp CNAME docs
 
 notebooks:
 	python make_notebooks.py
