@@ -1,10 +1,16 @@
-dev: images notebooks
-	/snap/bin/hugo -F server -D
+dev: images notebooks_dev hugo_dev
 
 dist: images notebooks
 	rm -rf docs
 	/snap/bin/hugo -D
 	cp CNAME docs
+
+notebooks_dev:
+	find ./content -name "*.ipynb" | grep -v checkpoint | entr make notebooks
+
+hugo_dev:
+	/snap/bin/hugo -F server -D
+	
 
 notebooks:
 	python make_notebooks.py

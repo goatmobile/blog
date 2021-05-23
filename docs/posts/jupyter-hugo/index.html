@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  <meta name="generator" content="Hugo 0.83.1" /> 
+  <meta name="description" content="Some description" />
+   
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="apple-touch-icon.png"
+  />
+
+  <meta
+    name="msapplication-TileColor"
+    content="#da532c"
+  />
+
+  <meta name="theme-color" content="#ffffff" />
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+
+  <link
+    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
+    rel="stylesheet"
+    type="text/css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
+    rel="stylesheet"
+    type="text/css"
+  />
+
+  <title>Goatmobile Website</title>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
+        messageStyle: "none"
+    });
+  </script>
+  <script
+    type="text/javascript"
+    async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
+  ></script>
+
+  <style>
+  body {
+    min-width: 300px;
+  }
+
+  .custom-navbar {
+    margin-bottom: 1em;
+    height: 60px;
+  }
+
+  .custom-navbar a {
+    display: inline-block;
+    padding: 18px 0;
+    margin-right: 1em;
+    font-weight: bold;
+  }
+
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    text-decoration: none;
+  }
+
+  @media print {
+    .custom-navbar {
+      display: none;
+    }
+  }
+
+  article {
+    padding-bottom: 1em;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  
+  body {
+    background-color: #fff;
+  }
+  
+
+  
+  body {
+    color: #212529;
+  }
+  
+
+  
+  a {
+    color: #007bff;
+  }
+  
+
+  
+  a:hover,
+  a:focus {
+    color: #0056b3;
+  }
+  
+
+  
+  .custom-navbar {
+    background-color: #212529;
+  }
+  
+
+  
+  .custom-navbar a {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  
+
+  
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    color: rgba(255, 255, 255, 1);
+  }
+  
+
+  
+  .container {
+    max-width: 800px;
+  }
+  
+
+  
+  pre {
+    display: block;
+    padding: 9.5px;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  pre code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  code {
+    padding: 2px 4px;
+    color: inherit;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: .9em;
+  }
+  
+
+  article {
+    font-family: 'Gentium Book Basic script=all rev=2', Georgia, serif;
+    font-size: 1.1em;
+  }
+
+  code {
+    font-family: 'Ubuntu Mono', monospace, serif;
+    font-size: 1.09em;
+  }
+
+  
+  blockquote,
+  .blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 1em;
+    border-left: 5px solid #6c757d;
+  }
+  
+</style>
+
+</head>
+
+
+<body>
+  <nav class="custom-navbar">
+  <div class="container">
+    
+    <a href="/">Home</a>
+    
+    <a href="/posts/">Posts</a>
+    
+  </div>
+</nav>
+  
+  <div class="container">
+    <article>
+      <h1>Jupyter Notebooks and Hugo</h1>
+<p>Jupyter is a super nice environment for doing <a href="https://en.wikipedia.org/wiki/Literate_programming">literate programming</a> and as such it&rsquo;s a natural choice for writing code-heavy articles. I&rsquo;ve set up several blogs with <a href="https://gohugo.io/">Hugo</a> which is nice to write in but only understand markdown by default, but thanks to <a href="https://nbconvert.readthedocs.io/en/latest/"><code>nbconvert</code></a> it&rsquo;s pretty easy to get the two working together.</p>
+<p>Inside each notebook I include the Hugo <a href="https://gohugo.io/content-management/front-matter/">front matter</a> in the first markdown cell inside a markdown code block. This keeps everything neatly in a single file per post:</p>
+<pre><code>```
+title: &quot;Jupyter Notebooks and Hugo&quot;
+date: 2021-05-22
+```
+</code></pre><p>The Python script below is intended to be run from a Hugo project root directory, it will search for notebook files and run them through <code>nbconvert</code>, doing some minor transformations along the way:</p>
+<ul>
+<li>remove empty code cells</li>
+<li>clean up the generated markdown</li>
+<li>install the front matter for Hugo</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env python3</span>
+
+<span style="color:#f92672">import</span> json
+<span style="color:#f92672">import</span> base64
+<span style="color:#f92672">import</span> pathlib
+<span style="color:#f92672">import</span> re
+<span style="color:#f92672">import</span> nbconvert
+
+<span style="color:#f92672">from</span> nbconvert.exporters.markdown <span style="color:#f92672">import</span> MarkdownExporter
+<span style="color:#f92672">from</span> traitlets.config <span style="color:#f92672">import</span> Config
+<span style="color:#f92672">from</span> nbconvert.preprocessors <span style="color:#f92672">import</span> Preprocessor
+
+DUPLICATE_NEWLINES_RE <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>compile(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#34;\n\n\n+&#34;</span>, flags<span style="color:#f92672">=</span>re<span style="color:#f92672">.</span>MULTILINE)
+ROOT_DIR <span style="color:#f92672">=</span> pathlib<span style="color:#f92672">.</span>Path(__file__)<span style="color:#f92672">.</span>parent
+POSTS_DIR <span style="color:#f92672">=</span> ROOT_DIR <span style="color:#f92672">/</span> <span style="color:#e6db74">&#34;content&#34;</span> <span style="color:#f92672">/</span> <span style="color:#e6db74">&#34;posts&#34;</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">remove_duplicate_newlines</span>(content: str) <span style="color:#f92672">-&gt;</span> str:
+    <span style="color:#66d9ef">return</span> DUPLICATE_NEWLINES_RE<span style="color:#f92672">.</span>sub(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span>, content)
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fix_image_links</span>(content: str) <span style="color:#f92672">-&gt;</span> str:
+    <span style="color:#75715e"># They come from nbconvert looking like &#39;[image](...)&#39;, so just</span>
+    <span style="color:#75715e"># remove the &#39;&#39; part</span>
+    <span style="color:#66d9ef">return</span> content<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fix_front_matter</span>(content: str) <span style="color:#f92672">-&gt;</span> str:
+    <span style="color:#75715e"># Make front matter use --- instead of ```</span>
+    content <span style="color:#f92672">=</span> content<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
+    code_fences <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, min(<span style="color:#ae81ff">10</span>, len(content))):
+        <span style="color:#66d9ef">if</span> content[i]<span style="color:#f92672">.</span>strip() <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;```&#34;</span>:
+            code_fences<span style="color:#f92672">.</span>append(i)
+
+    <span style="color:#66d9ef">if</span> len(code_fences) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span>:
+        <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">RuntimeError</span>(
+            f<span style="color:#e6db74">&#34;front matter not found first 10 lines of  in &#39;{notebook_path}&#39;&#34;</span>
+        )
+
+    <span style="color:#66d9ef">for</span> line <span style="color:#f92672">in</span> code_fences[:<span style="color:#ae81ff">2</span>]:
+        content[line] <span style="color:#f92672">=</span> content[line]<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;```&#34;</span>, <span style="color:#e6db74">&#34;---&#34;</span>)
+
+    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>join(content)
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ExtractImages</span>(Preprocessor):
+    <span style="color:#e6db74">&#34;&#34;&#34;Pull out images from notebook&#34;&#34;&#34;</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">preprocess</span>(self, nb, resources):
+        <span style="color:#75715e"># Find all attachments</span>
+        attachments <span style="color:#f92672">=</span> []
+        <span style="color:#66d9ef">for</span> cell <span style="color:#f92672">in</span> nb<span style="color:#f92672">.</span>cells:
+            <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;attachments&#34;</span> <span style="color:#f92672">in</span> cell:
+                attachments<span style="color:#f92672">.</span>append(cell[<span style="color:#e6db74">&#34;attachments&#34;</span>])
+
+        <span style="color:#75715e"># Write out base64 images as files</span>
+        <span style="color:#66d9ef">for</span> attachment <span style="color:#f92672">in</span> attachments:
+            <span style="color:#66d9ef">for</span> image_name, img_data <span style="color:#f92672">in</span> attachment<span style="color:#f92672">.</span>items():
+                <span style="color:#66d9ef">for</span> img_type, base64_code <span style="color:#f92672">in</span> img_data<span style="color:#f92672">.</span>items():
+                    <span style="color:#66d9ef">if</span> img_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;image/png&#34;</span>:
+                        bytes <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64decode(base64_code)
+                        resources[<span style="color:#e6db74">&#34;outputs&#34;</span>][image_name] <span style="color:#f92672">=</span> bytes
+
+        <span style="color:#66d9ef">return</span> nb, resources
+
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+    notebook_paths <span style="color:#f92672">=</span> POSTS_DIR<span style="color:#f92672">.</span>glob(<span style="color:#e6db74">&#34;*/*.ipynb&#34;</span>)
+    c <span style="color:#f92672">=</span> Config()
+    c<span style="color:#f92672">.</span>RegexRemovePreprocessor<span style="color:#f92672">.</span>patterns <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;\s*\Z&#34;</span>]
+    c<span style="color:#f92672">.</span>MarkdownExporter<span style="color:#f92672">.</span>preprocessors <span style="color:#f92672">=</span> [
+        ExtractImages,
+        <span style="color:#e6db74">&#34;nbconvert.preprocessors.RegexRemovePreprocessor&#34;</span>,
+    ]
+    exporter <span style="color:#f92672">=</span> nbconvert<span style="color:#f92672">.</span>MarkdownExporter(config<span style="color:#f92672">=</span>c)
+
+    <span style="color:#66d9ef">for</span> notebook_path <span style="color:#f92672">in</span> notebook_paths:
+        <span style="color:#66d9ef">with</span> open(notebook_path, <span style="color:#e6db74">&#34;r&#34;</span>) <span style="color:#66d9ef">as</span> f:
+            data <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>load(f)
+
+        <span style="color:#75715e"># Export to markdown via nbconvert</span>
+        md_path <span style="color:#f92672">=</span> notebook_path<span style="color:#f92672">.</span>with_suffix(<span style="color:#e6db74">&#34;.md&#34;</span>)
+        md_content, resources <span style="color:#f92672">=</span> exporter<span style="color:#f92672">.</span>from_filename(str(notebook_path))
+
+        <span style="color:#75715e"># Write the images to disk</span>
+        <span style="color:#66d9ef">for</span> filename, content <span style="color:#f92672">in</span> resources[<span style="color:#e6db74">&#34;outputs&#34;</span>]<span style="color:#f92672">.</span>items():
+            <span style="color:#66d9ef">with</span> open(notebook_path<span style="color:#f92672">.</span>parent <span style="color:#f92672">/</span> filename, <span style="color:#e6db74">&#34;wb&#34;</span>) <span style="color:#66d9ef">as</span> f:
+                f<span style="color:#f92672">.</span>write(content)
+
+        <span style="color:#75715e"># Run some processors over the text</span>
+        filters <span style="color:#f92672">=</span> [
+            fix_image_links,
+            fix_front_matter,
+            remove_duplicate_newlines,
+        ]
+
+        <span style="color:#66d9ef">for</span> filter <span style="color:#f92672">in</span> filters:
+            md_content <span style="color:#f92672">=</span> filter(md_content)
+
+        <span style="color:#75715e"># Write out the new content</span>
+        md_path <span style="color:#f92672">=</span> md_path<span style="color:#f92672">.</span>parent <span style="color:#f92672">/</span> <span style="color:#e6db74">&#34;index.md&#34;</span>
+        <span style="color:#66d9ef">with</span> open(md_path, <span style="color:#e6db74">&#34;w&#34;</span>) <span style="color:#66d9ef">as</span> f:
+            f<span style="color:#f92672">.</span>write(md_content<span style="color:#f92672">.</span>strip() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
+        <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34;Wrote {md_path}&#34;</span>)
+
+</code></pre></div><p>Assuming this in some file such as <code>my_repo/make_notebooks.py</code>, you make the notebooks automatically rebuild by watching the source files (requires <code>entr</code>, on Ubuntu you can get it via <code>sudo apt install entr</code>):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">find ./content -name <span style="color:#e6db74">&#34;*.ipynb&#34;</span> | grep -v checkpoint | entr python make_notebooks.py
+</code></pre></div><p>Start the development server in another terminal:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hugo server -D
+</code></pre></div><p>Personally I like to jam these all into a <code>Makefile</code> like so:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-make" data-lang="make"><span style="color:#a6e22e">notebooks_dev</span><span style="color:#f92672">:</span>
+    find ./content -name <span style="color:#e6db74">&#34;*.ipynb&#34;</span> | grep -v checkpoint | entr make notebooks
+   
+<span style="color:#a6e22e">hugo_dev</span><span style="color:#f92672">:</span>
+    hugo server -D
+    
+<span style="color:#a6e22e">dev</span><span style="color:#f92672">:</span> hugo_dev notebooks_dev
+</code></pre></div><p>and run it with 2 threads (one for each job):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">make dev -j2
+</code></pre></div><p>And that&rsquo;s all there is to it! Everything turns into markdown in the end and the computers are all happy.</p>
+
+    </article>
+  </div>
+</body>
+
+</html>

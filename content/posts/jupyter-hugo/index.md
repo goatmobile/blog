@@ -1,3 +1,26 @@
+---
+title: "Jupyter Notebooks and Hugo"
+date: 2021-05-22
+---
+
+Jupyter is a super nice environment for doing [literate programming](https://en.wikipedia.org/wiki/Literate_programming) and as such it's a natural choice for writing code-heavy articles. I've set up several blogs with [Hugo](https://gohugo.io/) which is nice to write in but only understand markdown by default, but thanks to [`nbconvert`](https://nbconvert.readthedocs.io/en/latest/) it's pretty easy to get the two working together.
+
+Inside each notebook I include the Hugo [front matter](https://gohugo.io/content-management/front-matter/) in the first markdown cell inside a markdown code block. This keeps everything neatly in a single file per post:
+
+````
+```
+title: "Jupyter Notebooks and Hugo"
+date: 2021-05-22
+```
+````
+
+The Python script below is intended to be run from a Hugo project root directory, it will search for notebook files and run them through `nbconvert`, doing some minor transformations along the way:
+
+* remove empty code cells
+* clean up the generated markdown
+* install the front matter for Hugo
+
+```python
 #!/usr/bin/env python3
 
 import json
@@ -14,16 +37,13 @@ DUPLICATE_NEWLINES_RE = re.compile(r"\n\n\n+", flags=re.MULTILINE)
 ROOT_DIR = pathlib.Path(__file__).parent
 POSTS_DIR = ROOT_DIR / "content" / "posts"
 
-
 def remove_duplicate_newlines(content: str) -> str:
     return DUPLICATE_NEWLINES_RE.sub("\n\n", content)
 
-
 def fix_image_links(content: str) -> str:
-    # They come from nbconvert looking like '[image](attachment:...)', so just
-    # remove the 'attachment:' part
-    return content.replace("attachment:", "")
-
+    # They come from nbconvert looking like '[image](...)', so just
+    # remove the '' part
+    return content.replace("", "")
 
 def fix_front_matter(content: str) -> str:
     # Make front matter use --- instead of ```
@@ -42,7 +62,6 @@ def fix_front_matter(content: str) -> str:
         content[line] = content[line].replace("```", "---")
 
     return "\n".join(content)
-
 
 class ExtractImages(Preprocessor):
     """Pull out images from notebook"""
@@ -63,7 +82,6 @@ class ExtractImages(Preprocessor):
                         resources["outputs"][image_name] = bytes
 
         return nb, resources
-
 
 if __name__ == "__main__":
     notebook_paths = POSTS_DIR.glob("*/*.ipynb")
@@ -103,3 +121,37 @@ if __name__ == "__main__":
         with open(md_path, "w") as f:
             f.write(md_content.strip() + "\n")
         print(f"Wrote {md_path}")
+
+```
+
+Assuming this in some file such as `my_repo/make_notebooks.py`, you make the notebooks automatically rebuild by watching the source files (requires `entr`, on Ubuntu you can get it via `sudo apt install entr`):
+
+```bash
+find ./content -name "*.ipynb" | grep -v checkpoint | entr python make_notebooks.py
+```
+
+Start the development server in another terminal:
+
+```bash
+hugo server -D
+```
+
+Personally I like to jam these all into a `Makefile` like so:
+
+```make
+notebooks_dev:
+    find ./content -name "*.ipynb" | grep -v checkpoint | entr make notebooks
+   
+hugo_dev:
+    hugo server -D
+    
+dev: hugo_dev notebooks_dev
+```
+
+and run it with 2 threads (one for each job):
+
+```bash
+make dev -j2
+```
+
+And that's all there is to it! Everything turns into markdown in the end and the computers are all happy.

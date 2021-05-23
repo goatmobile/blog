@@ -6,7 +6,17 @@
     <description>Recent content on Goatmobile Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 02 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 22 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Jupyter Notebooks and Hugo</title>
+      <link>/posts/jupyter-hugo/</link>
+      <pubDate>Sat, 22 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/jupyter-hugo/</guid>
+      <description>Jupyter is a super nice environment for doing literate programming and as such it&amp;rsquo;s a natural choice for writing code-heavy articles. I&amp;rsquo;ve set up several blogs with Hugo which is nice to write in but only understand markdown by default, but thanks to nbconvert it&amp;rsquo;s pretty easy to get the two working together.
+Inside each notebook I include the Hugo front matter in the first markdown cell inside a markdown code block.</description>
+    </item>
+    
     <item>
       <title>Multiple GitHub Users on a Single Machine: The Simple Way</title>
       <link>/posts/multiple-git-users/</link>

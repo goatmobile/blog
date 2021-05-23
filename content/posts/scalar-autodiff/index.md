@@ -21,7 +21,6 @@ So we see now there are actually two derivatives, one with respect to $x$ and th
 
 This is all well and good, but let's see some code. It will help cement a bunch of the ideas above. The end goal here is to learn a simple function (i.e. for $f(x) = mx + b$, figure out $m$ and $b$ from only a list of values fo $x$ and the corresponding value of $f(x)$). First we need a class to wrap scalar values (scalar meaning a plain-ol' number) so we can track inputs and outputs to build a graph via eager computations.
 
-
 ```python
 class Scalar:
     def __init__(self, num, inputs=None, backward=None):
@@ -42,7 +41,6 @@ class Scalar:
 
 This class takes in `num` which is the value it is wrapping. `inputs` is blank for any `Scalar`s we create, but operations will use this to record themselves on results. `Scalar`s therefore reference other `Scalar`s, creating a directed graph of operations. Lastly, `backward` is a callback we will see later. Next let's define a multiply operation by overriding the `__mul__` magic method.
 
-
 ```python
 class Scalar(Scalar):
     def __mul__(self, x):
@@ -56,7 +54,6 @@ class Scalar(Scalar):
 ```
 
 The multiply operation looks a little different than what we talked out above. First off, it only takes in one input since the first input is the `Scalar` in `self`. `backward` is a function (really a closure since it's grabbing variables from the outer scope like `x` and `self`) that takes in the previous gradient (via the chain rule) as `b_in` and returns partial derivatives for each inputs. Just like the Wolfram Alpha result above, we return `x` as the derivative with respect to `self` and vice-versa. We do something similar for all other operations we need, which are subtraction, square, and add.
-
 
 ```python
 class Scalar(Scalar):
@@ -87,7 +84,6 @@ class Scalar(Scalar):
 
 Now we have all the operations we need to train a model (we'll see what that looks like in a minute) but how do we actually do the chain rule (i.e. what's the deal with all these `backward` functions)?
 
-
 ```python
 class Scalar(Scalar):
     def backward(self, b_in=1):
@@ -106,7 +102,6 @@ class Scalar(Scalar):
 
 Now our `Scalar` class is fully defined and our machine learning "library" is done! Now we can use it in a real example. We will define a function `goal_function` that does some computation (here we happen to know exactly what it does since we wrote it, but it illustrates the principles). We use this to create some training data, examples for our model to learn from (since it doesn't know anything about `goal_function` directly.
 
-
 ```python
 def goal_function(x):
     return 5 * x + 10
@@ -116,7 +111,6 @@ training_data = [(i / 100, goal_function(i / 100)) for i in range(100)]
 ```
 
 Finally we can train the model. We want to figure out the $m$ and $b$ in $y = mx + b$, so we set up `Scalar`s for both of those. We also set two "hyperparameters" that dictate how we will scale the "nudges" produced by our training (`learning_rate`), as well as how many times to run through the training process (`epochs`).
-
 
 ```python
 # Arbitrary initialization for our weights
@@ -129,7 +123,6 @@ epochs = 30
 ```
 
 The training loop creates a `Scalar` and uses it to predict a value. It then calculates the `loss`, which represents the distance from the prediction to the actual value. Lastly it updates `m` and `b` with a new value from the derivatives of each (filled out via the `backward` function call).
-
 
 ```python
 # Training loop
@@ -157,6 +150,5 @@ for i in range(epochs):
     [epoch 20] Estimated that m=5.03 and b=9.92
     [epoch 24] Estimated that m=5.04 and b=9.95
     [epoch 28] Estimated that m=5.04 and b=9.97
-
 
 Pretty close, if you ask me! The model correctly figured out the `m` is 5-ish and `b` is 10-ish, which matches up with `goal_function` above. So we've created a simple framework for learning scalar linear functions, and validated that it works! Wow!
