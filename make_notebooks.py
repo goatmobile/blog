@@ -75,6 +75,8 @@ if __name__ == "__main__":
     ]
     exporter = nbconvert.MarkdownExporter(config=c)
 
+    notebook_paths = [path for path in notebook_paths if ".ipynb_checkpoints" not in str(path)]
+
     for notebook_path in notebook_paths:
         with open(notebook_path, "r") as f:
             data = json.load(f)
@@ -84,6 +86,7 @@ if __name__ == "__main__":
         md_content, resources = exporter.from_filename(str(notebook_path))
 
         # Write the images to disk
+        print(notebook_path)
         for filename, content in resources["outputs"].items():
             with open(notebook_path.parent / filename, "wb") as f:
                 f.write(content)

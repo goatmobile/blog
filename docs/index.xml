@@ -6,7 +6,17 @@
     <description>Recent content on Goatmobile Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 22 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 25 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cloning ping from Scratch</title>
+      <link>/posts/ping-clone/</link>
+      <pubDate>Sun, 25 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/ping-clone/</guid>
+      <description>The ping utility found on many systems is typically a simple tool to determine if 2 computers can see each other on a network. It&amp;rsquo;s been around in some form or another for nearly 40 years and is dead simple to use: ping &amp;lt;somewhere&amp;gt;. Some other tools can gussy up the output a bit but the fundamentals are the same.
+$ ping google.com PING google.com (172.217.6.46) 56(84) bytes of data. 64 bytes from sfo03s08-in-f46.</description>
+    </item>
+    
     <item>
       <title>Jupyter Notebooks and Hugo</title>
       <link>/posts/jupyter-hugo/</link>
