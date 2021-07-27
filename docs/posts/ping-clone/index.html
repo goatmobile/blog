@@ -171,12 +171,10 @@
 
   article {
     font-family: 'Gentium Book Basic script=all rev=2', Georgia, serif;
-    font-size: 1.1em;
   }
 
   code {
     font-family: 'Ubuntu Mono', monospace, serif;
-    font-size: 1.09em;
   }
 
   
@@ -318,20 +316,21 @@ ECHO_REQUEST_CODE <span style="color:#f92672">=</span> <span style="color:#ae81f
         dest,
     ) <span style="color:#f92672">=</span> struct<span style="color:#f92672">.</span>unpack(<span style="color:#e6db74">&#34;&gt;BBHHHBBHII&#34;</span>, recv_bytes[:<span style="color:#ae81ff">20</span>])
 
-    <span style="color:#66d9ef">return</span> rtt_ms, ttl, recv_bytes
+    <span style="color:#66d9ef">return</span> rtt_ms, ttl, recv_bytes, source
 </code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">ICMP_PROTOCOL <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x1</span>
 
-<span style="color:#75715e"># Use SOCK_RAW so we can fill in the details we need manually and bypass TCP</span>
-<span style="color:#75715e"># See https://linux.die.net/man/7/raw for details</span>
-socket <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_RAW, proto<span style="color:#f92672">=</span>ICMP_PROTOCOL)
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+    <span style="color:#75715e"># Use SOCK_RAW so we can fill in the details we need manually and bypass TCP</span>
+    <span style="color:#75715e"># See https://linux.die.net/man/7/raw for details</span>
+    socket <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_RAW, proto<span style="color:#f92672">=</span>ICMP_PROTOCOL)
 </code></pre></div><pre><code>---------------------------------------------------------------------------
 
 PermissionError                           Traceback (most recent call last)
 
-&lt;ipython-input-8-84bac5956c47&gt; in &lt;module&gt;
-      3 # Use SOCK_RAW so we can fill in the details we need manually and bypass TCP
-      4 # See https://linux.die.net/man/7/raw for details
-----&gt; 5 socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, proto=ICMP_PROTOCOL)
+&lt;ipython-input-3-ca7ebacf548d&gt; in &lt;module&gt;
+      4     # Use SOCK_RAW so we can fill in the details we need manually and bypass TCP
+      5     # See https://linux.die.net/man/7/raw for details
+----&gt; 6     socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, proto=ICMP_PROTOCOL)
 
 
 ~/miniconda3/lib/python3.8/socket.py in __init__(self, family, type, proto, fileno)
@@ -346,11 +345,12 @@ PermissionError: [Errno 1] Operation not permitted
 <p>Uh oh! <code>ping</code> has a quirk where (on Linux), it <a href="https://unix.stackexchange.com/questions/382771/why-does-ping-need-setuid-permission">requires</a> the setuid bit on its executable or to be run as a privileged user since it needs to create a raw socket (in my case I had to run <code>jupyter notebook</code> as root with the <code>--allow-root</code> flag).</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">ICMP_PROTOCOL <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x1</span>
 
-my_socket <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_RAW, proto<span style="color:#f92672">=</span>ICMP_PROTOCOL)
-rtt_ms, ttl, recv_bytes <span style="color:#f92672">=</span> ping(socket<span style="color:#f92672">=</span>my_socket, destination<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.1.1.1&#34;</span>, sequence_number<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
-print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>rtt_ms<span style="color:#e6db74">=}</span><span style="color:#e6db74">&#34;</span>)
-print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>ttl<span style="color:#e6db74">=}</span><span style="color:#e6db74">&#34;</span>)
-print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;bytes=</span><span style="color:#e6db74">{</span>len(recv_bytes)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+    my_socket <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_RAW, proto<span style="color:#f92672">=</span>ICMP_PROTOCOL)
+    rtt_ms, ttl, recv_bytes, _ <span style="color:#f92672">=</span> ping(socket<span style="color:#f92672">=</span>my_socket, destination<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.1.1.1&#34;</span>, sequence_number<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>rtt_ms<span style="color:#e6db74">=}</span><span style="color:#e6db74">&#34;</span>)
+    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>ttl<span style="color:#e6db74">=}</span><span style="color:#e6db74">&#34;</span>)
+    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;bytes=</span><span style="color:#e6db74">{</span>len(recv_bytes)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
 </code></pre></div><pre><code>rtt_ms=5.3168429999999995
 ttl=55
 bytes=28
@@ -363,10 +363,11 @@ PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
 </code></pre><p>The results from the Python implementation look close enough to me! A quick loop lets us ping as long as necessary.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">destination <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;1.1.1.1&#34;</span>
 
-<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">4</span>):
-    rrt_ms, ttl, recv_bytes <span style="color:#f92672">=</span> ping(socket<span style="color:#f92672">=</span>my_socket, destination<span style="color:#f92672">=</span>destination, sequence_number<span style="color:#f92672">=</span>i)
-    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>len(recv_bytes)<span style="color:#e6db74">}</span><span style="color:#e6db74"> bytes from </span><span style="color:#e6db74">{</span>destination<span style="color:#e6db74">}</span><span style="color:#e6db74">: icmp_seq=</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74"> ttl=</span><span style="color:#e6db74">{</span>ttl<span style="color:#e6db74">}</span><span style="color:#e6db74"> time=</span><span style="color:#e6db74">{</span>round(rtt_ms, <span style="color:#ae81ff">2</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74"> ms&#34;</span>)
-    time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">1</span>)
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">4</span>):
+        rrt_ms, ttl, recv_bytes, _ <span style="color:#f92672">=</span> ping(socket<span style="color:#f92672">=</span>my_socket, destination<span style="color:#f92672">=</span>destination, sequence_number<span style="color:#f92672">=</span>i)
+        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>len(recv_bytes)<span style="color:#e6db74">}</span><span style="color:#e6db74"> bytes from </span><span style="color:#e6db74">{</span>destination<span style="color:#e6db74">}</span><span style="color:#e6db74">: icmp_seq=</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74"> ttl=</span><span style="color:#e6db74">{</span>ttl<span style="color:#e6db74">}</span><span style="color:#e6db74"> time=</span><span style="color:#e6db74">{</span>round(rtt_ms, <span style="color:#ae81ff">2</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74"> ms&#34;</span>)
+        time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">1</span>)
 </code></pre></div><pre><code>28 bytes from 1.1.1.1: icmp_seq=0 ttl=55 time=5.32 ms
 28 bytes from 1.1.1.1: icmp_seq=1 ttl=55 time=5.32 ms
 28 bytes from 1.1.1.1: icmp_seq=2 ttl=55 time=5.32 ms

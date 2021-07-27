@@ -132,25 +132,26 @@ def ping(socket: socket.SocketType, destination: str, sequence_number: int) -> T
         dest,
     ) = struct.unpack(">BBHHHBBHII", recv_bytes[:20])
 
-    return rtt_ms, ttl, recv_bytes
+    return rtt_ms, ttl, recv_bytes, source
 ```
 
 ```python
 ICMP_PROTOCOL = 0x1
 
-# Use SOCK_RAW so we can fill in the details we need manually and bypass TCP
-# See https://linux.die.net/man/7/raw for details
-socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, proto=ICMP_PROTOCOL)
+if __name__ == "__main__":
+    # Use SOCK_RAW so we can fill in the details we need manually and bypass TCP
+    # See https://linux.die.net/man/7/raw for details
+    socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, proto=ICMP_PROTOCOL)
 ```
 
     ---------------------------------------------------------------------------
 
     PermissionError                           Traceback (most recent call last)
 
-    <ipython-input-8-84bac5956c47> in <module>
-          3 # Use SOCK_RAW so we can fill in the details we need manually and bypass TCP
-          4 # See https://linux.die.net/man/7/raw for details
-    ----> 5 socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, proto=ICMP_PROTOCOL)
+    <ipython-input-3-ca7ebacf548d> in <module>
+          4     # Use SOCK_RAW so we can fill in the details we need manually and bypass TCP
+          5     # See https://linux.die.net/man/7/raw for details
+    ----> 6     socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, proto=ICMP_PROTOCOL)
     
 
     ~/miniconda3/lib/python3.8/socket.py in __init__(self, family, type, proto, fileno)
@@ -167,11 +168,12 @@ Uh oh! `ping` has a quirk where (on Linux), it [requires](https://unix.stackexch
 ```python
 ICMP_PROTOCOL = 0x1
 
-my_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, proto=ICMP_PROTOCOL)
-rtt_ms, ttl, recv_bytes = ping(socket=my_socket, destination="1.1.1.1", sequence_number=1)
-print(f"{rtt_ms=}")
-print(f"{ttl=}")
-print(f"bytes={len(recv_bytes)}")
+if __name__ == "__main__":
+    my_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, proto=ICMP_PROTOCOL)
+    rtt_ms, ttl, recv_bytes, _ = ping(socket=my_socket, destination="1.1.1.1", sequence_number=1)
+    print(f"{rtt_ms=}")
+    print(f"{ttl=}")
+    print(f"bytes={len(recv_bytes)}")
 ```
 
     rtt_ms=5.3168429999999995
@@ -192,10 +194,11 @@ The results from the Python implementation look close enough to me! A quick loop
 ```python
 destination = "1.1.1.1"
 
-for i in range(4):
-    rrt_ms, ttl, recv_bytes = ping(socket=my_socket, destination=destination, sequence_number=i)
-    print(f"{len(recv_bytes)} bytes from {destination}: icmp_seq={i} ttl={ttl} time={round(rtt_ms, 2)} ms")
-    time.sleep(1)
+if __name__ == "__main__":
+    for i in range(4):
+        rrt_ms, ttl, recv_bytes, _ = ping(socket=my_socket, destination=destination, sequence_number=i)
+        print(f"{len(recv_bytes)} bytes from {destination}: icmp_seq={i} ttl={ttl} time={round(rtt_ms, 2)} ms")
+        time.sleep(1)
 ```
 
     28 bytes from 1.1.1.1: icmp_seq=0 ttl=55 time=5.32 ms

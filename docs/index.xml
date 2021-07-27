@@ -18,6 +18,15 @@ $ ping google.com PING google.com (172.217.6.46) 56(84) bytes of data. 64 bytes 
     </item>
     
     <item>
+      <title>Cloning traceroute from Scratch</title>
+      <link>/posts/traceroute-clone/</link>
+      <pubDate>Sun, 25 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/traceroute-clone/</guid>
+      <description>traceroute is a cool little tool that lets you see how your network packets travel through the network. If you&amp;rsquo;ve ever heard anyone talk about &amp;ldquo;network hops&amp;rdquo;, traceroute will show you exactly what these hops are (well, if it can). A basic implementation is super simple and relies on the definition of a TTL (time-to-live). Each packet in the network has a time-to-live associated with it, in practice it&amp;rsquo;s simply a number that increments on each network hop.</description>
+    </item>
+    
+    <item>
       <title>Jupyter Notebooks and Hugo</title>
       <link>/posts/jupyter-hugo/</link>
       <pubDate>Sat, 22 May 2021 00:00:00 +0000</pubDate>
