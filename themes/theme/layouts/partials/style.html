@@ -1,6 +1,7 @@
 <style>
   body {
     min-width: 300px;
+    padding: 20px;
   }
 
   .custom-navbar {
@@ -149,8 +150,10 @@
   }
   {{ end }}
 
-  article {
-    font-family: 'Gentium Book Basic script=all rev=2', Georgia, serif;
+  @import url('https://rsms.me/inter/inter.css');
+  html { font-family: 'Inter', sans-serif; }
+  @supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
   }
 
   code {

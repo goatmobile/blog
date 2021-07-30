@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1, shrink-to-fit=no"
   />
 
-  <meta name="generator" content="Hugo 0.86.0" /> 
+  <meta name="generator" content="Hugo 0.86.1" /> 
   <meta name="description" content="Some description" />
    
   <link
@@ -37,7 +37,7 @@
     type="text/css"
   />
 
-  <title>Goatmobile Website</title>
+  <title></title>
 
   <script type="text/x-mathjax-config">
     MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
@@ -55,6 +55,7 @@
   <style>
   body {
     min-width: 300px;
+    padding: 20px;
   }
 
   .custom-navbar {
@@ -169,8 +170,10 @@
   }
   
 
-  article {
-    font-family: 'Gentium Book Basic script=all rev=2', Georgia, serif;
+  @import url('https://rsms.me/inter/inter.css');
+  html { font-family: 'Inter', sans-serif; }
+  @supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
   }
 
   code {
@@ -192,16 +195,6 @@
 
 
 <body>
-  <nav class="custom-navbar">
-  <div class="container">
-    
-    <a href="/">Home</a>
-    
-    <a href="/posts/">Posts</a>
-    
-  </div>
-</nav>
-  
   <div class="container">
     <article>
       <h1>Posts</h1>

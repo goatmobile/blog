@@ -1,5 +1,4 @@
 languageCode = "en-us"
-title = "Goatmobile Website"
 theme = "theme"
 publishDir = "docs"
 
