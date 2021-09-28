@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  <meta name="generator" content="Hugo 0.88.1" /> 
+  <meta name="description" content="Some description" />
+   
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="apple-touch-icon.png"
+  />
+
+  <meta
+    name="msapplication-TileColor"
+    content="#da532c"
+  />
+
+  <meta name="theme-color" content="#ffffff" />
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+
+  <link
+    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
+    rel="stylesheet"
+    type="text/css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
+    rel="stylesheet"
+    type="text/css"
+  />
+
+  <title></title>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
+        messageStyle: "none"
+    });
+  </script>
+  <script
+    type="text/javascript"
+    async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
+  ></script>
+
+  <style>
+  body {
+    min-width: 300px;
+    padding: 20px;
+  }
+
+  .custom-navbar {
+    margin-bottom: 1em;
+    height: 60px;
+  }
+
+  .custom-navbar a {
+    display: inline-block;
+    padding: 18px 0;
+    margin-right: 1em;
+    font-weight: bold;
+  }
+
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    text-decoration: none;
+  }
+
+  @media print {
+    .custom-navbar {
+      display: none;
+    }
+  }
+
+  article {
+    padding-bottom: 1em;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  
+  body {
+    background-color: #fff;
+  }
+  
+
+  
+  body {
+    color: #212529;
+  }
+  
+
+  
+  a {
+    color: #007bff;
+  }
+  
+
+  
+  a:hover,
+  a:focus {
+    color: #0056b3;
+  }
+  
+
+  
+  .custom-navbar {
+    background-color: #212529;
+  }
+  
+
+  
+  .custom-navbar a {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  
+
+  
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    color: rgba(255, 255, 255, 1);
+  }
+  
+
+  
+  .container {
+    max-width: 800px;
+  }
+  
+
+  
+  pre {
+    display: block;
+    padding: 9.5px;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  pre code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  code {
+    padding: 2px 4px;
+    color: inherit;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: .9em;
+  }
+  
+
+  @import url('https://rsms.me/inter/inter.css');
+  html { font-family: 'Inter', sans-serif; }
+  @supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
+  }
+
+  code {
+    font-family: 'Ubuntu Mono', monospace, serif;
+  }
+
+  
+  blockquote,
+  .blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 1em;
+    border-left: 5px solid #6c757d;
+  }
+  
+</style>
+
+</head>
+
+
+<body>
+  <div class="container">
+    <article>
+      <h1>Installing Debian</h1>
+<p>This guide goes over my experience installing Debian 11 alongside Windows 10. Out of the common Linux distros, Ubuntu is out due to Canonical&rsquo;s including of non-free software by default and the whole debacle around <a href="https://lwn.net/Articles/825005/">snaps</a>. For a quick TL;DR: snaps follow a similar theme to Docker images or static builds in that they include the world alongside their package to avoid any &ldquo;this distro is missing mycoollibrary.so.123 so my software doesn&rsquo;t run!&rdquo; issues. While you could just not use snaps, some packages, namely <code>chromium-browser</code> was changed in apt to surreptitiously install the snap version. Most Linux users balk at the thought of telemetry, and so there is probably no good tracking of the popularity of each distro in the wild (as it should be). However, StackOverflow provides a <a href="https://insights.stackoverflow.com/trends?tags=ubuntu%2Cdebian%2Cfedora%2Ccentos">nice blurry window</a> (<a href="https://superuser.com/">https://superuser.com/</a> would be cool to look at too but they don&rsquo;t publish insights like this from what I can tell):</p>
+<p><img src="image.png" alt="image.png"></p>
+<p>These could mean that Ubuntu is the most popular or that it is the most confusing and everyone is having a great time using Fedora with no issues, but that&rsquo;s probably not the case. A quick peek at Docker image downloads of <a href="https://hub.docker.com/_/ubuntu">Ubuntu</a> vs <a href="https://hub.docker.com/_/debian">Debian</a> vs <a href="https://hub.docker.com/_/fedora">Fedora</a> put Ubuntu ahead by 20 times and Debian by 10. Debian is nice since it has good compatibility with the popular apt packages for Ubuntu, but with a focus on free software. It also supports nice things like disk encryption out of the box during setup.</p>
+<p>Copy over the image after downloading a pre-built version:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># on MacOS</span>
+$ diskutil list
+$ dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>debian.img of<span style="color:#f92672">=</span>/dev/disk2 bs<span style="color:#f92672">=</span>4m
+dd: /dev/disk2: Resource busy
+$ diskutil unmoundDisk /dev/disk2  <span style="color:#75715e"># unmount the disk so it won&#39;t be held up by any other processes</span>
+$ dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>debian.img of<span style="color:#f92672">=</span>/dev/disk2 bs<span style="color:#f92672">=</span>4m
+</code></pre></div><p>Great, that doesn&rsquo;t work, it just sits there. Checking it out further doesn&rsquo;t really help either:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ps -ax | grep dd | grep -i debian
+<span style="color:#ae81ff">88647</span> ttys000    0:00.03 sudo dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>debian.iso of<span style="color:#f92672">=</span>/dev/disk2 bs<span style="color:#f92672">=</span>4m
+<span style="color:#ae81ff">88648</span> ttys000    0:09.70 dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>debian.iso of<span style="color:#f92672">=</span>/dev/disk2 bs<span style="color:#f92672">=</span>4m
+$ sudo dtruss -p <span style="color:#ae81ff">88647</span>  <span style="color:#75715e"># also just sits there with no output</span>
+dtrace: system integrity protection is on, some features will not be available
+
+SYSCALL<span style="color:#f92672">(</span>args<span style="color:#f92672">)</span> 		 <span style="color:#f92672">=</span> <span style="color:#66d9ef">return</span>
+$ sudo dtruss -p <span style="color:#ae81ff">88648</span>  <span style="color:#75715e"># also just sits there with no output</span>
+dtrace: system integrity protection is on, some features will not be available
+
+SYSCALL<span style="color:#f92672">(</span>args<span style="color:#f92672">)</span> 		 <span style="color:#f92672">=</span> <span style="color:#66d9ef">return</span>
+dtrace: error on enabled probe ID <span style="color:#ae81ff">1683</span> <span style="color:#f92672">(</span>ID 177: syscall::read:return<span style="color:#f92672">)</span>: invalid user access in action <span style="color:#75715e">#5 at DIF offset 0</span>
+dtrace: error on enabled probe ID <span style="color:#ae81ff">1681</span> <span style="color:#f92672">(</span>ID 179: syscall::write:return<span style="color:#f92672">)</span>: invalid user access in action <span style="color:#75715e">#5 at DIF offset 0</span>
+...
+</code></pre></div><p>Not very helpful. MacOS&rsquo;s <a href="https://support.apple.com/en-us/HT204899">System Integrity Protection</a> is blocking attempts to watch some of the syscalls of <code>dd</code>. Running it on a fresh <code>dd</code> shows some syscalls though:</p>
+<pre tabindex="0"><code>dtrace: error on enabled probe ID 1696 (ID 317: syscall::munmap:return): invalid user access in action #5 at DIF offset 0
+dtrace: error on enabled probe ID 1696 (ID 317: syscall::munmap:return): invalid user access in action #5 at DIF offset 0
+dtrace: error on enabled probe ID 1696 (ID 317: syscall::munmap:return): invalid user access in action #5 at DIF offset 0
+dtrace: error on enabled probe ID 1696 (ID 317: syscall::munmap:return): invalid user access in action #5 at DIF offset 0
+thread_selfid(0x1, 0x0, 0x0)		 = 4300188 0
+</code></pre><p>So why is <code>thread_selfid</code> OK to view but not <code>munmap</code>? No idea.</p>
+<p>Killing <code>dd</code> with Ctrl-C shows <code>1761607680 bytes transferred in 678.283557 secs (2597155 bytes/sec)</code>, meaning some data was transferred, about 1.6 GB worth, and the Debian <code>.iso</code> is 1.9 GB so maybe it would have been fine if I left it. A progress bar would alleviate my concerns. <code>dd</code> can be coerced into outputting its progress while running with an <code>INFO</code> signal sent from another terminal:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ set PID <span style="color:#f92672">(</span>ps -ax | grep -i debian | head -n <span style="color:#ae81ff">1</span> | awk <span style="color:#e6db74">&#39;{print $1}&#39;</span><span style="color:#f92672">)</span>
+$ sudo kill -s INFO $PID
+</code></pre></div><p>The transfer rate is sitting at about 2 MB/s, well below the USB 2.0 limit of 480 MB/s and still far below the USB 1.1 limit of 12 MB/s. The <a href="https://en.wikipedia.org/wiki/USB_flash_drive#File_transfer_speeds">likely culprit</a> is a slow USB controller on the flash drive itself (it is almost 8 years old so that might explain it&hellip;). All this to say <code>dd</code> is confusing and <a href="https://www.balena.io/etcher/">Etcher</a> is easy so I just used that instead.</p>
+<h2 id="set-up">Set Up</h2>
+<p>I chose GNOME as the window manager during setup, but found it lacking due some annoyances (e.g. meta key to open an app by name covers the entire screen) and crashes. KDE Plasma works much more like Windows by default, and obviates the need for third-party settings apps like <code>gnome-tweaks</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ tasksel  <span style="color:#75715e"># set up KDE Plasma</span>
+</code></pre></div><h3 id="random-settings">Random Settings</h3>
+<ul>
+<li>
+<p>Settings</p>
+<ul>
+<li>Input Devices &gt; Mouse &gt; Acceleration Profile: Flat</li>
+<li>Workspace Behavior
+<ul>
+<li>General Behavior &gt; Animation Speed: Instant</li>
+<li>Screen Edges &gt; Disable</li>
+<li>Screen Edges &gt; Disable</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Download <a href="https://fonts.google.com/specimen/Source+Code+Pro">Source Code Pro</a>, move to <code>~/.fonts</code> (<code>.ttf</code> and <code>.otf</code> files stored here are automatically picked up)</p>
+<ul>
+<li>Konsole &gt; Settings &gt; Appearance &gt; Font: Source Code Pro 12pt</li>
+<li>Konsole &gt; Settings &gt; Appearance &gt; Color Scheme: Breeze</li>
+</ul>
+</li>
+<li>
+<p>Install Nvidia Driver + CUDA</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ deb http://deb.debian.org/debian/ bullseye main contrib non-free
+$ apt update
+$ apt install -y nvidia-driver firmware-misc-nonfree nvidia-cuda-toolkit
+$ nvidia-smi
+</code></pre></div></li>
+<li>
+<p>Firefox &gt; <code>about:config</code> &gt; <code>general.smoothScroll</code>: false</p>
+</li>
+</ul>
+
+    </article>
+  </div>
+</body>
+
+</html>

@@ -6,7 +6,16 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 25 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 16 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Installing Debian</title>
+      <link>/posts/debian/</link>
+      <pubDate>Thu, 16 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/debian/</guid>
+      <description>This guide goes over my experience installing Debian 11 alongside Windows 10. Out of the common Linux distros, Ubuntu is out due to Canonical&amp;rsquo;s including of non-free software by default and the whole debacle around snaps. For a quick TL;DR: snaps follow a similar theme to Docker images or static builds in that they include the world alongside their package to avoid any &amp;ldquo;this distro is missing mycoollibrary.so.123 so my software doesn&amp;rsquo;t run!</description>
+    </item>
+    
     <item>
       <title>Cloning ping from Scratch</title>
       <link>/posts/ping-clone/</link>
