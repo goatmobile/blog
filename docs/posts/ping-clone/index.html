@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1, shrink-to-fit=no"
   />
 
-  <meta name="generator" content="Hugo 0.88.1" /> 
+  <meta name="generator" content="Hugo 0.80.0" /> 
   <meta name="description" content="Some description" />
    
   <link
@@ -199,7 +199,7 @@
     <article>
       <h1>Cloning ping from Scratch</h1>
 <p>The <a href="https://en.wikipedia.org/wiki/Ping_(networking_utility)"><code>ping</code></a> utility found on many systems is typically a simple tool to determine if 2 computers can see each other on a network. It&rsquo;s been around in some form or another for nearly 40 years and is dead simple to use: <code>ping &lt;somewhere&gt;</code>. Some <a href="https://github.com/orf/gping">other tools</a> can gussy up the output a bit but the fundamentals are the same.</p>
-<pre tabindex="0"><code>$ ping google.com
+<pre><code>$ ping google.com
 PING google.com (172.217.6.46) 56(84) bytes of data.
 64 bytes from sfo03s08-in-f46.1e100.net (172.217.6.46): icmp_seq=1 ttl=116 time=5.47 ms
 64 bytes from sfo03s08-in-f46.1e100.net (172.217.6.46): icmp_seq=2 ttl=116 time=5.63 ms
@@ -212,7 +212,7 @@ rtt min/avg/max/mdev = 5.251/5.607/5.916/0.167 ms
 <p><img src="image.png" alt="image.png"></p>
 <p>The astute reader will notice an <a href="https://en.wikipedia.org/wiki/IPv4#Header">IPv4 header</a> followed by the actual ICMP data. Since we&rsquo;re not concerned with the details of the <a href="https://en.wikipedia.org/wiki/Network_layer">IP networking layer</a> here, we can leave those details to Python and focus on implementing the ICMP packet (un)marshaling. Turns out that diagram isn&rsquo;t that nice though since it doesn&rsquo;t detail the &ldquo;Header data&rdquo; which is split into 2 bytes for an identifier (which will be returned by the sender in the reply) and the sequence number. First we&rsquo;ll need to implement the checksum algorithm to fill in the relevant slot above, then we can write a function to construct ICMP packets, and lastly we just need to send these over an IP socket and we&rsquo;ll be pinging!</p>
 <p>The ICMP checksum is the <a href="https://en.wikipedia.org/wiki/Ones%27_complement">one&rsquo;s complement</a> of the ICMP header and payload (not including the IPv4 header).</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> struct  <span style="color:#75715e"># We&#39;ll need this to go between bytes &lt;-&gt; integers</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> struct  <span style="color:#75715e"># We&#39;ll need this to go between bytes &lt;-&gt; integers</span>
 
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">checksum</span>(packet_bytes: bytes) <span style="color:#f92672">-&gt;</span> int:
     <span style="color:#75715e"># First, pad bytes so it&#39;s divisible by 2</span>
@@ -234,7 +234,7 @@ rtt min/avg/max/mdev = 5.251/5.607/5.916/0.167 ms
 
     <span style="color:#66d9ef">return</span> checksum
 </code></pre></div><p>To use this checksum we&rsquo;ll need to partially construct the packet with a blank spot for the checksum (we&rsquo;ll leave it as <code>0</code>), then add the checksum to the packet in-place. Here&rsquo;s how we can make an ICMP packet using the description above:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_icmp_packet</span>(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_icmp_packet</span>(
     type: int,
     code: int,
     sequence_number: int,
@@ -264,7 +264,7 @@ rtt min/avg/max/mdev = 5.251/5.607/5.916/0.167 ms
 
     <span style="color:#66d9ef">return</span> header <span style="color:#f92672">+</span> payload
 </code></pre></div><p>This this function in hand we have everything we need to start sending pings around. Let&rsquo;s open a socket and give it a whirl.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> socket
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> socket
 <span style="color:#f92672">import</span> time  <span style="color:#75715e"># This will let us track the round trip time (rtt)</span>
 <span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Tuple
 
@@ -310,7 +310,7 @@ ECHO_REQUEST_CODE <span style="color:#f92672">=</span> <span style="color:#ae81f
     ) <span style="color:#f92672">=</span> struct<span style="color:#f92672">.</span>unpack(<span style="color:#e6db74">&#34;&gt;BBHHHBBHII&#34;</span>, recv_bytes[:<span style="color:#ae81ff">20</span>])
 
     <span style="color:#66d9ef">return</span> rtt_ms, ttl, recv_bytes, source
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">ICMP_PROTOCOL <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x1</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">ICMP_PROTOCOL <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x1</span>
 
 <span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
     <span style="color:#75715e"># Use SOCK_RAW so we can fill in the details we need manually and bypass TCP</span>
@@ -336,30 +336,30 @@ PermissionError                           Traceback (most recent call last)
 PermissionError: [Errno 1] Operation not permitted
 </code></pre>
 <p>Uh oh! <code>ping</code> has a quirk where (on Linux), it <a href="https://unix.stackexchange.com/questions/382771/why-does-ping-need-setuid-permission">requires</a> the setuid bit on its executable or to be run as a privileged user since it needs to create a raw socket (in my case I had to run <code>jupyter notebook</code> as root with the <code>--allow-root</code> flag).</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">ICMP_PROTOCOL <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x1</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">ICMP_PROTOCOL <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x1</span>
 
 <span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
     my_socket <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_RAW, proto<span style="color:#f92672">=</span>ICMP_PROTOCOL)
     rtt_ms, ttl, recv_bytes, _ <span style="color:#f92672">=</span> ping(socket<span style="color:#f92672">=</span>my_socket, destination<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.1.1.1&#34;</span>, sequence_number<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
-    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>rtt_ms<span style="color:#e6db74">=}</span><span style="color:#e6db74">&#34;</span>)
-    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>ttl<span style="color:#e6db74">=}</span><span style="color:#e6db74">&#34;</span>)
-    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;bytes=</span><span style="color:#e6db74">{</span>len(recv_bytes)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+    <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34;{rtt_ms=}&#34;</span>)
+    <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34;{ttl=}&#34;</span>)
+    <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34;bytes={len(recv_bytes)}&#34;</span>)
 </code></pre></div><pre><code>rtt_ms=5.3168429999999995
 ttl=55
 bytes=28
 </code></pre>
 <p>Some sweet numbers! Let&rsquo;s compare it to the built-in ping (on Ubuntu 18.04):</p>
-<pre tabindex="0"><code>$ ping 1.1.1.1
+<pre><code>$ ping 1.1.1.1
 PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
 64 bytes from 1.1.1.1: icmp_seq=1 ttl=55 time=5.63 ms
 64 bytes from 1.1.1.1: icmp_seq=2 ttl=55 time=5.70 ms
 </code></pre><p>The results from the Python implementation look close enough to me! A quick loop lets us ping as long as necessary.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">destination <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;1.1.1.1&#34;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">destination <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;1.1.1.1&#34;</span>
 
 <span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
     <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">4</span>):
         rrt_ms, ttl, recv_bytes, _ <span style="color:#f92672">=</span> ping(socket<span style="color:#f92672">=</span>my_socket, destination<span style="color:#f92672">=</span>destination, sequence_number<span style="color:#f92672">=</span>i)
-        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>len(recv_bytes)<span style="color:#e6db74">}</span><span style="color:#e6db74"> bytes from </span><span style="color:#e6db74">{</span>destination<span style="color:#e6db74">}</span><span style="color:#e6db74">: icmp_seq=</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74"> ttl=</span><span style="color:#e6db74">{</span>ttl<span style="color:#e6db74">}</span><span style="color:#e6db74"> time=</span><span style="color:#e6db74">{</span>round(rtt_ms, <span style="color:#ae81ff">2</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74"> ms&#34;</span>)
+        <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34;{len(recv_bytes)} bytes from {destination}: icmp_seq={i} ttl={ttl} time={round(rtt_ms, 2)} ms&#34;</span>)
         time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">1</span>)
 </code></pre></div><pre><code>28 bytes from 1.1.1.1: icmp_seq=0 ttl=55 time=5.32 ms
 28 bytes from 1.1.1.1: icmp_seq=1 ttl=55 time=5.32 ms

@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1, shrink-to-fit=no"
   />
 
-  <meta name="generator" content="Hugo 0.88.1" /> 
+  <meta name="generator" content="Hugo 0.80.0" /> 
   <meta name="description" content="Some description" />
    
   <link
@@ -201,16 +201,16 @@
 <ol>
 <li>
 <p>Generate a key.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Give your keys a special name! For this example it&#39;s &#39;my_cool_key&#39;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Give your keys a special name! For this example it&#39;s &#39;my_cool_key&#39;</span>
 ssh-keygen -t ed25519 -N <span style="color:#e6db74">&#34;&#34;</span> -C <span style="color:#e6db74">&#34;my key&#39;s name&#34;</span> -f ~/.ssh/my_cool_key
 </code></pre></div></li>
 <li>
 <p><a href="https://github.com/settings/keys">Copy it to whatever GitHub account it should be on</a>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat ~/.ssh/my_cool_key.pub
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat ~/.ssh/my_cool_key.pub
 </code></pre></div></li>
 <li>
 <p>Go to your repository and do some pushes! Use <code>GIT_SSH_COMMAND</code> to tell it to use the key we just generated.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">GIT_SSH_COMMAND<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ssh -i ~/.ssh/my_cool_key -o IdentitiesOnly=yes&#39;</span> git push
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">GIT_SSH_COMMAND<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ssh -i ~/.ssh/my_cool_key -o IdentitiesOnly=yes&#39;</span> git push
 </code></pre></div></li>
 <li>
 <p>Wow!</p>

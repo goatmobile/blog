@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1, shrink-to-fit=no"
   />
 
-  <meta name="generator" content="Hugo 0.88.1" /> 
+  <meta name="generator" content="Hugo 0.80.0" /> 
   <meta name="description" content="Some description" />
    
   <link
@@ -200,7 +200,7 @@
       <h1>Cloning traceroute from Scratch</h1>
 <p><a href="https://en.wikipedia.org/wiki/Traceroute"><code>traceroute</code></a> is a cool little tool that lets you see how your network packets travel through the network. If you&rsquo;ve ever heard anyone talk about <a href="https://en.wikipedia.org/wiki/Hop_(networking)">&ldquo;network hops&rdquo;</a>, <code>traceroute</code> will show you exactly what these hops are (well, if it can). A basic implementation is super simple and relies on the definition of a <a href="https://en.wikipedia.org/wiki/Time_to_live">TTL (time-to-live)</a>. Each packet in the network has a time-to-live associated with it, in practice it&rsquo;s simply a number that increments on each network hop. If any host in the path to the destination sees that the TTL has exceeded the packet&rsquo;s stated maximum TTL, the packet is dead and can be considered garbage.</p>
 <p>Let&rsquo;s first look at a real <code>traceroute</code>&rsquo;s output in detail. Your results will be different since I&rsquo;m guessing we&rsquo;re not in the same computer.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ traceroute example.com
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ traceroute example.com
 traceroute to example.com <span style="color:#f92672">(</span>93.184.216.34<span style="color:#f92672">)</span>, <span style="color:#ae81ff">30</span> hops max, <span style="color:#ae81ff">60</span> byte packets
  &lt; I omitted some paths <span style="color:#66d9ef">for</span> privacy / brevity &gt;
  <span style="color:#ae81ff">7</span>  242.0.31.17 <span style="color:#f92672">(</span>242.0.31.17<span style="color:#f92672">)</span>  0.384 ms 100.95.17.155 <span style="color:#f92672">(</span>100.95.17.155<span style="color:#f92672">)</span>  0.689 ms 100.95.1.145 <span style="color:#f92672">(</span>100.95.1.145<span style="color:#f92672">)</span>  0.961 ms
@@ -211,7 +211,7 @@ traceroute to example.com <span style="color:#f92672">(</span>93.184.216.34<span
 <p>In the <a href="/posts/ping-clone/"><code>ping</code> clone</a> post, we used ICMP to send packets to a destination to see if it&rsquo;s reachable. We&rsquo;ll do the same thing here, but intentionally set the TTL too low so the packet gets killed. A nice side effect is that the host that does the killing will tell us what happened, so we can identify each hop along the network if we set a TTL to expire at each hop. This of course relies on intermediate hosts playing along, which they don&rsquo;t always do for policy/firewall reasons.</p>
 <p><img src="image.png" alt="image.png"></p>
 <p>If we consult the holy ICMP ping packet diagram again, we see there is a TTL field we can set but that it is in the IPv4 header. Python copies the Unix socket API nearly directly, which lets you change these by setting options on your socket. So we don&rsquo;t need to touch the previous <code>ping</code> implementation at all.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Grab the ping implementation from</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Grab the ping implementation from</span>
 <span style="color:#75715e"># https://goatmobile.biz/posts/ping-clone</span>
 <span style="color:#f92672">from</span> ipynb.fs.full.Ping <span style="color:#f92672">import</span> ping
 <span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> List
@@ -258,17 +258,17 @@ ICMP_PROTOCOL <span style="color:#f92672">=</span> <span style="color:#ae81ff">0
     
     <span style="color:#66d9ef">return</span> routes
 </code></pre></div><p>This has everything needed to run a simple traceroute. For simplicity it only checks one path (and only supports IPv4).</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">destination <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;example.com&#34;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">destination <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;example.com&#34;</span>
 routes <span style="color:#f92672">=</span> traceroute(destination)
 
 <span style="color:#75715e"># Chopping off some of the more personal routes</span>
 routes <span style="color:#f92672">=</span> routes[<span style="color:#ae81ff">5</span>:]
 
 <span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
-    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;traceroute to </span><span style="color:#e6db74">{</span>destination<span style="color:#e6db74">}</span><span style="color:#e6db74">, </span><span style="color:#e6db74">{</span>MAX_HOPS<span style="color:#e6db74">}</span><span style="color:#e6db74"> hops max&#34;</span>)
-    print(<span style="color:#e6db74">&#34; &lt; some routes omitted &gt;&#34;</span>)
+    <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34;traceroute to {destination}, {MAX_HOPS} hops max&#34;</span>)
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34; &lt; some routes omitted &gt;&#34;</span>)
     <span style="color:#66d9ef">for</span> index, (route, rtt_ms) <span style="color:#f92672">in</span> enumerate(routes):
-        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34; </span><span style="color:#e6db74">{</span><span style="color:#ae81ff">5</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> index<span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span>route<span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span>round(rtt_ms, <span style="color:#ae81ff">2</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74"> ms&#34;</span>)
+        <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34; {5 + 1 + index} {route} {round(rtt_ms, 2)} ms&#34;</span>)
 </code></pre></div><pre><code>traceroute to example.com, 60 hops max
  &lt; some routes omitted &gt;
  6 192.205.32.238 7.22 ms

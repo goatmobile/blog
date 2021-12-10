@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  <meta name="generator" content="Hugo 0.80.0" /> 
+  <meta name="description" content="Some description" />
+   
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="apple-touch-icon.png"
+  />
+
+  <meta
+    name="msapplication-TileColor"
+    content="#da532c"
+  />
+
+  <meta name="theme-color" content="#ffffff" />
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+
+  <link
+    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
+    rel="stylesheet"
+    type="text/css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
+    rel="stylesheet"
+    type="text/css"
+  />
+
+  <title></title>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
+        messageStyle: "none"
+    });
+  </script>
+  <script
+    type="text/javascript"
+    async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
+  ></script>
+
+  <style>
+  body {
+    min-width: 300px;
+    padding: 20px;
+  }
+
+  .custom-navbar {
+    margin-bottom: 1em;
+    height: 60px;
+  }
+
+  .custom-navbar a {
+    display: inline-block;
+    padding: 18px 0;
+    margin-right: 1em;
+    font-weight: bold;
+  }
+
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    text-decoration: none;
+  }
+
+  @media print {
+    .custom-navbar {
+      display: none;
+    }
+  }
+
+  article {
+    padding-bottom: 1em;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  
+  body {
+    background-color: #fff;
+  }
+  
+
+  
+  body {
+    color: #212529;
+  }
+  
+
+  
+  a {
+    color: #007bff;
+  }
+  
+
+  
+  a:hover,
+  a:focus {
+    color: #0056b3;
+  }
+  
+
+  
+  .custom-navbar {
+    background-color: #212529;
+  }
+  
+
+  
+  .custom-navbar a {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  
+
+  
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    color: rgba(255, 255, 255, 1);
+  }
+  
+
+  
+  .container {
+    max-width: 800px;
+  }
+  
+
+  
+  pre {
+    display: block;
+    padding: 9.5px;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  pre code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  code {
+    padding: 2px 4px;
+    color: inherit;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: .9em;
+  }
+  
+
+  @import url('https://rsms.me/inter/inter.css');
+  html { font-family: 'Inter', sans-serif; }
+  @supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
+  }
+
+  code {
+    font-family: 'Ubuntu Mono', monospace, serif;
+  }
+
+  
+  blockquote,
+  .blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 1em;
+    border-left: 5px solid #6c757d;
+  }
+  
+</style>
+
+</head>
+
+
+<body>
+  <div class="container">
+    <article>
+      <h1>Terminal Spotlight</h1>
+<p>I do my daily driving from MacOS. One of the great things about MacOS is Spotlight. It&rsquo;s like a little secret menu that can do really neat things like open a program or add 2 numbers. Secret because no one who doesn&rsquo;t already know about it is going to find out. Sure you can click the little magnifying glass in the top bar but no one&rsquo;s doing that, all the other icons too much more clickable to bother.</p>
+
+
+<p style="text-align: center;"><img src="bar.png" alt=""></p>
+<p>I have a problem with Spotlight though. I don&rsquo;t like typing in Spotlight. I like typing in my terminal where I can <code>say meow</code> in between <code>rm -rf</code>-ing my way through various system folders. Wouldn&rsquo;t it be great if Spotlight wasn&rsquo;t Spotlight and was actually a terminal?</p>
+<p>Of course this already exists in real applications like Alfred or Cerebro, but installing things is lamer than typing into Spotlight. Let&rsquo;s see if we can make this happen and only install a little bit of stuff.</p>
+<p>First off clicking is out of the question, so we need the keyboard shortcut. Thankfully a built-in quirk of MacOS will put any Automator &ldquo;Quick Actions&rdquo; in the System Preferences keyboard shortcuts pane which work globally (unless captured by some other program first, so make sure to choose something unique). A 1-liner Quick Action in Automator to <code>open /System/Applications/Utilities/Terminal.app</code> will do the trick.</p>
+<p><img src="automator.png" alt="automator"></p>
+<p>Don&rsquo;t forget to press the Run button to see your hard work in action! After a quick trip to System Preferences to set up your shortcut of choice we&rsquo;re in business.</p>
+<p><img src="prefs.png" alt="prefs"></p>
+<p>That&rsquo;s great and all but it&rsquo;s just an ordinary terminal. Too much room for too many words! But we&rsquo;ll get to that later. First we have to deal with these startup times, yeesh!</p>
+<p><img src="big.png" alt="big"></p>
+<p>Terminal.app is great. Especially because I&rsquo;ve never bothered to use iTerm 2 (no installing things). We&rsquo;ll have to break that rule a little with Alacritty which starts up a teensy bit faster. Changing the Automator script to run <code>/Applications/Alacritty.app/Contents/MacOS/alacritty</code> is step 1, then the customizations. There needs to be a small window and no pesky title bars. Easy enough with this <code>~/.config/alacritty/alacritty.yml</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">window</span>:
+  <span style="color:#f92672">dimensions</span>:
+   <span style="color:#f92672">columns</span>: <span style="color:#ae81ff">40</span>
+   <span style="color:#f92672">lines</span>: <span style="color:#ae81ff">4</span>
+  <span style="color:#f92672">padding</span>:
+   <span style="color:#f92672">x</span>: <span style="color:#ae81ff">20</span>
+   <span style="color:#f92672">y</span>: <span style="color:#ae81ff">20</span>
+ <span style="color:#f92672">decorations</span>: <span style="color:#ae81ff">none</span>
+
+<span style="color:#f92672">font</span>:
+  <span style="color:#f92672">size</span>: <span style="color:#ae81ff">30.0</span>
+</code></pre></div><p>Things are starting to look better. We can get rid of most of the characters but we want to keep something so it looks terminal-y. Probably just the <code>&gt;</code> is good. The astute reader will also notice this is <code>fish</code> so you will have to adjust accordingly.</p>
+<p><img src="small-bad.png" alt="small-bad"></p>
+<p>Detecting the small terminal is a simple matter of <code>tput</code>-ing around in <code>~/.config/fish/config.fish</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export IS_QUICKTERM<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+<span style="color:#66d9ef">if</span> test <span style="color:#f92672">(</span>tput lines<span style="color:#f92672">)</span> -lt <span style="color:#ae81ff">7</span>
+    export IS_QUICKTERM<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+end
+</code></pre></div><p>Now other places can use <code>IS_QUICKTERM</code> to do things differently, like in <code>~/.config/fish/functions/fish_prompt.fish</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Count how many prompts have been shown</span>
+export TERM_PROMPTS<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+
+<span style="color:#66d9ef">function</span> fish_prompt --description <span style="color:#e6db74">&#39;Write out the prompt&#39;</span>
+    <span style="color:#66d9ef">if</span> test $IS_QUICKTERM -eq <span style="color:#ae81ff">1</span>
+        <span style="color:#75715e"># Mini terminal prompt!</span>
+        <span style="color:#66d9ef">if</span> test $TERM_PROMPTS -eq <span style="color:#ae81ff">1</span>
+            <span style="color:#75715e"># Only 1 command is allowed, but give some</span>
+            <span style="color:#75715e"># time to look at the output</span>
+            sleep <span style="color:#ae81ff">3</span>
+            exit
+        end
+        <span style="color:#75715e"># Don&#39;t show anything fancy</span>
+        printf <span style="color:#e6db74">&#39;&gt; &#39;</span>
+        export TERM_PROMPTS<span style="color:#f92672">=(</span>math $TERM_PROMPTS + 1<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">else</span>
+        <span style="color:#75715e"># The regular one</span>
+        printf <span style="color:#e6db74">&#39;[mac] %s%s%s &gt; &#39;</span> <span style="color:#f92672">(</span>set_color $fish_color_cwd<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>prompt_pwd<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>set_color normal<span style="color:#f92672">)</span>
+    end
+end
+</code></pre></div><p>and in <code>~/.config/fish/functions/fish_right_prompt.fish</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#66d9ef">function</span> fish_right_prompt -d <span style="color:#e6db74">&#34;Write out the right prompt&#34;</span>
+    <span style="color:#66d9ef">if</span> test $IS_QUICKTERM -ne <span style="color:#ae81ff">1</span>
+        <span style="color:#75715e"># Only show the date on a real sized terminal</span>
+        set_color <span style="color:#ae81ff">777</span>
+        echo <span style="color:#e6db74">&#34;[&#34;</span> <span style="color:#f92672">(</span>date <span style="color:#e6db74">&#39;+%T&#39;</span><span style="color:#f92672">)</span><span style="color:#e6db74">&#34; ]&#34;</span>
+        set_color normal
+    end
+end
+</code></pre></div><p>There it is! A nice looking box I can pop open at my lesiure to run a quick command, like opening VSCode to a folder with <code>code</code> or copying a file to the clipboard with <code>pbcopy</code>.</p>
+<p><img src="small-good.png" alt="small-good"></p>
+<p>And it only took editing 4 files and clicking on a few dozen things!</p>
+
+    </article>
+  </div>
+</body>
+
+</html>
