@@ -6,7 +6,18 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 08 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 16 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Maintaining SSH Connections</title>
+      <link>/posts/ssh/</link>
+      <pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/ssh/</guid>
+      <description>If you don&amp;rsquo;t like your computer to make sounds like beeping or fan spinning, you&amp;rsquo;re probably using a remote server to do development. And nothing says &amp;ldquo;remote development&amp;rdquo; more than SSH. Connecting is easy enough:
+ssh my_cool_server.com This works fine until you need to open another connection or you close your laptop. Thankfully there are some easy ways to make SSH connections live longer than they would otherwise.
+ControlPersist SSH has an option where it will persist a connection to a file (a socket) that can be used multiple times.</description>
+    </item>
+    
     <item>
       <title>Terminal Spotlight</title>
       <link>/posts/spotlight/</link>
