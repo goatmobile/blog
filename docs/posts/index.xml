@@ -6,7 +6,17 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 16 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 19 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Tricky Pickle</title>
+      <link>/posts/pickle/</link>
+      <pubDate>Sun, 19 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/pickle/</guid>
+      <description>Everybody knows Python&amp;rsquo;s pickle module has prickly edges, just like a real pickle. The documentation even has a big red box right at the top. The pickle file format is technically a program for the pickle stack machine, nicely described in Lib/pickletools.py. Briefly, instructions (opcodes) create Python primitives (ints, strs, tuples, etc.) on a stack. Some extra bits are used to:
+ preserve object references across serialization (e.g. if you save a list containing the same object twice, it will be deserialized into the same list rather than a list with two different objects with the same values) de-duplicate references via a memoization table (an array of already-deserialized objects) run custom deserialization code on objects  Let&amp;rsquo;s take a quick look inside a pickle using the pickletools standard library module.</description>
+    </item>
+    
     <item>
       <title>Maintaining SSH Connections</title>
       <link>/posts/ssh/</link>
