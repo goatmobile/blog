@@ -6,7 +6,27 @@
     <description>Recent content on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 19 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 13 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>rfile Command Runner</title>
+      <link>/posts/rfile/</link>
+      <pubDate>Thu, 13 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/rfile/</guid>
+      <description>I recently found myself needing to run some terminal commands on my computer while working on a web project. What a conundrum! Several days later out popped rfile, a cool command runner that makes keeping track of projects a breeze.
+My previous go-to for a project was to lump all the common tasks I needed to do (essentially a collection of short Bash scripts) into a Makefile and control things via environment variables.</description>
+    </item>
+    
+    <item>
+      <title>Terminal Spotlight: Part 2</title>
+      <link>/posts/mini-term2/</link>
+      <pubDate>Wed, 05 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/mini-term2/</guid>
+      <description>I found that startup time with Automator and a MacOS Service keyboard shortcut leads to pretty high start up latency (1-3 seconds-ish) that&amp;rsquo;s mostly outside of the terminal&amp;rsquo;s control. The obvious next step was to spend several hours futzing with Alacritty&amp;rsquo;s Rust codebase to hack in a global keyboard shortcut listener to cut out the Automator middleman.
+The listening was relatively simple with the rdev create. My Alacritty fork has the changes and building it is pretty straightforward.</description>
+    </item>
+    
     <item>
       <title>Tricky Pickle</title>
       <link>/posts/pickle/</link>
