@@ -10,7 +10,7 @@ dist: |
   rm -rf docs
   hugo -D
   # /snap/bin/hugo -D
-  cp CNAME docs
+  # cp CNAME docs
 
 notebooks_dev: |
   # watch: find ./content -name "*.ipynb" | grep -v checkpoint
