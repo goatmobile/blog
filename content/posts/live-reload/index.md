@@ -24,9 +24,9 @@ webSocket.onmessage = () => {
 };
 ```
 
-If you visit this page now there will just be an error since there is no websocket server listening on port 5678 yet. This Python code in `live-reload.py` will handle listening to the socket.
+If you visit this page now there will just be an error since there is no websocket server listening on port 5678 yet. This Python code in `reload-server.py` will handle listening to the socket.
 
-```python
+{{< labelled-highlight lang="python" filename="reload-server.py" >}}
 import signal
 
 signal.signal(signal.SIGUSR1, lambda a, b: None)
@@ -65,11 +65,11 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-```
+{{</ labelled-highlight >}}
 
 The seasoned reader will notice the use of a signal handler on `SIGUSR1` (a Linux-only feature, so no MacOS or Windows). This code runs a websocket server that sends a message whenever the process recieves a `SIGUSR1`. Now it all starts to come together, all we need is another piece to watch the relevant files and send the Python server a `SIGUSR1`. This will bubble over to the JavaScript running on the browser which will then do a reload. `r` comes in handy here with this code in `rfile.yml`.
 
-```yaml
+{{< labelled-highlight lang="yaml" filename="rfile.yml" >}}
 main: |
   # parallel
   # dep: serve
@@ -87,7 +87,7 @@ socket-server: |
 file-watcher: |
   # watch: find . -maxdepth 1 -type f
   kill -s USR1 $(ps -ax | grep reload-server.py | grep python | awk '{print $1}')
-```
+{{</ labelled-highlight >}}
 
 `serve` just runs Python's built in HTTP server, but any old HTTP server will do. `socket-server` runs the websocket server code above. The last entry, `file-watcher` is the interesting one. It uses `# watch` to monitor all files at the top level of the current directory and re-runs its body when they are changed. Finally, the `kill` command sends the `SIGUSR1` signal to the `reload-server.py` process. Most of these aren't that useful in isolation, so the default command `main` wraps them all up with `# dep <name>` to be executed simultaneously via `# parallel` (see [this post](/posts/rfile) for more details on `r`/`rfilerunner`)
 

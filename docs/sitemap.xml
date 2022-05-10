@@ -3,82 +3,77 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/</loc>
+    <loc>https://goatmobile.github.io/blog/</loc>
     <lastmod>2022-05-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/posts/live-reload/</loc>
+    <loc>https://goatmobile.github.io/blog/posts/live-reload/</loc>
     <lastmod>2022-05-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/posts/</loc>
+    <loc>https://goatmobile.github.io/blog/posts/</loc>
     <lastmod>2022-05-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/posts/rfile/</loc>
+    <loc>https://goatmobile.github.io/blog/posts/rfile/</loc>
     <lastmod>2022-01-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/posts/mini-term2/</loc>
+    <loc>https://goatmobile.github.io/blog/posts/mini-term2/</loc>
     <lastmod>2022-01-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/posts/pickle/</loc>
+    <loc>https://goatmobile.github.io/blog/posts/pickle/</loc>
     <lastmod>2021-12-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/posts/ssh/</loc>
+    <loc>https://goatmobile.github.io/blog/posts/ssh/</loc>
     <lastmod>2021-12-16T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/posts/spotlight/</loc>
+    <loc>https://goatmobile.github.io/blog/posts/spotlight/</loc>
     <lastmod>2021-12-08T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/posts/debian/</loc>
+    <loc>https://goatmobile.github.io/blog/posts/debian/</loc>
     <lastmod>2021-09-16T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/posts/ping-clone/</loc>
+    <loc>https://goatmobile.github.io/blog/posts/ping-clone/</loc>
     <lastmod>2021-07-25T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/posts/traceroute-clone/</loc>
+    <loc>https://goatmobile.github.io/blog/posts/traceroute-clone/</loc>
     <lastmod>2021-07-25T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/posts/jupyter-hugo/</loc>
+    <loc>https://goatmobile.github.io/blog/posts/jupyter-hugo/</loc>
     <lastmod>2021-05-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/posts/multiple-git-users/</loc>
+    <loc>https://goatmobile.github.io/blog/posts/multiple-git-users/</loc>
     <lastmod>2021-05-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/posts/scalar-autodiff/</loc>
+    <loc>https://goatmobile.github.io/blog/posts/scalar-autodiff/</loc>
     <lastmod>2021-05-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/about/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
+    <loc>https://goatmobile.github.io/blog/tags/</loc>
   </url>
   
 </urlset>

@@ -2,56 +2,56 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title></title>
-    <link>/</link>
+    <link>https://goatmobile.github.io/blog/</link>
     <description>Recent content on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 09 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Live Reloading HTML from Scratch</title>
-      <link>/posts/live-reload/</link>
+      <link>https://goatmobile.github.io/blog/posts/live-reload/</link>
       <pubDate>Mon, 09 May 2022 00:00:00 +0000</pubDate>
       
-      <guid>/posts/live-reload/</guid>
+      <guid>https://goatmobile.github.io/blog/posts/live-reload/</guid>
       <description>Any frontend toolkit worth its weight in node_modules today will have some kind of live reloading functionality (e.g. livereload or live-server for basic examples) where it watches files on disk for changes and automatically reloads changes in the browser. CodeKit is a cool (proprietary) example that even has hot-reloading for CSS only changes so the browser doesn&amp;rsquo;t lose any actual state. Most of these tools work by injecting JavaScript magic into your input HTML and communicating over a websocket server to a process on the server that watches the actual files.</description>
     </item>
     
     <item>
       <title>rfile Command Runner</title>
-      <link>/posts/rfile/</link>
+      <link>https://goatmobile.github.io/blog/posts/rfile/</link>
       <pubDate>Thu, 13 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>/posts/rfile/</guid>
+      <guid>https://goatmobile.github.io/blog/posts/rfile/</guid>
       <description>I recently found myself needing to run some terminal commands on my computer while working on a web project. What a conundrum! Several days later out popped rfile, a cool command runner that makes keeping track of projects a breeze.
 My previous go-to for a project was to lump all the common tasks I needed to do (essentially a collection of short Bash scripts) into a Makefile and control things via environment variables.</description>
     </item>
     
     <item>
       <title>Terminal Spotlight: Part 2</title>
-      <link>/posts/mini-term2/</link>
+      <link>https://goatmobile.github.io/blog/posts/mini-term2/</link>
       <pubDate>Wed, 05 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>/posts/mini-term2/</guid>
+      <guid>https://goatmobile.github.io/blog/posts/mini-term2/</guid>
       <description>I found that startup time with Automator and a MacOS Service keyboard shortcut leads to pretty high start up latency (1-3 seconds-ish) that&amp;rsquo;s mostly outside of the terminal&amp;rsquo;s control. The obvious next step was to spend several hours futzing with Alacritty&amp;rsquo;s Rust codebase to hack in a global keyboard shortcut listener to cut out the Automator middleman.
 The listening was relatively simple with the rdev create. My Alacritty fork has the changes and building it is pretty straightforward.</description>
     </item>
     
     <item>
       <title>Tricky Pickle</title>
-      <link>/posts/pickle/</link>
+      <link>https://goatmobile.github.io/blog/posts/pickle/</link>
       <pubDate>Sun, 19 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>/posts/pickle/</guid>
+      <guid>https://goatmobile.github.io/blog/posts/pickle/</guid>
       <description>Everybody knows Python&amp;rsquo;s pickle module has prickly edges, just like a real pickle. The documentation even has a big red box right at the top. The pickle file format is technically a program for the pickle stack machine, nicely described in Lib/pickletools.py. Briefly, instructions (opcodes) create Python primitives (ints, strs, tuples, etc.) on a stack. Some extra bits are used to:
  preserve object references across serialization (e.g. if you save a list containing the same object twice, it will be deserialized into the same list rather than a list with two different objects with the same values) de-duplicate references via a memoization table (an array of already-deserialized objects) run custom deserialization code on objects  Let&amp;rsquo;s take a quick look inside a pickle using the pickletools standard library module.</description>
     </item>
     
     <item>
       <title>Maintaining SSH Connections</title>
-      <link>/posts/ssh/</link>
+      <link>https://goatmobile.github.io/blog/posts/ssh/</link>
       <pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>/posts/ssh/</guid>
+      <guid>https://goatmobile.github.io/blog/posts/ssh/</guid>
       <description>If you don&amp;rsquo;t like your computer to make sounds like beeping or fan spinning, you&amp;rsquo;re probably using a remote server to do development. And nothing says &amp;ldquo;remote development&amp;rdquo; more than SSH. Connecting is easy enough:
 ssh my_cool_server.com This works fine until you need to open another connection or you close your laptop. Thankfully there are some easy ways to make SSH connections live longer than they would otherwise.
 ControlPersist SSH has an option where it will persist a connection to a file (a socket) that can be used multiple times.</description>
@@ -59,57 +59,57 @@ ControlPersist SSH has an option where it will persist a connection to a file (a
     
     <item>
       <title>Terminal Spotlight</title>
-      <link>/posts/spotlight/</link>
+      <link>https://goatmobile.github.io/blog/posts/spotlight/</link>
       <pubDate>Wed, 08 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>/posts/spotlight/</guid>
+      <guid>https://goatmobile.github.io/blog/posts/spotlight/</guid>
       <description>I do my daily driving from MacOS. One of the great things about MacOS is Spotlight. It&amp;rsquo;s like a little secret menu that can do really neat things like open a program or add 2 numbers. Secret because no one who doesn&amp;rsquo;t already know about it is going to find out. Sure you can click the little magnifying glass in the top bar but no one&amp;rsquo;s doing that, all the other icons too much more clickable to bother.</description>
     </item>
     
     <item>
       <title>Installing Debian</title>
-      <link>/posts/debian/</link>
+      <link>https://goatmobile.github.io/blog/posts/debian/</link>
       <pubDate>Thu, 16 Sep 2021 00:00:00 +0000</pubDate>
       
-      <guid>/posts/debian/</guid>
+      <guid>https://goatmobile.github.io/blog/posts/debian/</guid>
       <description>This guide goes over my experience installing Debian 11 alongside Windows 10. Out of the common Linux distros, Ubuntu is out due to Canonical&amp;rsquo;s including of non-free software by default and the whole debacle around snaps. For a quick TL;DR: snaps follow a similar theme to Docker images or static builds in that they include the world alongside their package to avoid any &amp;ldquo;this distro is missing mycoollibrary.so.123 so my software doesn&amp;rsquo;t run!</description>
     </item>
     
     <item>
       <title>Cloning ping from Scratch</title>
-      <link>/posts/ping-clone/</link>
+      <link>https://goatmobile.github.io/blog/posts/ping-clone/</link>
       <pubDate>Sun, 25 Jul 2021 00:00:00 +0000</pubDate>
       
-      <guid>/posts/ping-clone/</guid>
+      <guid>https://goatmobile.github.io/blog/posts/ping-clone/</guid>
       <description>The ping utility found on many systems is typically a simple tool to determine if 2 computers can see each other on a network. It&amp;rsquo;s been around in some form or another for nearly 40 years and is dead simple to use: ping &amp;lt;somewhere&amp;gt;. Some other tools can gussy up the output a bit but the fundamentals are the same.
 $ ping google.com PING google.com (172.217.6.46) 56(84) bytes of data. 64 bytes from sfo03s08-in-f46.</description>
     </item>
     
     <item>
       <title>Cloning traceroute from Scratch</title>
-      <link>/posts/traceroute-clone/</link>
+      <link>https://goatmobile.github.io/blog/posts/traceroute-clone/</link>
       <pubDate>Sun, 25 Jul 2021 00:00:00 +0000</pubDate>
       
-      <guid>/posts/traceroute-clone/</guid>
+      <guid>https://goatmobile.github.io/blog/posts/traceroute-clone/</guid>
       <description>traceroute is a cool little tool that lets you see how your network packets travel through the network. If you&amp;rsquo;ve ever heard anyone talk about &amp;ldquo;network hops&amp;rdquo;, traceroute will show you exactly what these hops are (well, if it can). A basic implementation is super simple and relies on the definition of a TTL (time-to-live). Each packet in the network has a time-to-live associated with it, in practice it&amp;rsquo;s simply a number that increments on each network hop.</description>
     </item>
     
     <item>
       <title>Jupyter Notebooks and Hugo</title>
-      <link>/posts/jupyter-hugo/</link>
+      <link>https://goatmobile.github.io/blog/posts/jupyter-hugo/</link>
       <pubDate>Sat, 22 May 2021 00:00:00 +0000</pubDate>
       
-      <guid>/posts/jupyter-hugo/</guid>
+      <guid>https://goatmobile.github.io/blog/posts/jupyter-hugo/</guid>
       <description>Jupyter is a super nice environment for doing literate programming and as such it&amp;rsquo;s a natural choice for writing code-heavy articles. I&amp;rsquo;ve set up several blogs with Hugo which is nice to write in but only understand markdown by default, but thanks to nbconvert it&amp;rsquo;s pretty easy to get the two working together.
 Inside each notebook I include the Hugo front matter in the first markdown cell inside a markdown code block.</description>
     </item>
     
     <item>
       <title>Multiple GitHub Users on a Single Machine: The Simple Way</title>
-      <link>/posts/multiple-git-users/</link>
+      <link>https://goatmobile.github.io/blog/posts/multiple-git-users/</link>
       <pubDate>Sun, 02 May 2021 00:00:00 +0000</pubDate>
       
-      <guid>/posts/multiple-git-users/</guid>
+      <guid>https://goatmobile.github.io/blog/posts/multiple-git-users/</guid>
       <description>Generate a key.
 # Give your keys a special name! For this example it&amp;#39;s &amp;#39;my_cool_key&amp;#39; ssh-keygen -t ed25519 -N &amp;#34;&amp;#34; -C &amp;#34;my key&amp;#39;s name&amp;#34; -f ~/.ssh/my_cool_key   Copy it to whatever GitHub account it should be on.
 cat ~/.ssh/my_cool_key.pub   Go to your repository and do some pushes! Use GIT_SSH_COMMAND to tell it to use the key we just generated.
@@ -118,20 +118,11 @@ GIT_SSH_COMMAND=&amp;#39;ssh -i ~/.ssh/my_cool_key -o IdentitiesOnly=yes&amp;#39
     
     <item>
       <title>Scalar Autodiff From Scratch</title>
-      <link>/posts/scalar-autodiff/</link>
+      <link>https://goatmobile.github.io/blog/posts/scalar-autodiff/</link>
       <pubDate>Sat, 01 May 2021 00:00:00 +0000</pubDate>
       
-      <guid>/posts/scalar-autodiff/</guid>
+      <guid>https://goatmobile.github.io/blog/posts/scalar-autodiff/</guid>
       <description>Automatic differentiation (or autodiff) underlies many modern machine learning frameworks and mathematical models. This post demonstrates a from-scratch implemention on scalar values (in contrast to tensors a.k.a. ndarrays that are common in machine learning) and shows how we can use it to implement gradient descent, eventually learning some linear function (i.e. a function looks like y = m * x + b). Rest assured the explanations here are much more complicated than the code itself.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/about/</guid>
-      <description>bark</description>
     </item>
     
   </channel>
