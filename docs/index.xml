@@ -6,7 +6,16 @@
     <description>Recent content on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 13 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 09 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Live Reloading HTML from Scratch</title>
+      <link>/posts/live-reload/</link>
+      <pubDate>Mon, 09 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/live-reload/</guid>
+      <description>Any frontend toolkit worth its weight in node_modules today will have some kind of live reloading functionality (e.g. livereload or live-server for basic examples) where it watches files on disk for changes and automatically reloads changes in the browser. CodeKit is a cool (proprietary) example that even has hot-reloading for CSS only changes so the browser doesn&amp;rsquo;t lose any actual state. Most of these tools work by injecting JavaScript magic into your input HTML and communicating over a websocket server to a process on the server that watches the actual files.</description>
+    </item>
+    
     <item>
       <title>rfile Command Runner</title>
       <link>/posts/rfile/</link>

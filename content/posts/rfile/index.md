@@ -11,7 +11,7 @@ My previous go-to for a project was to lump all the common tasks I needed to do 
 2. Make is ubiquitous but its syntax for this kind of thing is not the most ergnomic
 3. Using dependencies and `-jN` makes it easy to run two commands in parallel (e.g. watch and rebuild + serve files), but remembering to `-j` every time defeats the purpose of an easy command runner
 
-[rfile](https://github.com/goatmobile/rfile#rfilerunner) (named rfilerunner in on [PyPi](https://pypi.org/project/rfilerunner/) since rfile was reasonably [taken](https://pypi.org/project/rfile/) and I'd already developed muscle memory for typing `r` by the time I published) aims to solve all of these. Commands are defined in a YAML as a dictionary and run via `r` which automatically reads the YAML file and presents a nice interface to the user.
+[rfile](https://github.com/goatmobile/rfile#rfilerunner) (named rfilerunner in on [PyPi](https://pypi.org/project/rfilerunner/) since rfile was reasonably [taken](https://pypi.org/project/rfile/) and I'd already developed muscle memory for typing `r` by the time I published) aims to solve all of these. Commands are defined in a YAML as a dictionary and run via `r` which automatically reads the YAML file and presents a nice interface to the user. YAML isn't the best interface since it has way more features than are necessary here and the shell scripts don't get good syntax highlighting in most people's editors (and don't forget the inscrutable parse errors!), but it's easy to integrate so there it is.
 
 ```bash
 $ pip install rfilerunner

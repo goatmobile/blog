@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <script>
+            const host = `${window.location.protocol}//${window.location.hostname}`;
+            const socketUrl = `ws://${window.location.hostname}:5678`;
+            const webSocket = new WebSocket(socketUrl);
+            
+            webSocket.onmessage = () => {
+              window.location.reload();
+            };
+        </script>
+    </head>
+    <body>
+        <h1>Change Me!</h1>
+        <pre>
+            but first invoke the rfile.yml by running `r` from the command line!
+        </pre>
+    </body>
+</html>

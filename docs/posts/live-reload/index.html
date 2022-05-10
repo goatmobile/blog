@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  <meta name="generator" content="Hugo 0.80.0" /> 
+  <meta name="description" content="Some description" />
+   
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="apple-touch-icon.png"
+  />
+
+  <meta
+    name="msapplication-TileColor"
+    content="#da532c"
+  />
+
+  <meta name="theme-color" content="#ffffff" />
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+
+  <link
+    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
+    rel="stylesheet"
+    type="text/css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
+    rel="stylesheet"
+    type="text/css"
+  />
+
+  <title></title>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
+        messageStyle: "none"
+    });
+  </script>
+  <script
+    type="text/javascript"
+    async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
+  ></script>
+
+  <style>
+  body {
+    min-width: 300px;
+    padding: 20px;
+  }
+
+  .custom-navbar {
+    margin-bottom: 1em;
+    height: 60px;
+  }
+
+  .custom-navbar a {
+    display: inline-block;
+    padding: 18px 0;
+    margin-right: 1em;
+    font-weight: bold;
+  }
+
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    text-decoration: none;
+  }
+
+  @media print {
+    .custom-navbar {
+      display: none;
+    }
+  }
+
+  article {
+    padding-bottom: 1em;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  
+  body {
+    background-color: #fff;
+  }
+  
+
+  
+  body {
+    color: #212529;
+  }
+  
+
+  
+  a {
+    color: #007bff;
+  }
+  
+
+  
+  a:hover,
+  a:focus {
+    color: #0056b3;
+  }
+  
+
+  
+  .custom-navbar {
+    background-color: #212529;
+  }
+  
+
+  
+  .custom-navbar a {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  
+
+  
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    color: rgba(255, 255, 255, 1);
+  }
+  
+
+  
+  .container {
+    max-width: 800px;
+  }
+  
+
+  
+  pre {
+    display: block;
+    padding: 9.5px;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  pre code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  code {
+    padding: 2px 4px;
+    color: inherit;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: .9em;
+  }
+  
+
+  @import url('https://rsms.me/inter/inter.css');
+  html { font-family: 'Inter', sans-serif; }
+  @supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
+  }
+
+  code {
+    font-family: 'Ubuntu Mono', monospace, serif;
+  }
+
+  
+  blockquote,
+  .blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 1em;
+    border-left: 5px solid #6c757d;
+  }
+  
+</style>
+
+</head>
+
+
+<body>
+  <div class="container">
+    <article>
+      <h1>Live Reloading HTML from Scratch</h1>
+<p>Any frontend toolkit worth its weight in <code>node_modules</code> today will have some kind of live reloading functionality (e.g. <a href="https://pypi.org/project/livereload/">livereload</a> or <a href="https://www.npmjs.com/package/live-server">live-server</a> for basic examples) where it watches files on disk for changes and automatically reloads changes in the browser. <a href="https://codekitapp.com/">CodeKit</a> is a cool (proprietary) example that even has hot-reloading for CSS only changes so the browser doesn&rsquo;t lose any actual state. Most of these tools work by injecting JavaScript magic into your input HTML and communicating over a websocket server to a process on the server that watches the actual files. Sometimes however its useful to pull back the curtain for esoteric use cases that these tools don&rsquo;t support. This shows a simple Python websocket server + associated JavaScript that does a basic live reload in just a few dozen lines.</p>
+<p>First, install <a href="https://pypi.org/project/rfilerunner/"><code>rfilerunner</code></a> which will handle the file watching and <a href="https://pypi.org/project/websockets/"><code>websockets</code></a>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ pip install rfilerunner websockets
+$ r --help
+</code></pre></div><p>Next, the JavaScript snippet. This will need to be manually included into every page that needs live-reload functionality. These few lines listen to a websocket server from the same origin as the webpage and does a full page reload on any message.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">host</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span>window.<span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">protocol</span><span style="color:#e6db74">}</span><span style="color:#e6db74">//</span><span style="color:#e6db74">${</span>window.<span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">hostname</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>;
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">socketUrl</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`ws://</span><span style="color:#e6db74">${</span>window.<span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">hostname</span><span style="color:#e6db74">}</span><span style="color:#e6db74">:5678`</span>;
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">webSocket</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">WebSocket</span>(<span style="color:#a6e22e">socketUrl</span>);
+
+<span style="color:#a6e22e">webSocket</span>.<span style="color:#a6e22e">onmessage</span> <span style="color:#f92672">=</span> () =&gt; {
+  window.<span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">reload</span>();
+};
+</code></pre></div><p>If you visit this page now there will just be an error since there is no websocket server listening on port 5678 yet. This Python code in <code>live-reload.py</code> will handle listening to the socket.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> signal
+
+signal<span style="color:#f92672">.</span>signal(signal<span style="color:#f92672">.</span>SIGUSR1, <span style="color:#66d9ef">lambda</span> a, b: None)
+
+<span style="color:#f92672">import</span> asyncio
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> websockets
+
+
+CONNECTIONS <span style="color:#f92672">=</span> set()
+
+
+async <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">register</span>(websocket):
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;New connection&#34;</span>, websocket)
+    CONNECTIONS<span style="color:#f92672">.</span>add(websocket)
+    <span style="color:#66d9ef">try</span>:
+        await websocket<span style="color:#f92672">.</span>wait_closed()
+    <span style="color:#66d9ef">finally</span>:
+        CONNECTIONS<span style="color:#f92672">.</span>remove(websocket)
+
+
+async <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Running websocket server&#34;</span>)
+    async <span style="color:#66d9ef">with</span> websockets<span style="color:#f92672">.</span>serve(register, os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;HOST&#34;</span>, <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>), <span style="color:#ae81ff">5678</span>):
+
+        <span style="color:#75715e"># This will run when triggered from an external source via the SIGUSR1</span>
+        <span style="color:#75715e"># signal</span>
+        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">signal_handler</span>(sig, frame):
+            <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34;Sending refresh to {len(CONNECTIONS)} clients&#34;</span>)
+            websockets<span style="color:#f92672">.</span>broadcast(CONNECTIONS, <span style="color:#e6db74">&#34;reload&#34;</span>)
+
+        signal<span style="color:#f92672">.</span>signal(signal<span style="color:#f92672">.</span>SIGUSR1, signal_handler)
+        <span style="color:#66d9ef">while</span> True:
+            await asyncio<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">10000</span>)
+
+
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+    asyncio<span style="color:#f92672">.</span>run(main())
+</code></pre></div><p>The seasoned reader will notice the use of a signal handler on <code>SIGUSR1</code> (a Linux-only feature, so no MacOS or Windows). This code runs a websocket server that sends a message whenever the process recieves a <code>SIGUSR1</code>. Now it all starts to come together, all we need is another piece to watch the relevant files and send the Python server a <code>SIGUSR1</code>. This will bubble over to the JavaScript running on the browser which will then do a reload. <code>r</code> comes in handy here with this code in <code>rfile.yml</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">main</span>: |<span style="color:#e6db74">
+</span><span style="color:#e6db74">  # parallel
+</span><span style="color:#e6db74">  # dep: serve
+</span><span style="color:#e6db74">  # dep: socket-server
+</span><span style="color:#e6db74">  # dep: file-watcher</span>  
+
+<span style="color:#f92672">serve</span>: |<span style="color:#e6db74">
+</span><span style="color:#e6db74">  # basic HTTP server
+</span><span style="color:#e6db74">  python -m http.server</span>  
+
+<span style="color:#f92672">socket-server</span>: |<span style="color:#e6db74">
+</span><span style="color:#e6db74">  # run the websocket server
+</span><span style="color:#e6db74">  python reload-server.py</span>  
+
+<span style="color:#f92672">file-watcher</span>: |<span style="color:#e6db74">
+</span><span style="color:#e6db74">  # watch: find . -maxdepth 1 -type f
+</span><span style="color:#e6db74">  kill -s USR1 $(ps -ax | grep reload-server.py | grep python | awk &#39;{print $1}&#39;)</span>  
+</code></pre></div><p><code>serve</code> just runs Python&rsquo;s built in HTTP server, but any old HTTP server will do. <code>socket-server</code> runs the websocket server code above. The last entry, <code>file-watcher</code> is the interesting one. It uses <code># watch</code> to monitor all files at the top level of the current directory and re-runs its body when they are changed. Finally, the <code>kill</code> command sends the <code>SIGUSR1</code> signal to the <code>reload-server.py</code> process. Most of these aren&rsquo;t that useful in isolation, so the default command <code>main</code> wraps them all up with <code># dep &lt;name&gt;</code> to be executed simultaneously via <code># parallel</code> (see <a href="/posts/rfile">this post</a> for more details on <code>r</code>/<code>rfilerunner</code>)</p>
+<p>All the pieces are laid out, now to activate them</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ r
+</code></pre></div><p>Then visit localhost:8000 in your browser, edit a file, and watch it go! Run this to get the full example code for this post.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone --depth<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> https://github.com/goatmobile/bg goatmobile-blog
+$ cd goatmobile-blog/content/posts/live-reload
+$ python3 -m pip install -r requirements.txt
+$ r
+</code></pre></div>
+    </article>
+  </div>
+</body>
+
+</html>

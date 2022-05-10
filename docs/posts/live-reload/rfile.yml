@@ -1,0 +1,17 @@
+main: |
+  # parallel
+  # dep: serve
+  # dep: socket-server
+  # dep: file-watcher
+
+serve: |
+  # basic HTTP server
+  python -m http.server
+
+socket-server: |
+  # run the websocket server
+  python reload-server.py
+
+file-watcher: |
+  # watch: find . -maxdepth 1 -type f
+  kill -s USR1 $(ps -ax | grep reload-server.py | grep python | awk '{print $1}')
