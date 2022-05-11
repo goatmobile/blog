@@ -1,10 +1,11 @@
 {{- define "main" -}}
 
-<h1 class="">Posts</h1>
+<h1 class="text-4xl font-bold">Posts</h1>
 
+<div class="my-7">
 {{ $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
 {{ range $pages.ByPublishDate.Reverse }}
-  <p>
+  <p class="mt-3">
     <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
     {{ $customDateFormat := "January 2, 2006" }}
     {{ with .Site.Params.customDateFormat }}{{ $customDateFormat = . }}{{ end }}
@@ -16,5 +17,6 @@
     {{ end }}
   </p>
 {{ end }}
+</div>
 
 {{- end -}}

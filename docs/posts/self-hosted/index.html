@@ -24,35 +24,23 @@
 
   <meta name="theme-color" content="#ffffff" />
 
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.css" />
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
   <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
 
-  <link
-    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
-    rel="stylesheet"
-    type="text/css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
-    rel="stylesheet"
-    type="text/css"
-  />
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+  </style>
 
   <title></title>
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
-        messageStyle: "none"
-    });
-  </script>
-  <script
-    type="text/javascript"
-    async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
-  ></script>
+  
 
   <style>
   body {
@@ -197,10 +185,11 @@
 
 
 <body>
-  <div class="container">
+  <div class="px-6 py-4">
     <article>
-      <h1>Running Self-Hosted Services Locally with HTTPS</h1>
-<p>With Docker and friends it&rsquo;s getting pretty easy to run complex software on your local network for private use. For example to download and run <a href="https://grafana.com/">Grafana</a> all you have to do is:</p>
+      <div class="prose max-w-2xl mx-auto">
+    <h1>Running Self-Hosted Services Locally with HTTPS</h1>
+    <p>With Docker and friends it&rsquo;s getting pretty easy to run complex software on your local network for private use. For example to download and run <a href="https://grafana.com/">Grafana</a> all you have to do is:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt update
 sudo apt install -y docker.io
 sudo docker run -d -p 3000:3000 --name grafana grafana/grafana
@@ -405,6 +394,7 @@ server {
 <li><code>docker-compose down --remove-orphans</code> will stop everything</li>
 </ol>
 
+</div>
     </article>
   </div>
 </body>

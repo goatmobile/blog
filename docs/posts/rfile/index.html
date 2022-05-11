@@ -24,35 +24,23 @@
 
   <meta name="theme-color" content="#ffffff" />
 
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.css" />
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
   <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
 
-  <link
-    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
-    rel="stylesheet"
-    type="text/css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
-    rel="stylesheet"
-    type="text/css"
-  />
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+  </style>
 
   <title></title>
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
-        messageStyle: "none"
-    });
-  </script>
-  <script
-    type="text/javascript"
-    async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
-  ></script>
+  
 
   <style>
   body {
@@ -197,10 +185,11 @@
 
 
 <body>
-  <div class="container">
+  <div class="px-6 py-4">
     <article>
-      <h1>rfile Command Runner</h1>
-<p>I recently found myself needing to run some terminal commands on my computer while working on a web project. What a conundrum! Several days later out popped <a href="https://github.com/goatmobile/rfile#rfilerunner">rfile</a>, a cool command runner that makes keeping track of projects a breeze.</p>
+      <div class="prose max-w-2xl mx-auto">
+    <h1>rfile Command Runner</h1>
+    <p>I recently found myself needing to run some terminal commands on my computer while working on a web project. What a conundrum! Several days later out popped <a href="https://github.com/goatmobile/rfile#rfilerunner">rfile</a>, a cool command runner that makes keeping track of projects a breeze.</p>
 <p>My previous go-to for a project was to lump all the common tasks I needed to do (essentially a collection of short Bash scripts) into a Makefile and control things via environment variables. This works but:</p>
 <ol>
 <li>It&rsquo;s hard to keep track of what does what after a few days/weeks of not working on something</li>
@@ -294,6 +283,7 @@ serve |   http://172.18.0.1:8080
 serve | Hit CTRL-C to stop the server
 </code></pre></div><p>The code and more descriptions of the language used in the YAML comments can be found the README at <a href="https://github.com/goatmobile/rfile#rfilerunner!">https://github.com/goatmobile/rfile#rfilerunner!</a></p>
 
+</div>
     </article>
   </div>
 </body>

@@ -24,35 +24,23 @@
 
   <meta name="theme-color" content="#ffffff" />
 
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.css" />
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
   <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
 
-  <link
-    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
-    rel="stylesheet"
-    type="text/css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
-    rel="stylesheet"
-    type="text/css"
-  />
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+  </style>
 
   <title></title>
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
-        messageStyle: "none"
-    });
-  </script>
-  <script
-    type="text/javascript"
-    async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
-  ></script>
+  
 
   <style>
   body {
@@ -197,10 +185,11 @@
 
 
 <body>
-  <div class="container">
+  <div class="px-6 py-4">
     <article>
-      <h1>Multiple GitHub Users on a Single Machine: The Simple Way</h1>
-<ol>
+      <div class="prose max-w-2xl mx-auto">
+    <h1>Multiple GitHub Users on a Single Machine: The Simple Way</h1>
+    <ol>
 <li>
 <p>Generate a key.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Give your keys a special name! For this example it&#39;s &#39;my_cool_key&#39;</span>
@@ -222,6 +211,7 @@ ssh-keygen -t ed25519 -N <span style="color:#e6db74">&#34;&#34;</span> -C <span 
 <p>When you have multiple SSH keys associated with different GitHub accounts on the same machine, it can be tricky to tell which ones are being used, especially when you push to a repo to which more than one of these accounts have access. <code>git</code> will use the <a href="https://git-scm.com/docs/git#Documentation/git.txt-codeGITSSHCOMMANDcode"><code>GIT_SSH_COMMAND</code></a> environment variable in place of <code>ssh</code> when connecting to a repo via an SSH remote. So, in the SSH command we specify <code>-i</code> (<code>identity_file</code>) to offer a specific SSH key. <code>-o IdentitiesOnly=yes</code> means to <em>only</em> use the specified key instead of offering up other keys in the default search locations.</p>
 <p>For a more permanent solution, you can <a href="https://gist.github.com/jexchan/2351996">edit your <code>~/.ssh/config</code> instead</a>.</p>
 
+</div>
     </article>
   </div>
 </body>

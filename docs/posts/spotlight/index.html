@@ -24,35 +24,23 @@
 
   <meta name="theme-color" content="#ffffff" />
 
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.css" />
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
   <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
 
-  <link
-    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
-    rel="stylesheet"
-    type="text/css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
-    rel="stylesheet"
-    type="text/css"
-  />
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+  </style>
 
   <title></title>
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
-        messageStyle: "none"
-    });
-  </script>
-  <script
-    type="text/javascript"
-    async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
-  ></script>
+  
 
   <style>
   body {
@@ -197,10 +185,11 @@
 
 
 <body>
-  <div class="container">
+  <div class="px-6 py-4">
     <article>
-      <h1>Terminal Spotlight</h1>
-<p>I do my daily driving from MacOS. One of the great things about MacOS is Spotlight. It&rsquo;s like a little secret menu that can do really neat things like open a program or add 2 numbers. Secret because no one who doesn&rsquo;t already know about it is going to find out. Sure you can click the little magnifying glass in the top bar but no one&rsquo;s doing that, all the other icons too much more clickable to bother.</p>
+      <div class="prose max-w-2xl mx-auto">
+    <h1>Terminal Spotlight</h1>
+    <p>I do my daily driving from MacOS. One of the great things about MacOS is Spotlight. It&rsquo;s like a little secret menu that can do really neat things like open a program or add 2 numbers. Secret because no one who doesn&rsquo;t already know about it is going to find out. Sure you can click the little magnifying glass in the top bar but no one&rsquo;s doing that, all the other icons too much more clickable to bother.</p>
 
 
 <p style="text-align: center;"><img src="bar.png" alt=""></p>
@@ -265,6 +254,7 @@ end
 <p><img src="small-good.png" alt="small-good"></p>
 <p>And it only took editing 4 files and clicking on a few dozen things!</p>
 
+</div>
     </article>
   </div>
 </body>

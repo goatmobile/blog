@@ -24,35 +24,23 @@
 
   <meta name="theme-color" content="#ffffff" />
 
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.css" />
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
   <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
 
-  <link
-    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
-    rel="stylesheet"
-    type="text/css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
-    rel="stylesheet"
-    type="text/css"
-  />
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+  </style>
 
   <title></title>
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
-        messageStyle: "none"
-    });
-  </script>
-  <script
-    type="text/javascript"
-    async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
-  ></script>
+  
 
   <style>
   body {
@@ -197,10 +185,11 @@
 
 
 <body>
-  <div class="container">
+  <div class="px-6 py-4">
     <article>
-      <h1>Installing Debian</h1>
-<p>This guide goes over my experience installing Debian 11 alongside Windows 10. Out of the common Linux distros, Ubuntu is out due to Canonical&rsquo;s including of non-free software by default and the whole debacle around <a href="https://lwn.net/Articles/825005/">snaps</a>. For a quick TL;DR: snaps follow a similar theme to Docker images or static builds in that they include the world alongside their package to avoid any &ldquo;this distro is missing mycoollibrary.so.123 so my software doesn&rsquo;t run!&rdquo; issues. While you could just not use snaps, some packages, namely <code>chromium-browser</code> was changed in apt to surreptitiously install the snap version. Most Linux users balk at the thought of telemetry, and so there is probably no good tracking of the popularity of each distro in the wild (as it should be). However, StackOverflow provides a <a href="https://insights.stackoverflow.com/trends?tags=ubuntu%2Cdebian%2Cfedora%2Ccentos">nice blurry window</a> (<a href="https://superuser.com/">https://superuser.com/</a> would be cool to look at too but they don&rsquo;t publish insights like this from what I can tell):</p>
+      <div class="prose max-w-2xl mx-auto">
+    <h1>Installing Debian</h1>
+    <p>This guide goes over my experience installing Debian 11 alongside Windows 10. Out of the common Linux distros, Ubuntu is out due to Canonical&rsquo;s including of non-free software by default and the whole debacle around <a href="https://lwn.net/Articles/825005/">snaps</a>. For a quick TL;DR: snaps follow a similar theme to Docker images or static builds in that they include the world alongside their package to avoid any &ldquo;this distro is missing mycoollibrary.so.123 so my software doesn&rsquo;t run!&rdquo; issues. While you could just not use snaps, some packages, namely <code>chromium-browser</code> was changed in apt to surreptitiously install the snap version. Most Linux users balk at the thought of telemetry, and so there is probably no good tracking of the popularity of each distro in the wild (as it should be). However, StackOverflow provides a <a href="https://insights.stackoverflow.com/trends?tags=ubuntu%2Cdebian%2Cfedora%2Ccentos">nice blurry window</a> (<a href="https://superuser.com/">https://superuser.com/</a> would be cool to look at too but they don&rsquo;t publish insights like this from what I can tell):</p>
 <p><img src="image.png" alt="image.png"></p>
 <p>These could mean that Ubuntu is the most popular or that it is the most confusing and everyone is having a great time using Fedora with no issues, but that&rsquo;s probably not the case. A quick peek at Docker image downloads of <a href="https://hub.docker.com/_/ubuntu">Ubuntu</a> vs <a href="https://hub.docker.com/_/debian">Debian</a> vs <a href="https://hub.docker.com/_/fedora">Fedora</a> put Ubuntu ahead by 20 times and Debian by 10. Debian is nice since it has good compatibility with the popular apt packages for Ubuntu, but with a focus on free software. It also supports nice things like disk encryption out of the box during setup.</p>
 <p>Copy over the image after downloading a pre-built version:</p>
@@ -273,6 +262,7 @@ $ nvidia-smi
 </li>
 </ul>
 
+</div>
     </article>
   </div>
 </body>

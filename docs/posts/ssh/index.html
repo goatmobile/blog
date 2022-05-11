@@ -24,35 +24,23 @@
 
   <meta name="theme-color" content="#ffffff" />
 
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.css" />
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
   <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
 
-  <link
-    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
-    rel="stylesheet"
-    type="text/css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
-    rel="stylesheet"
-    type="text/css"
-  />
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+  </style>
 
   <title></title>
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
-        messageStyle: "none"
-    });
-  </script>
-  <script
-    type="text/javascript"
-    async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
-  ></script>
+  
 
   <style>
   body {
@@ -197,10 +185,11 @@
 
 
 <body>
-  <div class="container">
+  <div class="px-6 py-4">
     <article>
-      <h1>Maintaining SSH Connections</h1>
-<p>If you don&rsquo;t like your computer to make sounds like beeping or fan spinning, you&rsquo;re probably using a remote server to do development. And nothing says &ldquo;remote development&rdquo; more than SSH. Connecting is easy enough:</p>
+      <div class="prose max-w-2xl mx-auto">
+    <h1>Maintaining SSH Connections</h1>
+    <p>If you don&rsquo;t like your computer to make sounds like beeping or fan spinning, you&rsquo;re probably using a remote server to do development. And nothing says &ldquo;remote development&rdquo; more than SSH. Connecting is easy enough:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh my_cool_server.com
 </code></pre></div><p>This works fine until you need to open another connection or you close your laptop. Thankfully there are some easy ways to make SSH connections live longer than they would otherwise.</p>
 <h3 id="controlpersist">ControlPersist</h3>
@@ -224,6 +213,7 @@
 <span style="color:#75715e">#   - (optional) use a special command to start or attach to a tmux session</span>
 et --kill-other-sessions --tunnel 2222:22,8000:8000 --command <span style="color:#e6db74">&#39;tmux new-session -A -s main&#39;</span> my_cool_server
 </code></pre></div>
+</div>
     </article>
   </div>
 </body>

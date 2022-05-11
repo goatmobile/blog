@@ -24,35 +24,23 @@
 
   <meta name="theme-color" content="#ffffff" />
 
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.css" />
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
   <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
 
-  <link
-    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
-    rel="stylesheet"
-    type="text/css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
-    rel="stylesheet"
-    type="text/css"
-  />
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+  </style>
 
   <title></title>
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
-        messageStyle: "none"
-    });
-  </script>
-  <script
-    type="text/javascript"
-    async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
-  ></script>
+  
 
   <style>
   body {
@@ -197,13 +185,14 @@
 
 
 <body>
-  <div class="container">
+  <div class="px-6 py-4">
     <article>
-      <h1>Posts</h1>
+      <h1 class="text-4xl font-bold">Posts</h1>
+
+<div class="my-7">
 
 
-
-  <p>
+  <p class="mt-3">
     <a href="https://goatmobile.github.io/blog/posts/self-hosted/">Running Self-Hosted Services Locally with HTTPS</a>
     
     
@@ -212,7 +201,7 @@
     
   </p>
 
-  <p>
+  <p class="mt-3">
     <a href="https://goatmobile.github.io/blog/posts/live-reload/">Live Reloading HTML from Scratch</a>
     
     
@@ -221,7 +210,7 @@
     
   </p>
 
-  <p>
+  <p class="mt-3">
     <a href="https://goatmobile.github.io/blog/posts/rfile/">rfile Command Runner</a>
     
     
@@ -230,7 +219,7 @@
     
   </p>
 
-  <p>
+  <p class="mt-3">
     <a href="https://goatmobile.github.io/blog/posts/mini-term2/">Terminal Spotlight: Part 2</a>
     
     
@@ -239,7 +228,7 @@
     
   </p>
 
-  <p>
+  <p class="mt-3">
     <a href="https://goatmobile.github.io/blog/posts/pickle/">Tricky Pickle</a>
     
     
@@ -248,7 +237,7 @@
     
   </p>
 
-  <p>
+  <p class="mt-3">
     <a href="https://goatmobile.github.io/blog/posts/ssh/">Maintaining SSH Connections</a>
     
     
@@ -257,7 +246,7 @@
     
   </p>
 
-  <p>
+  <p class="mt-3">
     <a href="https://goatmobile.github.io/blog/posts/spotlight/">Terminal Spotlight</a>
     
     
@@ -266,7 +255,7 @@
     
   </p>
 
-  <p>
+  <p class="mt-3">
     <a href="https://goatmobile.github.io/blog/posts/debian/">Installing Debian</a>
     
     
@@ -275,7 +264,7 @@
     
   </p>
 
-  <p>
+  <p class="mt-3">
     <a href="https://goatmobile.github.io/blog/posts/traceroute-clone/">Cloning traceroute from Scratch</a>
     
     
@@ -284,7 +273,7 @@
     
   </p>
 
-  <p>
+  <p class="mt-3">
     <a href="https://goatmobile.github.io/blog/posts/ping-clone/">Cloning ping from Scratch</a>
     
     
@@ -293,7 +282,7 @@
     
   </p>
 
-  <p>
+  <p class="mt-3">
     <a href="https://goatmobile.github.io/blog/posts/jupyter-hugo/">Jupyter Notebooks and Hugo</a>
     
     
@@ -302,7 +291,7 @@
     
   </p>
 
-  <p>
+  <p class="mt-3">
     <a href="https://goatmobile.github.io/blog/posts/multiple-git-users/">Multiple GitHub Users on a Single Machine: The Simple Way</a>
     
     
@@ -311,7 +300,7 @@
     
   </p>
 
-  <p>
+  <p class="mt-3">
     <a href="https://goatmobile.github.io/blog/posts/scalar-autodiff/">Scalar Autodiff From Scratch</a>
     
     
@@ -320,6 +309,7 @@
     
   </p>
 
+</div>
     </article>
   </div>
 </body>

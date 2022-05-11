@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
+
+.prose a {
+    color: #007bff;
+    @apply no-underline;
+}
+
+
 @tailwind utilities;
+
+.prose code::before, .prose code::after {
+    content: none;
+}

@@ -2,6 +2,7 @@ dev: |
   # parallel
   # dep: images
   # dep: notebooks_dev
+  # dep: css
   # dep: hugo_dev
 
 dist: |
@@ -28,6 +29,12 @@ notebooks: |
 wordcount: |
   cd content
   find . -type f -name '*.md' -exec bash -c 'cat {} | wc -w'  \; | jq -s add
+
+css: |
+  npx tailwindcss --input ./static/css/style.css -o ./static/css/style.dist.css --watch
+
+css_setup: |
+  yarn add tailwindcss @tailwindcss/typography
 
 images: |
   # bash ./images.sh

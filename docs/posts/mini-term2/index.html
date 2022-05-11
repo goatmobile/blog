@@ -24,35 +24,23 @@
 
   <meta name="theme-color" content="#ffffff" />
 
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.css" />
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
   <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
 
-  <link
-    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
-    rel="stylesheet"
-    type="text/css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
-    rel="stylesheet"
-    type="text/css"
-  />
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+  </style>
 
   <title></title>
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
-        messageStyle: "none"
-    });
-  </script>
-  <script
-    type="text/javascript"
-    async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
-  ></script>
+  
 
   <style>
   body {
@@ -197,10 +185,11 @@
 
 
 <body>
-  <div class="container">
+  <div class="px-6 py-4">
     <article>
-      <h1>Terminal Spotlight: Part 2</h1>
-<p>I found that startup time with Automator and a MacOS Service keyboard shortcut leads to pretty high start up latency (1-3 seconds-ish) that&rsquo;s mostly outside of the terminal&rsquo;s control. The obvious next step was to spend several hours futzing with Alacritty&rsquo;s <a href="https://github.com/alacritty/alacritty">Rust codebase</a> to hack in a global keyboard shortcut listener to cut out the Automator middleman.</p>
+      <div class="prose max-w-2xl mx-auto">
+    <h1>Terminal Spotlight: Part 2</h1>
+    <p>I found that startup time with Automator and a MacOS Service keyboard shortcut leads to pretty high start up latency (1-3 seconds-ish) that&rsquo;s mostly outside of the terminal&rsquo;s control. The obvious next step was to spend several hours futzing with Alacritty&rsquo;s <a href="https://github.com/alacritty/alacritty">Rust codebase</a> to hack in a global keyboard shortcut listener to cut out the Automator middleman.</p>
 <p>The listening was relatively simple with the <a href="https://github.com/Narsil/rdev">rdev</a> create. My <a href="https://github.com/goatmobile/alacritty">Alacritty fork</a> has the <a href="https://github.com/alacritty/alacritty/compare/master...goatmobile:master">changes</a> and building it is pretty straightforward.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># This assumes Rust is installed: https://www.rust-lang.org/tools/install</span>
 git clone https://github.com/goatmobile/alacritty
@@ -237,6 +226,7 @@ BIN<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$
 launchctl load /Users/home/Library/LaunchAgents/daemon.plist
 </code></pre></div><p>And we&rsquo;re in! Log out and back in and <code>ps -ax | grep go.sh</code> should show a process running in the background. This solution isn&rsquo;t perfect by any means, but the start up time is significantly improved. It could probably be nearly instantaneous though with a proper application of Alacritty&rsquo;s <a href="https://github.com/alacritty/alacritty/commit/1df7dc5171abfe1eab3e95be964f61c5876198f1">multi-window support</a>, where a single instance would stay running in the background and spawn new windows as needed, though as you can see in my fork there&rsquo;s still some missing pieces. <a href="https://github.com/kovidgoyal/kitty">kitty</a> looks promising since it has this functionality already via its <a href="https://sw.kovidgoyal.net/kitty/invocation/#cmdoption-kitty-single-instance"><code>--single-instance</code></a> option, but this set up with Alacritty meets my needs well enough.</p>
 
+</div>
     </article>
   </div>
 </body>

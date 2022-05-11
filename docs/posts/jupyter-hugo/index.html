@@ -24,35 +24,23 @@
 
   <meta name="theme-color" content="#ffffff" />
 
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.css" />
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
   <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
 
-  <link
-    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
-    rel="stylesheet"
-    type="text/css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
-    rel="stylesheet"
-    type="text/css"
-  />
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+  </style>
 
   <title></title>
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
-        messageStyle: "none"
-    });
-  </script>
-  <script
-    type="text/javascript"
-    async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
-  ></script>
+  
 
   <style>
   body {
@@ -197,10 +185,11 @@
 
 
 <body>
-  <div class="container">
+  <div class="px-6 py-4">
     <article>
-      <h1>Jupyter Notebooks and Hugo</h1>
-<p>Jupyter is a super nice environment for doing <a href="https://en.wikipedia.org/wiki/Literate_programming">literate programming</a> and as such it&rsquo;s a natural choice for writing code-heavy articles. I&rsquo;ve set up several blogs with <a href="https://gohugo.io/">Hugo</a> which is nice to write in but only understand markdown by default, but thanks to <a href="https://nbconvert.readthedocs.io/en/latest/"><code>nbconvert</code></a> it&rsquo;s pretty easy to get the two working together.</p>
+      <div class="prose max-w-2xl mx-auto">
+    <h1>Jupyter Notebooks and Hugo</h1>
+    <p>Jupyter is a super nice environment for doing <a href="https://en.wikipedia.org/wiki/Literate_programming">literate programming</a> and as such it&rsquo;s a natural choice for writing code-heavy articles. I&rsquo;ve set up several blogs with <a href="https://gohugo.io/">Hugo</a> which is nice to write in but only understand markdown by default, but thanks to <a href="https://nbconvert.readthedocs.io/en/latest/"><code>nbconvert</code></a> it&rsquo;s pretty easy to get the two working together.</p>
 <p>Inside each notebook I include the Hugo <a href="https://gohugo.io/content-management/front-matter/">front matter</a> in the first markdown cell inside a markdown code block. This keeps everything neatly in a single file per post:</p>
 <pre><code>```
 title: &quot;Jupyter Notebooks and Hugo&quot;
@@ -329,6 +318,7 @@ POSTS_DIR <span style="color:#f92672">=</span> ROOT_DIR <span style="color:#f926
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">make dev -j2
 </code></pre></div><p>And that&rsquo;s all there is to it! Everything turns into markdown in the end and the computers are all happy.</p>
 
+</div>
     </article>
   </div>
 </body>

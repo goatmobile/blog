@@ -24,35 +24,23 @@
 
   <meta name="theme-color" content="#ffffff" />
 
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.css" />
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
   <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
 
-  <link
-    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
-    rel="stylesheet"
-    type="text/css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
-    rel="stylesheet"
-    type="text/css"
-  />
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+  </style>
 
   <title></title>
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
-        messageStyle: "none"
-    });
-  </script>
-  <script
-    type="text/javascript"
-    async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
-  ></script>
+  
 
   <style>
   body {
@@ -197,10 +185,11 @@
 
 
 <body>
-  <div class="container">
+  <div class="px-6 py-4">
     <article>
-      <h1>Live Reloading HTML from Scratch</h1>
-<p>Any frontend toolkit worth its weight in <code>node_modules</code> today will have some kind of live reloading functionality (e.g. <a href="https://pypi.org/project/livereload/">livereload</a> or <a href="https://www.npmjs.com/package/live-server">live-server</a> for basic examples) where it watches files on disk for changes and automatically reloads changes in the browser. <a href="https://codekitapp.com/">CodeKit</a> is a cool (proprietary) example that even has hot-reloading for CSS only changes so the browser doesn&rsquo;t lose any actual state. Most of these tools work by injecting JavaScript magic into your input HTML and communicating over a websocket server to a process on the server that watches the actual files. Sometimes however its useful to pull back the curtain for esoteric use cases that these tools don&rsquo;t support. This shows a simple Python websocket server + associated JavaScript that does a basic live reload in just a few dozen lines.</p>
+      <div class="prose max-w-2xl mx-auto">
+    <h1>Live Reloading HTML from Scratch</h1>
+    <p>Any frontend toolkit worth its weight in <code>node_modules</code> today will have some kind of live reloading functionality (e.g. <a href="https://pypi.org/project/livereload/">livereload</a> or <a href="https://www.npmjs.com/package/live-server">live-server</a> for basic examples) where it watches files on disk for changes and automatically reloads changes in the browser. <a href="https://codekitapp.com/">CodeKit</a> is a cool (proprietary) example that even has hot-reloading for CSS only changes so the browser doesn&rsquo;t lose any actual state. Most of these tools work by injecting JavaScript magic into your input HTML and communicating over a websocket server to a process on the server that watches the actual files. Sometimes however its useful to pull back the curtain for esoteric use cases that these tools don&rsquo;t support. This shows a simple Python websocket server + associated JavaScript that does a basic live reload in just a few dozen lines.</p>
 <p>First, install <a href="https://pypi.org/project/rfilerunner/"><code>rfilerunner</code></a> which will handle the file watching and <a href="https://pypi.org/project/websockets/"><code>websockets</code></a>.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ pip install rfilerunner websockets
 $ r --help
@@ -292,6 +281,7 @@ $ cd goatmobile-blog/content/posts/live-reload
 $ python3 -m pip install -r requirements.txt
 $ r
 </code></pre></div>
+</div>
     </article>
   </div>
 </body>

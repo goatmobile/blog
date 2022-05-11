@@ -24,35 +24,23 @@
 
   <meta name="theme-color" content="#ffffff" />
 
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.css" />
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
   <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
 
-  <link
-    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
-    rel="stylesheet"
-    type="text/css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
-    rel="stylesheet"
-    type="text/css"
-  />
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+  </style>
 
   <title></title>
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
-        messageStyle: "none"
-    });
-  </script>
-  <script
-    type="text/javascript"
-    async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
-  ></script>
+  
 
   <style>
   body {
@@ -197,10 +185,11 @@
 
 
 <body>
-  <div class="container">
+  <div class="px-6 py-4">
     <article>
-      <h1>Cloning traceroute from Scratch</h1>
-<p><a href="https://en.wikipedia.org/wiki/Traceroute"><code>traceroute</code></a> is a cool little tool that lets you see how your network packets travel through the network. If you&rsquo;ve ever heard anyone talk about <a href="https://en.wikipedia.org/wiki/Hop_(networking)">&ldquo;network hops&rdquo;</a>, <code>traceroute</code> will show you exactly what these hops are (well, if it can). A basic implementation is super simple and relies on the definition of a <a href="https://en.wikipedia.org/wiki/Time_to_live">TTL (time-to-live)</a>. Each packet in the network has a time-to-live associated with it, in practice it&rsquo;s simply a number that increments on each network hop. If any host in the path to the destination sees that the TTL has exceeded the packet&rsquo;s stated maximum TTL, the packet is dead and can be considered garbage.</p>
+      <div class="prose max-w-2xl mx-auto">
+    <h1>Cloning traceroute from Scratch</h1>
+    <p><a href="https://en.wikipedia.org/wiki/Traceroute"><code>traceroute</code></a> is a cool little tool that lets you see how your network packets travel through the network. If you&rsquo;ve ever heard anyone talk about <a href="https://en.wikipedia.org/wiki/Hop_(networking)">&ldquo;network hops&rdquo;</a>, <code>traceroute</code> will show you exactly what these hops are (well, if it can). A basic implementation is super simple and relies on the definition of a <a href="https://en.wikipedia.org/wiki/Time_to_live">TTL (time-to-live)</a>. Each packet in the network has a time-to-live associated with it, in practice it&rsquo;s simply a number that increments on each network hop. If any host in the path to the destination sees that the TTL has exceeded the packet&rsquo;s stated maximum TTL, the packet is dead and can be considered garbage.</p>
 <p>Let&rsquo;s first look at a real <code>traceroute</code>&rsquo;s output in detail. Your results will be different since I&rsquo;m guessing we&rsquo;re not in the same computer.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ traceroute example.com
 traceroute to example.com <span style="color:#f92672">(</span>93.184.216.34<span style="color:#f92672">)</span>, <span style="color:#ae81ff">30</span> hops max, <span style="color:#ae81ff">60</span> byte packets
@@ -284,6 +273,7 @@ routes <span style="color:#f92672">=</span> routes[<span style="color:#ae81ff">5
 <li>A bunch of options to control the various parameters (max hops, wait time, simultaneous pings, etc.)</li>
 </ul>
 
+</div>
     </article>
   </div>
 </body>

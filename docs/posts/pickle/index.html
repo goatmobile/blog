@@ -24,35 +24,23 @@
 
   <meta name="theme-color" content="#ffffff" />
 
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.css" />
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
   <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
 
-  <link
-    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
-    rel="stylesheet"
-    type="text/css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
-    rel="stylesheet"
-    type="text/css"
-  />
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+  </style>
 
   <title></title>
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
-        messageStyle: "none"
-    });
-  </script>
-  <script
-    type="text/javascript"
-    async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
-  ></script>
+  
 
   <style>
   body {
@@ -197,10 +185,11 @@
 
 
 <body>
-  <div class="container">
+  <div class="px-6 py-4">
     <article>
-      <h1>Tricky Pickle</h1>
-<p>Everybody knows Python&rsquo;s <code>pickle</code> module has prickly edges, just like a real pickle. The <a href="https://docs.python.org/3/library/pickle.html">documentation</a> even has a big red box right at the top. The <code>pickle</code> file format is technically a program for the pickle stack machine, nicely described in <a href="https://github.com/python/cpython/blob/main/Lib/pickletools.py"><code>Lib/pickletools.py</code></a>. Briefly, instructions (opcodes) create Python primitives (<code>int</code>s, <code>str</code>s, <code>tuple</code>s, etc.) on a stack. Some extra bits are used to:</p>
+      <div class="prose max-w-2xl mx-auto">
+    <h1>Tricky Pickle</h1>
+    <p>Everybody knows Python&rsquo;s <code>pickle</code> module has prickly edges, just like a real pickle. The <a href="https://docs.python.org/3/library/pickle.html">documentation</a> even has a big red box right at the top. The <code>pickle</code> file format is technically a program for the pickle stack machine, nicely described in <a href="https://github.com/python/cpython/blob/main/Lib/pickletools.py"><code>Lib/pickletools.py</code></a>. Briefly, instructions (opcodes) create Python primitives (<code>int</code>s, <code>str</code>s, <code>tuple</code>s, etc.) on a stack. Some extra bits are used to:</p>
 <ul>
 <li>preserve object references across serialization (e.g. if you save a list containing the same object twice, it will be deserialized into the same list rather than a list with two different objects with the same values)</li>
 <li>de-duplicate references via a memoization table (an array of already-deserialized objects)</li>
@@ -403,6 +392,7 @@ RuntimeError                              Traceback (most recent call last)
 RuntimeError: no REDUCE-ing allowed!
 </code></pre>
 
+</div>
     </article>
   </div>
 </body>
