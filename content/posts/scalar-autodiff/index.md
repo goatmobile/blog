@@ -1,6 +1,7 @@
 ---
 title: "Scalar Autodiff From Scratch"
 date: 2021-05-01
+katex: true
 ---
 
 [Automatic differentiation](https://en.wikipedia.org/wiki/Automatic_differentiation) (or autodiff) underlies many modern machine learning frameworks and mathematical models. This post demonstrates a from-scratch implemention on scalar values (in contrast to tensors a.k.a. ndarrays that are common in machine learning) and shows how we can use it to implement gradient descent, eventually learning some linear function (i.e. a function looks like `y = m * x + b`). Rest assured the explanations here are much more complicated than the code itself.

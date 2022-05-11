@@ -21,23 +21,23 @@
 
   <meta name="theme-color" content="{{ .Site.Params.faviconThemeColor }}" />
 
-  <link rel="stylesheet" href="{{ "css/bootstrap.min.css" | absURL }}" />
-  <link rel="stylesheet" href="{{ "css/style.css" | absURL }}" />
+  <!-- <link rel="stylesheet" href="{{ "css/bootstrap.min.css" | absURL }}" /> -->
+  <link rel="stylesheet" href="{{ "css/style.dist.css" | absURL }}" />
   <link rel="icon" type="image/x-icon" href="{{ "favicon.ico" | absURL }}">
 
-  <link
-    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
-    rel="stylesheet"
-    type="text/css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
-    rel="stylesheet"
-    type="text/css"
-  />
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url({{ "UbuntuMono.ttf" | absURL }}) format('truetype');
+    }
+  </style>
 
   <title>{{ .Site.Title }}</title>
 
+  {{ if .Params.katex }}
   <script type="text/x-mathjax-config">
     MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
         tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
@@ -50,6 +50,7 @@
     async
     src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
   ></script>
+  {{ end }}
 
   {{ partial "style.html" . }}
 </head>

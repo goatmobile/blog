@@ -1,6 +1,6 @@
 {{- define "main" -}}
 
-<h1>Posts</h1>
+<h1 class="">Posts</h1>
 
 {{ $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
 {{ range $pages.ByPublishDate.Reverse }}

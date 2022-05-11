@@ -41,3 +41,6 @@ Thumbs.db
 
 .Trash-1000/
 .local/
+node_modules/
+yarn.lock
+package.json
