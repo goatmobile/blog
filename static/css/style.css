@@ -12,3 +12,7 @@
 .prose code::before, .prose code::after {
     content: none;
 }
+
+.prose code {
+    font-weight: 400;
+}

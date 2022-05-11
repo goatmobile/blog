@@ -2847,6 +2847,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   content: none;
 }
 
+.prose code {
+  font-weight: 400;
+}
+
 .hover\:font-bold:hover {
   font-weight: 700;
 }
