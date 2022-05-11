@@ -6,7 +6,17 @@
     <description>Recent content on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 10 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Running Self-Hosted Services Locally with HTTPS</title>
+      <link>https://goatmobile.github.io/blog/posts/self-hosted/</link>
+      <pubDate>Tue, 10 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://goatmobile.github.io/blog/posts/self-hosted/</guid>
+      <description>With Docker and friends it&amp;rsquo;s getting pretty easy to run complex software on your local network for private use. For example to download and run Grafana all you have to do is:
+sudo apt update sudo apt install -y docker.io sudo docker run -d -p 3000:3000 --name grafana grafana/grafana This will put the service up at localhost:3000 on the server, then to access this from somewhere else you need to set up an SSH tunnel:</description>
+    </item>
+    
     <item>
       <title>Live Reloading HTML from Scratch</title>
       <link>https://goatmobile.github.io/blog/posts/live-reload/</link>

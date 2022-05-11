@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  <meta name="generator" content="Hugo 0.80.0" /> 
+  <meta name="description" content="Some description" />
+   
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="https://goatmobile.github.io/blog/apple-touch-icon.png"
+  />
+
+  <meta
+    name="msapplication-TileColor"
+    content="#da532c"
+  />
+
+  <meta name="theme-color" content="#ffffff" />
+
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.css" />
+  <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
+
+  <link
+    href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic"
+    rel="stylesheet"
+    type="text/css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css?family=Ubuntu+Mono"
+    rel="stylesheet"
+    type="text/css"
+  />
+
+  <title></title>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(", "\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
+        messageStyle: "none"
+    });
+  </script>
+  <script
+    type="text/javascript"
+    async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
+  ></script>
+
+  <style>
+  body {
+    min-width: 300px;
+    padding: 20px;
+  }
+
+  .custom-navbar {
+    margin-bottom: 1em;
+    height: 60px;
+  }
+
+  .custom-navbar a {
+    display: inline-block;
+    padding: 18px 0;
+    margin-right: 1em;
+    font-weight: bold;
+  }
+
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    text-decoration: none;
+  }
+
+  @media print {
+    .custom-navbar {
+      display: none;
+    }
+  }
+
+  article {
+    padding-bottom: 1em;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  
+  body {
+    background-color: #fff;
+  }
+  
+
+  
+  body {
+    color: #212529;
+  }
+  
+
+  
+  a {
+    color: #007bff;
+  }
+  
+
+  
+  a:hover,
+  a:focus {
+    color: #0056b3;
+  }
+  
+
+  
+  .custom-navbar {
+    background-color: #212529;
+  }
+  
+
+  
+  .custom-navbar a {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  
+
+  
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    color: rgba(255, 255, 255, 1);
+  }
+  
+
+  
+  .container {
+    max-width: 800px;
+  }
+  
+
+  
+  pre {
+    display: block;
+    padding: 9.5px;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  pre code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  code {
+    padding: 2px 4px;
+    color: inherit;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: .9em;
+  }
+  
+
+  @import url('https://rsms.me/inter/inter.css');
+  html { font-family: 'Inter', sans-serif; }
+  @supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
+  }
+
+  code {
+    font-family: 'Ubuntu Mono', monospace, serif;
+  }
+
+  
+  blockquote,
+  .blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 1em;
+    border-left: 5px solid #6c757d;
+  }
+  
+</style>
+
+</head>
+
+
+<body>
+  <div class="container">
+    <article>
+      <h1>Running Self-Hosted Services Locally with HTTPS</h1>
+<p>With Docker and friends it&rsquo;s getting pretty easy to run complex software on your local network for private use. For example to download and run <a href="https://grafana.com/">Grafana</a> all you have to do is:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt update
+sudo apt install -y docker.io
+sudo docker run -d -p 3000:3000 --name grafana grafana/grafana
+</code></pre></div><p>This will put the service up at <code>localhost:3000</code> on the server, then to access this from somewhere else you need to set up an SSH tunnel:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh -L 3000:localhost:3000 myusername@&lt;the server<span style="color:#960050;background-color:#1e0010">&#39;</span>s IP&gt;
+</code></pre></div><p>Then finally you can visit <code>localhost:3000</code> on your client machine and start using the web app. While short and sweet, this has a couple downsides. Mainly that all the traffic is transmitted in the clear over HTTP! If you have an ISP provided router, that means they can still see everything you&rsquo;re doing. Plus this UX sucks! It&rsquo;d be way nicer to be able to visit <code>grafana.myname.com</code> and get HTTPS.</p>
+<p>This guide shows how to get a domain and a wildcard SSL certificate (meaning it&rsquo;s valid for all domains of the pattern <code>*.myname.com</code>) and register it for a local address. Then we&rsquo;ll set up Nginx as a reverse proxy to a bunch of services running in <code>docker-compose</code>. A little bit of set-up pays off in the long run since you get secure encrypted HTTP communications and nice logging for everything.</p>
+<h2 id="option-1---spend-money">Option 1 - Spend Money</h2>
+<h3 id="step-1---get-a-domain-name">Step 1 - Get a Domain Name</h3>
+<p>HTTPS is the way to go, but to get a certificate you need a domain name, say for this post <code>myname.com</code>. Depending on your requirements this can cost upwards of $2 (which you&rsquo;ll have to renew every year too). You can also get <a href="https://en.wikipedia.org/wiki/.tk">much sketchier free domains</a> but you&rsquo;ll probably still have to rotate the name each year.</p>
+<h3 id="step-2---register-your-local-ip">Step 2 - Register your Local IP</h3>
+<p>Since everything will be on the local network, the domain needs to resolve to the local IP of the server. That way none of the traffic should ever leave your router. Say the server is at <code>192.168.1.123</code>, you should make 2 DNS entries with your registrar:</p>
+<ol>
+<li>Host: <code>@</code> - this will be for the main site <code>myname.com</code></li>
+<li>Host: <code>*</code> - this is the &lsquo;wildcard&rsquo;, any subdomain of <code>myname.com</code> will go here (e.g. <code>another.myname.com</code>)</li>
+</ol>
+<p>After a while (5-30 minutes) you should be able to verify both of these and see the result</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># check the @ record</span>
+nslookup myname.com
+
+<span style="color:#75715e"># check whidcard entries</span>
+nslookup another.myname.com
+nslookup something-else.myname.com
+</code></pre></div><h2 id="option-2---dont-spend-money">Option 2 - Don&rsquo;t Spend Money</h2>
+<h3 id="step-1---get-a-domain-name-1">Step 1 - Get a &ldquo;Domain Name&rdquo;</h3>
+<p>You can also edit your <code>/etc/hosts</code> file (works on Windows, MacOS, and Linux!) to have an easy to remember domain name for your server. This will only work on that specific machine with the entry in <code>/etc/hosts/</code> though. For example:</p>
+<pre><code>echo '192.168.1.123  myname.local' &gt;&gt; /etc/hosts
+</code></pre><h2 id="step-2---get-a-ssl-certificate">Step 2 - Get a SSL Certificate</h2>
+<p>If you don&rsquo;t want to buy a domain name, you can still create a certificate locally, your browser will just give you scary/annoying warnings when you try to use it.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">openssl req -newkey rsa:2048 -nodes -keyout privkey.pem -x509 -days <span style="color:#ae81ff">365</span> -out fullchain.pem
+</code></pre></div><p>Once you buy a domain, you need to get an SSL certificate. Let&rsquo;s Encrypt provides these for free and you don&rsquo;t even need to open up your server to the Internet to verify you own the domain. After installing <a href="https://certbot.eff.org/">certbot</a>, run it and request a wildcard certificate. This requires that you set a TXT record up for your domain using a secret Let&rsquo;s Encrypt gives you.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Follow the prompts until it gives you the secret</span>
+sudo certbot --manual --preferred-challenges dns certonly
+</code></pre></div><p>Most domain registrars will have a section (sometimes under an &ldquo;Advanced&rdquo; menu) to enter DNS records. Add a TXT record with a host of <code>_acme-challenge</code> and a value that matches the one from <code>certbot</code>. Wait a couple seconds and it should verify and issue you a certificate! Copy these down for later use.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Be careful not to leave these anywhere insecure!</span>
+sudo /etc/letsencrypt/live/myname.com/privkey.pem .
+sudo /etc/letsencrypt/live/myname.com/fullchain.pem .
+sudo chown $USER privkey.pem fullchain.pem
+</code></pre></div><h2 id="step-3---start-an-nginx-server">Step 3 - Start an Nginx Server</h2>
+<p>All the bookkeeping is done, now to make the server actually do something. <a href="https://docs.docker.com/compose/">docker-compose</a> makes it simple to get several Docker containers up and running. To start we&rsquo;ll just do the server with no subdomains (so nothing actually useful yet).</p>
+<p>First we need to create a <a href="https://www.nginx.com/resources/wiki/start/topics/examples/full/">config for Nginx</a>. That&rsquo;s way out of scope here, so copy-and-paste away into <code>http.conf</code>.</p>
+<pre><code>server {
+    listen [::]:80 ipv6only=off;
+    server_name /;
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    # server block for all the other requests
+    # this block will be a default server block listening on port 80
+    listen 443 default_server ssl;
+    server_name _;
+    ssl_certificate /etc/nginx/fullchain.pem;
+    ssl_certificate_key /etc/nginx/privkey.pem;
+    location / {
+      return 200 'hello';
+      add_header Content-Type text/plain;
+    }
+}
+</code></pre><p>Then create a <code>docker-compose.yml</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#34;3.7&#34;</span>
+
+<span style="color:#f92672">services</span>:
+  <span style="color:#75715e"># Run a service called &#39;nginx&#39;</span>
+  <span style="color:#f92672">nginx</span>:
+    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">nginx:1.21.0</span>
+    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">nginx</span>
+    <span style="color:#75715e"># Expose ports 80 (for http) and 443 (for https) on the host</span>
+    <span style="color:#f92672">ports</span>:
+      - <span style="color:#e6db74">&#34;80:80&#34;</span>
+      - <span style="color:#e6db74">&#34;443:443&#34;</span>
+    <span style="color:#f92672">networks</span>:
+      - <span style="color:#ae81ff">local-net</span>
+      - <span style="color:#66d9ef">no</span>-<span style="color:#ae81ff">internet</span>
+    <span style="color:#f92672">volumes</span>:
+      <span style="color:#75715e"># Mount the config file and the 2 SSL certificate files</span>
+      - <span style="color:#e6db74">&#34;./http.conf:/etc/nginx/conf.d/default.conf&#34;</span>
+      - <span style="color:#e6db74">&#34;./fullchain.pem:/etc/nginx/fullchain.pem&#34;</span>
+      - <span style="color:#e6db74">&#34;./privkey.pem:/etc/nginx/privkey.pem&#34;</span>
+
+<span style="color:#f92672">networks</span>:
+  <span style="color:#75715e"># A docker internal network where services can find each other but can&#39;t</span>
+  <span style="color:#75715e"># connect to the Internet</span>
+  <span style="color:#f92672">no-internet</span>:
+    <span style="color:#f92672">driver</span>: <span style="color:#ae81ff">bridge</span>
+    <span style="color:#f92672">internal</span>: <span style="color:#66d9ef">true</span>
+  <span style="color:#75715e"># A docker network that can be exposed to the host</span>
+  <span style="color:#f92672">local-net</span>:
+    <span style="color:#f92672">external</span>: <span style="color:#66d9ef">false</span>
+</code></pre></div><p>Now everything is in order to start up the server (note that <code>docker-compose</code> relies on reading a <code>docker-compose.yml</code> file from the current directory, so pass <code>--file</code> if it&rsquo;s somewhere else).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker-compose up
+<span style="color:#75715e"># check the status</span>
+docker-compose ps
+</code></pre></div><p>Now if we check <code>myname.com</code>, we should see Nginx up and running.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -v myname.com
+</code></pre></div><h2 id="step-4---run-a-service">Step 4 - Run a Service</h2>
+<p>This is all basically useless so far since it doesn&rsquo;t actually run the services that got us here in the first place. So now we&rsquo;ll integrate one of those using <a href="https://gitea.io/en-us/">Gitea</a> as the example. To do this we need to make an entry in <code>docker-compose.yml</code> to tell Docker to start the Gitea Docker image alongside Nginx</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#34;3.7&#34;</span>
+
+<span style="color:#f92672">services</span>:
+  <span style="color:#ae81ff">...</span>
+  <span style="color:#f92672">gitea</span>:
+    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">gitea/gitea:1.16.5</span>
+    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">gitea</span>
+    <span style="color:#f92672">environment</span>:
+      - <span style="color:#ae81ff">USER_UID=1000</span>
+      - <span style="color:#ae81ff">USER_GID=1000</span>
+    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+    <span style="color:#f92672">volumes</span>:
+      <span style="color:#75715e"># Mount the Gitea data directory on the host so it&#39;s persistent across runs</span>
+      - <span style="color:#ae81ff">./gitea/:/data</span>
+      - <span style="color:#ae81ff">/etc/timezone:/etc/timezone:ro</span>
+      - <span style="color:#ae81ff">/etc/localtime:/etc/localtime:ro</span>
+    <span style="color:#f92672">networks</span>:
+      <span style="color:#75715e"># Gitea might need the Internet (e.g. for creating GitHub mirrors)</span>
+      - <span style="color:#ae81ff">local-net</span>
+
+<span style="color:#f92672">networks</span>:
+  <span style="color:#ae81ff">...</span>
+</code></pre></div><p>Then we can start it with</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Create the data folder</span>
+mkdir -p gitea
+
+<span style="color:#75715e"># Start Gitea</span>
+docker-compose up
+</code></pre></div><p>But since the <code>gitea</code> definition in the <code>docker-compose.yml</code> doesn&rsquo;t publish any ports, there&rsquo;s no way to actually get to the Gitea server from outside the Docker <code>local-net</code> network. We need to tell Nginx that all traffic from <code>gitea.myname.com</code> should be routed to the Gitea server via some changes to <code>http.conf</code></p>
+<pre><code>server {
+    listen [::]:80 ipv6only=off;
+    server_name /;
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+# This will catch all the wildcard domains that aren't explicitly listed below
+server {
+    # server block for all the other requests
+    # this block will be a default server block listening on port 80
+    listen 443 default_server ssl;
+    server_name _;
+    ssl_certificate /etc/nginx/fullchain.pem;
+    ssl_certificate_key /etc/nginx/privkey.pem;
+    # close the connection immediately
+    return 444;
+}
+
+server {
+    server_name gitea.tcl.bar;
+    listen 443;
+
+    client_max_body_size 500M;
+
+    # Proxy to 'gitea', which is a valid DNS name inside the Docker local-net
+    # network
+    set $gitea_upstream_endpoint http://gitea:3000;
+    location / {
+        resolver 127.0.0.11 valid=30s ipv6=off;
+        proxy_pass	$gitea_upstream_endpoint;
+
+        # Everything below this is just gobbledegook to make proxying work better
+        proxy_set_header    Host                $host:$server_port;
+        proxy_set_header    X-Real-IP           $remote_addr;
+        proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+        proxy_set_header    X-Forwarded-Host    $host;
+        proxy_set_header    X-Forwarded-Port    $server_port;
+        proxy_set_header    X-Forwarded-Server  $host:$server_port;
+        proxy_set_header    X-Forwarded-Proto   $scheme;
+        proxy_hide_header X-Frame-Options;
+
+        proxy_set_header        Upgrade $http_upgrade;
+        proxy_set_header        Connection &quot;upgrade&quot;;
+
+        proxy_max_temp_file_size 0;
+
+        client_max_body_size       100m;
+        client_body_buffer_size    128k;
+
+        proxy_connect_timeout      90;
+        proxy_send_timeout         90;
+        proxy_read_timeout         90;
+
+        proxy_buffer_size          4k;
+        proxy_buffers              4 32k;
+        proxy_busy_buffers_size    64k;
+        proxy_temp_file_write_size 64k;
+    }
+}
+</code></pre><p>While it&rsquo;s rather long this config has only 2 real changes:</p>
+<ol>
+<li>Adding a <code>server</code> block to catch all the wildcard domains (i.e. <code>anything.myname.com</code>)</li>
+<li>Adding a <code>server</code> to send all <code>gitea.myname.com</code> data to Gitea</li>
+</ol>
+<p>Then reload the Nginx config by re-running compose one last time.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker-compose up
+</code></pre></div><p>Then visit <code>gitea.myname.com</code> and, hot-dog, there it is! You can copy-paste your way to adding new services or generate the <code>http.conf</code> (or do it dynamically in Nginx via Lua if you really know what you&rsquo;re doing). Some final points of note:</p>
+<ol>
+<li>Even if a service runs at a subdomain so the relative URLs of data on the webpage don&rsquo;t change (e.g. the services delivers an HTML page that tries to load <code>/style.css</code>, which will work fine), there are often other places that the domain shows up so you should still try to set the base/root URL in the service via its config if possible.</li>
+<li><code>docker-compose down --remove-orphans</code> will stop everything</li>
+</ol>
+
+    </article>
+  </div>
+</body>
+
+</html>
