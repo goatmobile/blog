@@ -51,7 +51,11 @@
     }
   </style>
 
-  <title>{{ .Site.Title }}</title>
+    {{ if .Title }}
+    <title>{{ .Title }}</title>
+    {{ else }}
+    <title>Posts</title>
+    {{ end }}
 
   {{ if .Params.katex }}
   <script type="text/x-mathjax-config">

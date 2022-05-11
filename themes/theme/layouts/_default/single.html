@@ -1,7 +1,10 @@
 {{- define "main" -}}
 
 <div class="prose max-w-2xl mx-auto">
-    <h1>{{ .Title | markdownify }}</h1>
+    <a href="{{ "" | absURL }}">
+        <span class="mt-3">posts</span>
+    </a>
+    <h1 class="mt-3">{{ .Title | markdownify }}</h1>
     {{ .Content }}
 </div>
 {{- end -}}

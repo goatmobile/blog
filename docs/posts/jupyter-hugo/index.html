@@ -54,7 +54,9 @@
     }
   </style>
 
-  <title></title>
+    
+    <title>Jupyter Notebooks and Hugo</title>
+    
 
   
 
@@ -204,7 +206,10 @@
   <div class="px-6 py-4">
     <article>
       <div class="prose max-w-2xl mx-auto">
-    <h1>Jupyter Notebooks and Hugo</h1>
+    <a href="https://goatmobile.github.io/blog">
+        <span class="mt-3">posts</span>
+    </a>
+    <h1 class="mt-3">Jupyter Notebooks and Hugo</h1>
     <p>Jupyter is a super nice environment for doing <a href="https://en.wikipedia.org/wiki/Literate_programming">literate programming</a> and as such it&rsquo;s a natural choice for writing code-heavy articles. I&rsquo;ve set up several blogs with <a href="https://gohugo.io/">Hugo</a> which is nice to write in but only understand markdown by default, but thanks to <a href="https://nbconvert.readthedocs.io/en/latest/"><code>nbconvert</code></a> it&rsquo;s pretty easy to get the two working together.</p>
 <p>Inside each notebook I include the Hugo <a href="https://gohugo.io/content-management/front-matter/">front matter</a> in the first markdown cell inside a markdown code block. This keeps everything neatly in a single file per post:</p>
 <pre><code>```

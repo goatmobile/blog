@@ -54,7 +54,9 @@
     }
   </style>
 
-  <title></title>
+    
+    <title>Installing Debian</title>
+    
 
   
 
@@ -204,7 +206,10 @@
   <div class="px-6 py-4">
     <article>
       <div class="prose max-w-2xl mx-auto">
-    <h1>Installing Debian</h1>
+    <a href="https://goatmobile.github.io/blog">
+        <span class="mt-3">posts</span>
+    </a>
+    <h1 class="mt-3">Installing Debian</h1>
     <p>This guide goes over my experience installing Debian 11 alongside Windows 10. Out of the common Linux distros, Ubuntu is out due to Canonical&rsquo;s including of non-free software by default and the whole debacle around <a href="https://lwn.net/Articles/825005/">snaps</a>. For a quick TL;DR: snaps follow a similar theme to Docker images or static builds in that they include the world alongside their package to avoid any &ldquo;this distro is missing mycoollibrary.so.123 so my software doesn&rsquo;t run!&rdquo; issues. While you could just not use snaps, some packages, namely <code>chromium-browser</code> was changed in apt to surreptitiously install the snap version. Most Linux users balk at the thought of telemetry, and so there is probably no good tracking of the popularity of each distro in the wild (as it should be). However, StackOverflow provides a <a href="https://insights.stackoverflow.com/trends?tags=ubuntu%2Cdebian%2Cfedora%2Ccentos">nice blurry window</a> (<a href="https://superuser.com/">https://superuser.com/</a> would be cool to look at too but they don&rsquo;t publish insights like this from what I can tell):</p>
 <p><img src="image.png" alt="image.png"></p>
 <p>These could mean that Ubuntu is the most popular or that it is the most confusing and everyone is having a great time using Fedora with no issues, but that&rsquo;s probably not the case. A quick peek at Docker image downloads of <a href="https://hub.docker.com/_/ubuntu">Ubuntu</a> vs <a href="https://hub.docker.com/_/debian">Debian</a> vs <a href="https://hub.docker.com/_/fedora">Fedora</a> put Ubuntu ahead by 20 times and Debian by 10. Debian is nice since it has good compatibility with the popular apt packages for Ubuntu, but with a focus on free software. It also supports nice things like disk encryption out of the box during setup.</p>

@@ -54,7 +54,9 @@
     }
   </style>
 
-  <title></title>
+    
+    <title>Scalar Autodiff From Scratch</title>
+    
 
   
   <script type="text/x-mathjax-config">
@@ -217,7 +219,10 @@
   <div class="px-6 py-4">
     <article>
       <div class="prose max-w-2xl mx-auto">
-    <h1>Scalar Autodiff From Scratch</h1>
+    <a href="https://goatmobile.github.io/blog">
+        <span class="mt-3">posts</span>
+    </a>
+    <h1 class="mt-3">Scalar Autodiff From Scratch</h1>
     <p><a href="https://en.wikipedia.org/wiki/Automatic_differentiation">Automatic differentiation</a> (or autodiff) underlies many modern machine learning frameworks and mathematical models. This post demonstrates a from-scratch implemention on scalar values (in contrast to tensors a.k.a. ndarrays that are common in machine learning) and shows how we can use it to implement gradient descent, eventually learning some linear function (i.e. a function looks like <code>y = m * x + b</code>). Rest assured the explanations here are much more complicated than the code itself.</p>
 <p>To train a machine learning model, some model (read: a program) will run through a series of computations based on some relevant inputs to the question at hand (i.e. the picture for a model that determines whether a picture is of a dog or cat) as well as some other data called weights. These weights are just numbers (like <code>6</code>), and their values are what the model &ldquo;learns&rdquo; during the training process.</p>
 <p><a href="https://en.wikipedia.org/wiki/Gradient_descent">Gradient descent</a> is the method we will use to &ldquo;learn&rdquo; values. There are many intuitive explanations online, but in a nutshell we will pick random starting numbers for our weights, feed them in addition to some input to a model, and then see how we need to change the weights. This last part of &ldquo;how we need to change the weights&rdquo; is where autodiff comes in. It tells us whether we should increase or decrease our weights, and by how much. Then we repeat the process over and over until our model can guess the right result.</p>

@@ -54,7 +54,9 @@
     }
   </style>
 
-  <title></title>
+    
+    <title>Live Reloading HTML from Scratch</title>
+    
 
   
 
@@ -204,7 +206,10 @@
   <div class="px-6 py-4">
     <article>
       <div class="prose max-w-2xl mx-auto">
-    <h1>Live Reloading HTML from Scratch</h1>
+    <a href="https://goatmobile.github.io/blog">
+        <span class="mt-3">posts</span>
+    </a>
+    <h1 class="mt-3">Live Reloading HTML from Scratch</h1>
     <p>Any frontend toolkit worth its weight in <code>node_modules</code> today will have some kind of live reloading functionality (e.g. <a href="https://pypi.org/project/livereload/">livereload</a> or <a href="https://www.npmjs.com/package/live-server">live-server</a> for basic examples) where it watches files on disk for changes and automatically reloads changes in the browser. <a href="https://codekitapp.com/">CodeKit</a> is a cool (proprietary) example that even has hot-reloading for CSS only changes so the browser doesn&rsquo;t lose any actual state. Most of these tools work by injecting JavaScript magic into your input HTML and communicating over a websocket server to a process on the server that watches the actual files. Sometimes however its useful to pull back the curtain for esoteric use cases that these tools don&rsquo;t support. This shows a simple Python websocket server + associated JavaScript that does a basic live reload in just a few dozen lines.</p>
 <p>First, install <a href="https://pypi.org/project/rfilerunner/"><code>rfilerunner</code></a> which will handle the file watching and <a href="https://pypi.org/project/websockets/"><code>websockets</code></a>.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ pip install rfilerunner websockets
