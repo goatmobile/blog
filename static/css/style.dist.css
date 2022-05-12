@@ -1262,6 +1262,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-bottom: 1.75rem;
 }
 
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
 .mt-3 {
   margin-top: 0.75rem;
 }
@@ -3090,6 +3095,13 @@ Ensure the default browser behavior of the `hidden` attribute.
   .sm\:underline {
     -webkit-text-decoration-line: underline;
             text-decoration-line: underline;
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:mx-10 {
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
   }
 }
 
