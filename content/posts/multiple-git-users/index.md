@@ -1,5 +1,5 @@
 ---
-title: "Multiple GitHub Users on a Single Machine: The Simple Way"
+title: "Multiple GitHub Users on a Single Machine"
 date: 2021-05-02
 ---
 
@@ -19,7 +19,8 @@ date: 2021-05-02
 3. Go to your repository and do some pushes! Use `GIT_SSH_COMMAND` to tell it to use the key we just generated.
 
     ```bash
-    GIT_SSH_COMMAND='ssh -i ~/.ssh/my_cool_key -o IdentitiesOnly=yes' git push
+    GIT_SSH_COMMAND='ssh -i ~/.ssh/my_cool_key -o IdentitiesOnly=yes' \
+        git push
     ```
 
 4. Wow!

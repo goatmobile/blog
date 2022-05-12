@@ -238,7 +238,8 @@ nslookup something-else.myname.com
 <pre><code>echo '192.168.1.123  myname.local' &gt;&gt; /etc/hosts
 </code></pre><h2 id="step-2---get-a-ssl-certificate">Step 2 - Get a SSL Certificate</h2>
 <p>If you don&rsquo;t want to buy a domain name, you can still create a certificate locally, your browser will just give you scary/annoying warnings when you try to use it.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">openssl req -newkey rsa:2048 -nodes -keyout privkey.pem -x509 -days <span style="color:#ae81ff">365</span> -out fullchain.pem
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">openssl req -newkey rsa:2048 -nodes <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  -keyout privkey.pem -x509 -days <span style="color:#ae81ff">365</span> -out fullchain.pem
 </code></pre></div><p>Once you buy a domain, you need to get an SSL certificate. Let&rsquo;s Encrypt provides these for free and you don&rsquo;t even need to open up your server to the Internet to verify you own the domain. After installing <a href="https://certbot.eff.org/">certbot</a>, run it and request a wildcard certificate. This requires that you set a TXT record up for your domain using a secret Let&rsquo;s Encrypt gives you.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Follow the prompts until it gives you the secret</span>
 sudo certbot --manual --preferred-challenges dns certonly
@@ -250,7 +251,7 @@ sudo chown $USER privkey.pem fullchain.pem
 </code></pre></div><h2 id="step-3---start-an-nginx-server">Step 3 - Start an Nginx Server</h2>
 <p>All the bookkeeping is done, now to make the server actually do something. <a href="https://docs.docker.com/compose/">docker-compose</a> makes it simple to get several Docker containers up and running. To start we&rsquo;ll just do the server with no subdomains (so nothing actually useful yet).</p>
 <p>First we need to create a <a href="https://www.nginx.com/resources/wiki/start/topics/examples/full/">config for Nginx</a>. That&rsquo;s way out of scope here, so copy-and-paste away into <code>http.conf</code>.</p>
-<pre><code>server {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">server {
     listen [::]:80 ipv6only=off;
     server_name /;
 
@@ -267,11 +268,11 @@ server {
     ssl_certificate /etc/nginx/fullchain.pem;
     ssl_certificate_key /etc/nginx/privkey.pem;
     location / {
-      return 200 'hello';
+      return 200 &#39;hello&#39;;
       add_header Content-Type text/plain;
     }
 }
-</code></pre><p>Then create a <code>docker-compose.yml</code>.</p>
+</code></pre></div><p>Then create a <code>docker-compose.yml</code>.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#34;3.7&#34;</span>
 
 <span style="color:#f92672">services</span>:
@@ -338,7 +339,7 @@ mkdir -p gitea
 <span style="color:#75715e"># Start Gitea</span>
 docker-compose up
 </code></pre></div><p>But since the <code>gitea</code> definition in the <code>docker-compose.yml</code> doesn&rsquo;t publish any ports, there&rsquo;s no way to actually get to the Gitea server from outside the Docker <code>local-net</code> network. We need to tell Nginx that all traffic from <code>gitea.myname.com</code> should be routed to the Gitea server via some changes to <code>http.conf</code></p>
-<pre><code>server {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">server {
     listen [::]:80 ipv6only=off;
     server_name /;
 
@@ -347,7 +348,7 @@ docker-compose up
     }
 }
 
-# This will catch all the wildcard domains that aren't explicitly listed below
+# This will catch all the wildcard domains that aren&#39;t explicitly listed below
 server {
     # server block for all the other requests
     # this block will be a default server block listening on port 80
@@ -365,7 +366,7 @@ server {
 
     client_max_body_size 500M;
 
-    # Proxy to 'gitea', which is a valid DNS name inside the Docker local-net
+    # Proxy to &#39;gitea&#39;, which is a valid DNS name inside the Docker local-net
     # network
     set $gitea_upstream_endpoint http://gitea:3000;
     location / {
@@ -383,7 +384,7 @@ server {
         proxy_hide_header X-Frame-Options;
 
         proxy_set_header        Upgrade $http_upgrade;
-        proxy_set_header        Connection &quot;upgrade&quot;;
+        proxy_set_header        Connection &#34;upgrade&#34;;
 
         proxy_max_temp_file_size 0;
 
@@ -400,7 +401,7 @@ server {
         proxy_temp_file_write_size 64k;
     }
 }
-</code></pre><p>While it&rsquo;s rather long this config has only 2 real changes:</p>
+</code></pre></div><p>While it&rsquo;s rather long this config has only 2 real changes:</p>
 <ol>
 <li>Adding a <code>server</code> block to catch all the wildcard domains (i.e. <code>anything.myname.com</code>)</li>
 <li>Adding a <code>server</code> to send all <code>gitea.myname.com</code> data to Gitea</li>
@@ -413,7 +414,8 @@ server {
 <li><code>docker-compose down --remove-orphans</code> will stop everything</li>
 </ol>
 
-</div></article>
+</div>
+<script src="https://goatmobile.github.io/blog/copy.js"></script></article>
     </div>
   </body>
 </html>

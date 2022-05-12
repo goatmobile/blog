@@ -245,7 +245,8 @@ BIN<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$
 launchctl load /Users/home/Library/LaunchAgents/daemon.plist
 </code></pre></div><p>And we&rsquo;re in! Log out and back in and <code>ps -ax | grep go.sh</code> should show a process running in the background. This solution isn&rsquo;t perfect by any means, but the start up time is significantly improved. It could probably be nearly instantaneous though with a proper application of Alacritty&rsquo;s <a href="https://github.com/alacritty/alacritty/commit/1df7dc5171abfe1eab3e95be964f61c5876198f1">multi-window support</a>, where a single instance would stay running in the background and spawn new windows as needed, though as you can see in my fork there&rsquo;s still some missing pieces. <a href="https://github.com/kovidgoyal/kitty">kitty</a> looks promising since it has this functionality already via its <a href="https://sw.kovidgoyal.net/kitty/invocation/#cmdoption-kitty-single-instance"><code>--single-instance</code></a> option, but this set up with Alacritty meets my needs well enough.</p>
 
-</div></article>
+</div>
+<script src="https://goatmobile.github.io/blog/copy.js"></script></article>
     </div>
   </body>
 </html>

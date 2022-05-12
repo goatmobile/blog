@@ -140,7 +140,8 @@ Personally I like to jam these all into a `Makefile` like so:
 
 ```make
 notebooks_dev:
-    find ./content -name "*.ipynb" | grep -v checkpoint | entr make notebooks
+    find ./content -name "*.ipynb" | 
+      grep -v checkpoint | entr make notebooks
    
 hugo_dev:
     hugo server -D

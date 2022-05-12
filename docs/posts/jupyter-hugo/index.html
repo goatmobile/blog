@@ -327,7 +327,8 @@ POSTS_DIR <span style="color:#f92672">=</span> ROOT_DIR <span style="color:#f926
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hugo server -D
 </code></pre></div><p>Personally I like to jam these all into a <code>Makefile</code> like so:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-make" data-lang="make"><span style="color:#a6e22e">notebooks_dev</span><span style="color:#f92672">:</span>
-    find ./content -name <span style="color:#e6db74">&#34;*.ipynb&#34;</span> | grep -v checkpoint | entr make notebooks
+    find ./content -name <span style="color:#e6db74">&#34;*.ipynb&#34;</span> | 
+      grep -v checkpoint | entr make notebooks
    
 <span style="color:#a6e22e">hugo_dev</span><span style="color:#f92672">:</span>
     hugo server -D
@@ -337,7 +338,8 @@ POSTS_DIR <span style="color:#f92672">=</span> ROOT_DIR <span style="color:#f926
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">make dev -j2
 </code></pre></div><p>And that&rsquo;s all there is to it! Everything turns into markdown in the end and the computers are all happy.</p>
 
-</div></article>
+</div>
+<script src="https://goatmobile.github.io/blog/copy.js"></script></article>
     </div>
   </body>
 </html>

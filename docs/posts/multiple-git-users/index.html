@@ -54,7 +54,7 @@
   </style>
 
     
-    <title>Multiple GitHub Users on a Single Machine: The Simple Way</title>
+    <title>Multiple GitHub Users on a Single Machine</title>
     
 
   
@@ -207,7 +207,7 @@
     <a href="https://goatmobile.github.io/blog">
         <span class="mt-3">posts</span>
     </a>
-    <h1 class="mt-3">Multiple GitHub Users on a Single Machine: The Simple Way</h1>
+    <h1 class="mt-3">Multiple GitHub Users on a Single Machine</h1>
     <ol>
 <li>
 <p>Generate a key.</p>
@@ -220,7 +220,8 @@ ssh-keygen -t ed25519 -N <span style="color:#e6db74">&#34;&#34;</span> -C <span 
 </code></pre></div></li>
 <li>
 <p>Go to your repository and do some pushes! Use <code>GIT_SSH_COMMAND</code> to tell it to use the key we just generated.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">GIT_SSH_COMMAND<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ssh -i ~/.ssh/my_cool_key -o IdentitiesOnly=yes&#39;</span> git push
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">GIT_SSH_COMMAND<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ssh -i ~/.ssh/my_cool_key -o IdentitiesOnly=yes&#39;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    git push
 </code></pre></div></li>
 <li>
 <p>Wow!</p>
@@ -230,7 +231,8 @@ ssh-keygen -t ed25519 -N <span style="color:#e6db74">&#34;&#34;</span> -C <span 
 <p>When you have multiple SSH keys associated with different GitHub accounts on the same machine, it can be tricky to tell which ones are being used, especially when you push to a repo to which more than one of these accounts have access. <code>git</code> will use the <a href="https://git-scm.com/docs/git#Documentation/git.txt-codeGITSSHCOMMANDcode"><code>GIT_SSH_COMMAND</code></a> environment variable in place of <code>ssh</code> when connecting to a repo via an SSH remote. So, in the SSH command we specify <code>-i</code> (<code>identity_file</code>) to offer a specific SSH key. <code>-o IdentitiesOnly=yes</code> means to <em>only</em> use the specified key instead of offering up other keys in the default search locations.</p>
 <p>For a more permanent solution, you can <a href="https://gist.github.com/jexchan/2351996">edit your <code>~/.ssh/config</code> instead</a>.</p>
 
-</div></article>
+</div>
+<script src="https://goatmobile.github.io/blog/copy.js"></script></article>
     </div>
   </body>
 </html>

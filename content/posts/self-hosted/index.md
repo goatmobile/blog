@@ -60,7 +60,8 @@ echo '192.168.1.123  myname.local' >> /etc/hosts
 If you don't want to buy a domain name, you can still create a certificate locally, your browser will just give you scary/annoying warnings when you try to use it.
 
 ```bash
-openssl req -newkey rsa:2048 -nodes -keyout privkey.pem -x509 -days 365 -out fullchain.pem
+openssl req -newkey rsa:2048 -nodes \
+  -keyout privkey.pem -x509 -days 365 -out fullchain.pem
 ```
 
 Once you buy a domain, you need to get an SSL certificate. Let's Encrypt provides these for free and you don't even need to open up your server to the Internet to verify you own the domain. After installing [certbot](https://certbot.eff.org/), run it and request a wildcard certificate. This requires that you set a TXT record up for your domain using a secret Let's Encrypt gives you.
@@ -85,7 +86,7 @@ All the bookkeeping is done, now to make the server actually do something. [dock
 
 First we need to create a [config for Nginx](https://www.nginx.com/resources/wiki/start/topics/examples/full/). That's way out of scope here, so copy-and-paste away into `http.conf`.
 
-```
+```plaintext
 server {
     listen [::]:80 ipv6only=off;
     server_name /;
@@ -198,7 +199,7 @@ docker-compose up
 
 But since the `gitea` definition in the `docker-compose.yml` doesn't publish any ports, there's no way to actually get to the Gitea server from outside the Docker `local-net` network. We need to tell Nginx that all traffic from `gitea.myname.com` should be routed to the Gitea server via some changes to `http.conf`
 
-```
+```plaintext
 server {
     listen [::]:80 ipv6only=off;
     server_name /;

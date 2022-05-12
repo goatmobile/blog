@@ -115,7 +115,7 @@ Inside each notebook I include the Hugo front matter in the first markdown cell 
     </item>
     
     <item>
-      <title>Multiple GitHub Users on a Single Machine: The Simple Way</title>
+      <title>Multiple GitHub Users on a Single Machine</title>
       <link>https://goatmobile.github.io/blog/posts/multiple-git-users/</link>
       <pubDate>Sun, 02 May 2021 00:00:00 +0000</pubDate>
       
@@ -123,7 +123,7 @@ Inside each notebook I include the Hugo front matter in the first markdown cell 
       <description>Generate a key.
 # Give your keys a special name! For this example it&amp;#39;s &amp;#39;my_cool_key&amp;#39; ssh-keygen -t ed25519 -N &amp;#34;&amp;#34; -C &amp;#34;my key&amp;#39;s name&amp;#34; -f ~/.ssh/my_cool_key   Copy it to whatever GitHub account it should be on.
 cat ~/.ssh/my_cool_key.pub   Go to your repository and do some pushes! Use GIT_SSH_COMMAND to tell it to use the key we just generated.
-GIT_SSH_COMMAND=&amp;#39;ssh -i ~/.ssh/my_cool_key -o IdentitiesOnly=yes&amp;#39; git push   Wow!</description>
+GIT_SSH_COMMAND=&amp;#39;ssh -i ~/.ssh/my_cool_key -o IdentitiesOnly=yes&amp;#39; \  git push   Wow!</description>
     </item>
     
     <item>

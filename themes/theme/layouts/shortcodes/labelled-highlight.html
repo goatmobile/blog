@@ -3,6 +3,10 @@
 {{ $options := .Get "options" }}
 {{ $input := (trim .Inner "\n\r") }}
 
-<div style="text-align: center"><code style="font-size: 1em; border: 2px solid red; border-bottom: none;">{{ $filename }}</code></div>
+<div class="highlighted-filename">
+    <code >{{ $filename }}</code>
+</div>
 
+<div class="highlighted-markdown">
 {{ highlight $input $lang $options }}
+</div>
