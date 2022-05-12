@@ -8,6 +8,7 @@ dev: |
 dist: |
   # dep: images
   # dep: notebooks
+  # dep: css-once
   set -eux
   rm -rf docs
   hugo -D
@@ -32,6 +33,9 @@ wordcount: |
 
 css: |
   npx tailwindcss --input ./static/css/style.css -o ./static/css/style.dist.css --watch
+
+css-once: |
+  npx tailwindcss --input ./static/css/style.css -o ./static/css/style.dist.css
 
 css_setup: |
   yarn add tailwindcss @tailwindcss/typography

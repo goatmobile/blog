@@ -1,14 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+  {{ partial "head.html" . }}
 
-{{ partial "head.html" . }}
-
-<body>
-  <div class="px-6 py-4">
-    <article>
-      {{ block "main" . }}{{ end }}
-    </article>
-  </div>
-</body>
-
+  <body>
+    <div class="">
+      <article>{{ block "main" . }}{{ end }}</article>
+    </div>
+  </body>
 </html>

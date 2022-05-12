@@ -1,7 +1,6 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
@@ -202,10 +201,9 @@
 </head>
 
 
-<body>
-  <div class="px-6 py-4">
-    <article>
-      <div class="prose max-w-2xl mx-auto">
+  <body>
+    <div class="">
+      <article><div class="prose max-w-2xl mx-auto">
     <a href="https://goatmobile.github.io/blog">
         <span class="mt-3">posts</span>
     </a>
@@ -232,9 +230,7 @@ ssh-keygen -t ed25519 -N <span style="color:#e6db74">&#34;&#34;</span> -C <span 
 <p>When you have multiple SSH keys associated with different GitHub accounts on the same machine, it can be tricky to tell which ones are being used, especially when you push to a repo to which more than one of these accounts have access. <code>git</code> will use the <a href="https://git-scm.com/docs/git#Documentation/git.txt-codeGITSSHCOMMANDcode"><code>GIT_SSH_COMMAND</code></a> environment variable in place of <code>ssh</code> when connecting to a repo via an SSH remote. So, in the SSH command we specify <code>-i</code> (<code>identity_file</code>) to offer a specific SSH key. <code>-o IdentitiesOnly=yes</code> means to <em>only</em> use the specified key instead of offering up other keys in the default search locations.</p>
 <p>For a more permanent solution, you can <a href="https://gist.github.com/jexchan/2351996">edit your <code>~/.ssh/config</code> instead</a>.</p>
 
-</div>
-    </article>
-  </div>
-</body>
-
+</div></article>
+    </div>
+  </body>
 </html>
