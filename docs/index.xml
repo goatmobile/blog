@@ -6,7 +6,17 @@
     <description>Recent content on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 10 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 19 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Proper Python Logger</title>
+      <link>https://goatmobile.github.io/blog/posts/python-logging/</link>
+      <pubDate>Thu, 19 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://goatmobile.github.io/blog/posts/python-logging/</guid>
+      <description>Why yes, that is 60 lines just to initialize a reasonable logger in Python.
+import logging import sys from typing import Optional from pathlib import Path # Set to the git or project level root ROOT = Path(__file__).resolve().parent LOG = None class FilterRelativePath(logging.Filter): &amp;#34;&amp;#34;&amp;#34; Logging filter to make paths relative to a fixed root folder &amp;#34;&amp;#34;&amp;#34; def filter(self, record): path = Path(record.pathname).resolve() record.relativepath = str(path.relative_to(ROOT)) return True def init_logger( name: Optional[str] = None, time: bool = True, filename: bool = True ) -&amp;gt; logging.</description>
+    </item>
+    
     <item>
       <title>Running Self-Hosted Services Locally with HTTPS</title>
       <link>https://goatmobile.github.io/blog/posts/self-hosted/</link>
