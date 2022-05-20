@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  <meta name="generator" content="Hugo 0.80.0" /> 
+  <meta name="description" content="Some description" />
+   
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="https://goatmobile.github.io/blog/apple-touch-icon.png"
+  />
+
+  <meta
+    name="msapplication-TileColor"
+    content="#da532c"
+  />
+
+  <meta name="theme-color" content="#ffffff" />
+
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
+  <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
+
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Martel';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/Martel400.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Martel';
+      font-style: normal;
+      font-weight: 700;
+      src: url(https://goatmobile.github.io/blog/Martel700.ttf) format('truetype');
+    }
+
+    body {
+      font-family: 'Martel', sans-serif;
+    }
+  </style>
+
+    
+    <title>`apylaas`: Any Python Library As A Service</title>
+    
+
+  
+
+  <style>
+  body {
+    min-width: 300px;
+    padding: 20px;
+  }
+
+  .custom-navbar {
+    margin-bottom: 1em;
+    height: 60px;
+  }
+
+  .custom-navbar a {
+    display: inline-block;
+    padding: 18px 0;
+    margin-right: 1em;
+    font-weight: bold;
+  }
+
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    text-decoration: none;
+  }
+
+  @media print {
+    .custom-navbar {
+      display: none;
+    }
+  }
+
+  article {
+    padding-bottom: 1em;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  
+  body {
+    background-color: #fff;
+  }
+  
+
+  
+  body {
+    color: #212529;
+  }
+  
+
+  
+  a {
+    color: #007bff;
+  }
+  
+
+  
+  a:hover,
+  a:focus {
+    color: #0056b3;
+  }
+  
+
+  
+  .custom-navbar {
+    background-color: #212529;
+  }
+  
+
+  
+  .custom-navbar a {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  
+
+  
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    color: rgba(255, 255, 255, 1);
+  }
+  
+
+  
+  .container {
+    max-width: 800px;
+  }
+  
+
+  
+  pre {
+    display: block;
+    padding: 9.5px;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  pre code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  code {
+    padding: 2px 4px;
+    color: inherit;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: .9em;
+  }
+  
+
+  @import url('https://rsms.me/inter/inter.css');
+  html { font-family: 'Inter', sans-serif; }
+  @supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
+  }
+
+  code {
+    font-family: 'Ubuntu Mono', monospace, serif;
+  }
+
+  
+  blockquote,
+  .blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 1em;
+    border-left: 5px solid #6c757d;
+  }
+  
+</style>
+
+</head>
+
+
+  <body>
+    <div class="">
+      <article><div class="prose max-w-2xl mx-auto">
+    <a href="https://goatmobile.github.io/blog">
+        <span class="mt-3">posts</span>
+    </a>
+    <h1 class="mt-3"><code>apylaas</code>: Any Python Library As A Service</h1>
+    <p>Recently I found myself wanting to run a short shell script from my home server through my phone for some automation tasks. This is certainly possible with existing tools but I figured it&rsquo;d be nice to make it so any code I could possibly want could be easily wrapped up into a simple web UI. <code>apylaas</code> is the result, a Python package to turn existing Python modules into a JSON API controllable through a webpage.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#e6db74">&#34;
+</span><span style="color:#e6db74">def hello(s):
+</span><span style="color:#e6db74">    return f&#39;Hello {s}&#39;
+</span><span style="color:#e6db74">&#34;</span> &gt; my_file.py
+pip install apylaas
+apylaas --library my_file.py
+</code></pre></div><p><code>apylaas</code> attemps to load <code>my_file</code> then indexes the available callable attributes (i.e. mostly functions). It then puts these up on a webserver at <code>localhost:5000</code> by default (controllable via the <code>HOST</code> and <code>PORT</code> environment variables).</p>
+<p><img src="main.png" alt="apylaas index page"></p>
+<p>Clicking through gives you an interface for the function with a display for the last run as well as (locally) saved previous runs.</p>
+<p><img src="fn.png" alt="function page for greet">.</p>
+<p>Above the red exclamation mark reads: &ldquo;type wasn&rsquo;t annotated, inferring <code>str</code>&rdquo; which is the &ldquo;safe&rdquo; default <code>apylaas</code> picks when there are no type annotations on functions.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#e6db74">&#34;
+</span><span style="color:#e6db74">def add2(s: int) -&gt; int:
+</span><span style="color:#e6db74">    return s + 2
+</span><span style="color:#e6db74">&#34;</span> &gt;&gt; my_file.py
+apylaas --library my_file.py
+</code></pre></div><p>Then at <code>localhost:5000/add2</code> the error is gone:</p>
+<p><img src="add.png" alt="function page for add2"></p>
+<p>This generally met my needs but it turns out you can do some wonky stuff like reload the Python library every time the web page reloads. Editing some Python and running a test script, you could edit some Python, reload a webpage, and hit submit! And since its based on a JSON API, if you haven&rsquo;t changed the function schema there isn&rsquo;t even a need to reload the page. This behavior is on by default but can be disabled with <code>--no-reload</code>.</p>
+<h2 id="adding-types">Adding Types</h2>
+<p><code>apylaas</code> is limited in that all types it accepts must be predefined (or <code>str</code> is assumed). The interface to register types is open so you could add your own, but Pillow&rsquo;s <code>PIL.Image</code> type is supported out of the box, but lets remove it and add it back in as a third-party user. Imagine there is a function like this in <code>classifier.py</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">predict</span>(image: PIL<span style="color:#f92672">.</span>Image) <span style="color:#f92672">-&gt;</span> str:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Run &#39;image&#39; through a classifier model and return a label that describes the image
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    <span style="color:#f92672">...</span>
+</code></pre></div><p>How does the <code>Image</code> get uploaded and marshaled from the web page to Python? The code is relatively simple but cannot use the <code>apylaas</code> CLI. First make a script <code>apylaas_server.py</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> apylaas
+<span style="color:#f92672">import</span> classifier
+<span style="color:#f92672">from</span> PIL <span style="color:#f92672">import</span> Image
+
+app <span style="color:#f92672">=</span> apylaas<span style="color:#f92672">.</span>App(module<span style="color:#f92672">=</span>classifier)
+app<span style="color:#f92672">.</span>serve()
+</code></pre></div><p>Running this shows the error on the web UI</p>
+<p><img src="missing_error.png" alt="missing transformer error"></p>
+<p>This indicates that we need to tell <code>apylaas</code> how to handle the <code>PIL.Image</code> type. First it needs to know how to accept input for this type in HTML.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># How to render the type in an input element in the HTML</span>
+<span style="color:#75715e"># - You can put arbitrary HTML here, but if it&#39;s just a</span>
+<span style="color:#75715e">#   word then &#39;apylaas&#39; wraps it with an &lt;input&gt; element.</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">image_html</span>(type):
+    <span style="color:#66d9ef">if</span> type <span style="color:#f92672">==</span> Image:
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;file&#34;</span>
+
+    <span style="color:#66d9ef">return</span> None
+</code></pre></div><p>Next it needs a way to marshal the data from the webpage to Python</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># How to take the bytes from the page and turn</span>
+<span style="color:#75715e"># them into a Python type</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">image_loader_wrapper</span>(type):
+    <span style="color:#75715e"># Check if the type is something supported</span>
+    <span style="color:#66d9ef">if</span> type <span style="color:#f92672">==</span> Image:
+
+        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">image_loader</span>(f):
+            <span style="color:#75715e"># Read the file-like f into a PIL.Image</span>
+            <span style="color:#66d9ef">return</span> Image<span style="color:#f92672">.</span>open(io<span style="color:#f92672">.</span>BytesIO(f<span style="color:#f92672">.</span>read()))
+
+        <span style="color:#66d9ef">return</span> image_loader
+    <span style="color:#66d9ef">return</span> None
+</code></pre></div><p>Using these two when creating an <code>App</code> brings it all together.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">app <span style="color:#f92672">=</span> apylaas<span style="color:#f92672">.</span>App(
+    module<span style="color:#f92672">=</span>classifier,
+    input_to_python<span style="color:#f92672">=</span>[image_loader_wrapper],
+    type_to_html<span style="color:#f92672">=</span>[image_html],
+)
+app<span style="color:#f92672">.</span>serve()
+</code></pre></div><p>And there it is! The prediction comes back as a string and is shown on the web UI.</p>
+<p><img src="dog.png" alt="dog"></p>
+<h2 id="serving">Serving</h2>
+<p>If you so choose <code>app.wsgi_app()</code> exposes a WSGI compatible object that you can use with your Python serving library of choice rather than the included one (<code>waitress</code>).</p>
+
+</div>
+<script src="https://goatmobile.github.io/blog/copy.js"></script></article>
+    </div>
+  </body>
+</html>
