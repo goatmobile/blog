@@ -6,7 +6,16 @@
     <description>Recent content on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 20 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 11 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Live Reloading HTML from Scratch Again</title>
+      <link>https://goatmobile.github.io/blog/posts/live-reload2/</link>
+      <pubDate>Sat, 11 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://goatmobile.github.io/blog/posts/live-reload2/</guid>
+      <description>As a follow on to the original Live Reloading HTML from Scratch post, adding the &amp;lt;script&amp;gt; tag to include the websocket server to each client HTML page turned out to be a little tedious. Most frameworks don&amp;rsquo;t require this either, they just insert the relevant JavaScript into the page before they ship it off to complete the request. Python&amp;rsquo;s HTTP server is pretty easy to extend to do this same thing:</description>
+    </item>
+    
     <item>
       <title>`apylaas`: Any Python Library As A Service</title>
       <link>https://goatmobile.github.io/blog/posts/apylaas/</link>

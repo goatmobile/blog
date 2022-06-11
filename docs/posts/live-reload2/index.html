@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  <meta name="generator" content="Hugo 0.80.0" /> 
+  <meta name="description" content="Some description" />
+   
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="https://goatmobile.github.io/blog/apple-touch-icon.png"
+  />
+
+  <meta
+    name="msapplication-TileColor"
+    content="#da532c"
+  />
+
+  <meta name="theme-color" content="#ffffff" />
+
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
+  <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
+
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Martel';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/Martel400.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Martel';
+      font-style: normal;
+      font-weight: 700;
+      src: url(https://goatmobile.github.io/blog/Martel700.ttf) format('truetype');
+    }
+
+    body {
+      font-family: 'Martel', sans-serif;
+    }
+  </style>
+
+    
+    <title>Live Reloading HTML from Scratch Again</title>
+    
+
+  
+
+  <style>
+  body {
+    min-width: 300px;
+    padding: 20px;
+  }
+
+  .custom-navbar {
+    margin-bottom: 1em;
+    height: 60px;
+  }
+
+  .custom-navbar a {
+    display: inline-block;
+    padding: 18px 0;
+    margin-right: 1em;
+    font-weight: bold;
+  }
+
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    text-decoration: none;
+  }
+
+  @media print {
+    .custom-navbar {
+      display: none;
+    }
+  }
+
+  article {
+    padding-bottom: 1em;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  
+  body {
+    background-color: #fff;
+  }
+  
+
+  
+  body {
+    color: #212529;
+  }
+  
+
+  
+  a {
+    color: #007bff;
+  }
+  
+
+  
+  a:hover,
+  a:focus {
+    color: #0056b3;
+  }
+  
+
+  
+  .custom-navbar {
+    background-color: #212529;
+  }
+  
+
+  
+  .custom-navbar a {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  
+
+  
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    color: rgba(255, 255, 255, 1);
+  }
+  
+
+  
+  .container {
+    max-width: 800px;
+  }
+  
+
+  
+  pre {
+    display: block;
+    padding: 9.5px;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  pre code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  code {
+    padding: 2px 4px;
+    color: inherit;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: .9em;
+  }
+  
+
+  @import url('https://rsms.me/inter/inter.css');
+  html { font-family: 'Inter', sans-serif; }
+  @supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
+  }
+
+  code {
+    font-family: 'Ubuntu Mono', monospace, serif;
+  }
+
+  
+  blockquote,
+  .blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 1em;
+    border-left: 5px solid #6c757d;
+  }
+  
+</style>
+
+</head>
+
+
+  <body>
+    <div class="">
+      <article><div class="prose max-w-2xl mx-auto">
+    <a href="https://goatmobile.github.io/blog">
+        <span class="mt-3">posts</span>
+    </a>
+    <h1 class="mt-3">Live Reloading HTML from Scratch Again</h1>
+    <p>As a follow on to the original <a href="https://goatmobile.github.io/blog/posts/live-reload/">Live Reloading HTML from Scratch</a> post, adding the <code>&lt;script&gt;</code> tag to include the websocket server to each client HTML page turned out to be a little tedious. Most frameworks don&rsquo;t require this either, they just insert the relevant JavaScript into the page before they ship it off to complete the request. Python&rsquo;s HTTP server is pretty easy to extend to do this same thing:</p>
+
+
+
+
+
+<div class="highlighted-filename">
+    <code >http-server.py</code>
+</div>
+
+<div class="highlighted-markdown">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> http
+<span style="color:#f92672">import</span> http.server
+<span style="color:#f92672">import</span> tempfile
+<span style="color:#f92672">from</span> pathlib <span style="color:#f92672">import</span> Path
+
+LIVE_JS <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">&lt;script&gt;
+</span><span style="color:#e6db74">const host = `${window.location.protocol}//${window.location.hostname}`;
+</span><span style="color:#e6db74">const socketUrl = `ws://${window.location.hostname}:5678`;
+</span><span style="color:#e6db74">const webSocket = new WebSocket(socketUrl);
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">webSocket.onmessage = () =&gt; {
+</span><span style="color:#e6db74">window.location.reload();
+</span><span style="color:#e6db74">};
+</span><span style="color:#e6db74">&lt;/script&gt;
+</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+SCRATCH <span style="color:#f92672">=</span> Path(tempfile<span style="color:#f92672">.</span>gettempdir()) <span style="color:#f92672">/</span> <span style="color:#e6db74">&#34;livereload.html&#34;</span>
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_live_js</span>(content: str) <span style="color:#f92672">-&gt;</span> str:
+    <span style="color:#66d9ef">return</span> content<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;&lt;/body&gt;&#34;</span>, LIVE_JS <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&lt;/body&gt;&#34;</span>)
+
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LiveHandler</span>(http<span style="color:#f92672">.</span>server<span style="color:#f92672">.</span>SimpleHTTPRequestHandler):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">translate_path</span>(self, path: str) <span style="color:#f92672">-&gt;</span> str:
+        ppath <span style="color:#f92672">=</span> Path(path<span style="color:#f92672">.</span>lstrip(<span style="color:#e6db74">&#34;/&#34;</span>))
+        <span style="color:#66d9ef">if</span> ppath<span style="color:#f92672">.</span>exists() <span style="color:#f92672">and</span> ppath<span style="color:#f92672">.</span>name<span style="color:#f92672">.</span>endswith(<span style="color:#e6db74">&#34;.html&#34;</span>):
+            <span style="color:#66d9ef">with</span> open(ppath) <span style="color:#66d9ef">as</span> f:
+                content <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>read()
+            <span style="color:#66d9ef">with</span> open(SCRATCH, <span style="color:#e6db74">&#34;w&#34;</span>) <span style="color:#66d9ef">as</span> f:
+                f<span style="color:#f92672">.</span>write(add_live_js(content))
+
+            <span style="color:#66d9ef">return</span> str(SCRATCH)
+        <span style="color:#66d9ef">return</span> super()<span style="color:#f92672">.</span>translate_path(path)
+
+
+http<span style="color:#f92672">.</span>server<span style="color:#f92672">.</span>test(HandlerClass<span style="color:#f92672">=</span>LiveHandler)</code></pre></div>
+</div>
+<p>And to repost the other relevant files with a short change to <code>rfile.yml</code>:</p>
+
+
+
+
+
+<div class="highlighted-filename">
+    <code >rfile.yml</code>
+</div>
+
+<div class="highlighted-markdown">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">main</span>: |<span style="color:#e6db74">
+</span><span style="color:#e6db74">  # parallel
+</span><span style="color:#e6db74">  # dep: serve
+</span><span style="color:#e6db74">  # dep: socket-server
+</span><span style="color:#e6db74">  # dep: file-watcher</span>  
+
+<span style="color:#f92672">serve</span>: |<span style="color:#e6db74">
+</span><span style="color:#e6db74">  # basic HTTP server
+</span><span style="color:#e6db74">  python http-server.py</span>  
+
+<span style="color:#f92672">socket-server</span>: |<span style="color:#e6db74">
+</span><span style="color:#e6db74">  # run the websocket server
+</span><span style="color:#e6db74">  python reload-server.py</span>  
+
+<span style="color:#f92672">file-watcher</span>: |<span style="color:#e6db74">
+</span><span style="color:#e6db74">  # watch: find . -maxdepth 1 -type f
+</span><span style="color:#e6db74">  kill -s USR1 $(ps -ax | grep reload-server.py | grep python | awk &#39;{print $1}&#39;)</span>  </code></pre></div>
+</div>
+
+
+
+
+
+<div class="highlighted-filename">
+    <code >reload-server.py</code>
+</div>
+
+<div class="highlighted-markdown">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> signal
+
+signal<span style="color:#f92672">.</span>signal(signal<span style="color:#f92672">.</span>SIGUSR1, <span style="color:#66d9ef">lambda</span> a, b: None)
+
+<span style="color:#f92672">import</span> asyncio
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> websockets
+
+
+CONNECTIONS <span style="color:#f92672">=</span> set()
+
+
+async <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">register</span>(websocket):
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;New connection&#34;</span>, websocket)
+    CONNECTIONS<span style="color:#f92672">.</span>add(websocket)
+    <span style="color:#66d9ef">try</span>:
+        await websocket<span style="color:#f92672">.</span>wait_closed()
+    <span style="color:#66d9ef">finally</span>:
+        CONNECTIONS<span style="color:#f92672">.</span>remove(websocket)
+
+
+async <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Running websocket server&#34;</span>)
+    async <span style="color:#66d9ef">with</span> websockets<span style="color:#f92672">.</span>serve(register, os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;HOST&#34;</span>, <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>), <span style="color:#ae81ff">5678</span>):
+
+        <span style="color:#75715e"># This will run when triggered from an external source via the SIGUSR1</span>
+        <span style="color:#75715e"># signal</span>
+        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">signal_handler</span>(sig, frame):
+            <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34;Sending refresh to {len(CONNECTIONS)} clients&#34;</span>)
+            websockets<span style="color:#f92672">.</span>broadcast(CONNECTIONS, <span style="color:#e6db74">&#34;reload&#34;</span>)
+
+        signal<span style="color:#f92672">.</span>signal(signal<span style="color:#f92672">.</span>SIGUSR1, signal_handler)
+        <span style="color:#66d9ef">while</span> True:
+            await asyncio<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">10000</span>)
+
+
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+    asyncio<span style="color:#f92672">.</span>run(main())</code></pre></div>
+</div>
+
+</div>
+<script src="https://goatmobile.github.io/blog/copy.js"></script></article>
+    </div>
+  </body>
+</html>
