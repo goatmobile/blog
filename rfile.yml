@@ -46,6 +46,7 @@ images: |
 
 setup: |
   sudo apt install hugo imagemagick-6.q16 libimage-exiftool-perl
+  pip install nbconvert
   # heic conversion:
   # sudo apt install libheif-examples
 
