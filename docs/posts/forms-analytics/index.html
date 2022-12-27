@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  <meta name="generator" content="Hugo 0.80.0" /> 
+  <meta name="description" content="Some description" />
+   
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="https://goatmobile.github.io/blog/apple-touch-icon.png"
+  />
+
+  <meta
+    name="msapplication-TileColor"
+    content="#da532c"
+  />
+
+  <meta name="theme-color" content="#ffffff" />
+
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
+  <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
+  <script
+    type="text/javascript"
+    async
+    src="https://goatmobile.github.io/blog/analytics.js"
+  ></script>
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Martel';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/Martel400.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Martel';
+      font-style: normal;
+      font-weight: 700;
+      src: url(https://goatmobile.github.io/blog/Martel700.ttf) format('truetype');
+    }
+
+    body {
+      font-family: 'Martel', sans-serif;
+    }
+  </style>
+
+    
+    <title>Fake Google Analytics</title>
+    
+
+  
+
+  <style>
+  body {
+    min-width: 300px;
+    padding: 20px;
+  }
+
+  .custom-navbar {
+    margin-bottom: 1em;
+    height: 60px;
+  }
+
+  .custom-navbar a {
+    display: inline-block;
+    padding: 18px 0;
+    margin-right: 1em;
+    font-weight: bold;
+  }
+
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    text-decoration: none;
+  }
+
+  @media print {
+    .custom-navbar {
+      display: none;
+    }
+  }
+
+  article {
+    padding-bottom: 1em;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  
+  body {
+    background-color: #fff;
+  }
+  
+
+  
+  body {
+    color: #212529;
+  }
+  
+
+  
+  a {
+    color: #007bff;
+  }
+  
+
+  
+  a:hover,
+  a:focus {
+    color: #0056b3;
+  }
+  
+
+  
+  .custom-navbar {
+    background-color: #212529;
+  }
+  
+
+  
+  .custom-navbar a {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  
+
+  
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    color: rgba(255, 255, 255, 1);
+  }
+  
+
+  
+  .container {
+    max-width: 800px;
+  }
+  
+
+  
+  pre {
+    display: block;
+    padding: 9.5px;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  pre code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  code {
+    padding: 2px 4px;
+    color: inherit;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: .9em;
+  }
+  
+
+  @import url('https://rsms.me/inter/inter.css');
+  html { font-family: 'Inter', sans-serif; }
+  @supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
+  }
+
+  code {
+    font-family: 'Ubuntu Mono', monospace, serif;
+  }
+
+  
+  blockquote,
+  .blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 1em;
+    border-left: 5px solid #6c757d;
+  }
+  
+</style>
+
+</head>
+
+
+  <body>
+    <div class="">
+      <article><div class="prose max-w-2xl mx-auto">
+    <a href="https://goatmobile.github.io/blog">
+        <span class="mt-3">posts</span>
+    </a>
+    <h1 class="mt-3">Fake Google Analytics</h1>
+    <p>There are dozens of alternatives to Google Analytics out there (<a href="https://plausible.io/">Plausible</a> for example), but these unfortunately cost money to run and therefore money to use since your data isn&rsquo;t being used to target ads. At the end of the day a basic page-views type analytics service is a key-value database that every page visit adds an entry to, which plenty of free online services let you mimic. <a href="https://forms.google.com">Google Forms</a> here is a middle ground between the two options: it&rsquo;s free (like Google Analytics) and you don&rsquo;t have to download a JavaScript blob from Google to use it (stay tuned), but the data is still going to Google in the end.</p>
+<p>As it turns out Forms lets you submit responses via <code>POST</code> requests. Since the response isn&rsquo;t really important, you can send this request from third-party websites via JavaScript by setting <code>mode: 'no-cors'</code> on the request. This means you can set up a Google Form with fields for each analytic datapoint you care about, fish these out via JavaScript on each page load, then fire them off to Google Forms for storage and later viewing.</p>
+<p>Create a new form and set up the fields you want to extract. For this example it tracks the browser user agent and the current path (e.g. <code>/blog/posts/forms-analytics</code> for this webpage).</p>
+<p>Next go into the form preview mode with and run this JavaScript snippet in the developer console:</p>
+<p><img src="preview.png" alt="preview.png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">document.<span style="color:#a6e22e">querySelectorAll</span>(<span style="color:#e6db74">&#34;input[name*=entry]&#34;</span>).<span style="color:#a6e22e">forEach</span>(<span style="color:#a6e22e">i</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">i</span>.<span style="color:#a6e22e">name</span>));
+</code></pre></div><p>This fetches the names of the form fields that the <code>POST</code> request made from your website in the order they are defined in the form. Save these for a bit as you&rsquo;ll need them in a minute.</p>
+<pre><code>entry.1234567
+entry.1234568
+</code></pre><p>Finally go to the &ldquo;Responses&rdquo; tab and make sure to hit the Google Sheets button to enable logging of responses to a spreadsheet, they&rsquo;ll be much easier to view there. Now the form is all set up! This will act as the key-value database (in this case there are a couple values) to store the analytics data for analysis.</p>
+<p><img src="responses.png" alt="responses.png"></p>
+<p>On your webpage, add a bit of JavaScript to every page:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// Add each entry to the body to send along with the POST request
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">body</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">FormData</span>();
+
+<span style="color:#75715e">// The &#39;path&#39; field
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">body</span>.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#39;entry.1234567&#39;</span>, window.<span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">pathname</span>);
+
+<span style="color:#75715e">// The &#39;user agent&#39; field
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">ua</span> <span style="color:#f92672">=</span> window.<span style="color:#a6e22e">navigator</span> <span style="color:#f92672">?</span> window.<span style="color:#a6e22e">navigator</span>.<span style="color:#a6e22e">userAgent</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;none&#39;</span>
+<span style="color:#a6e22e">body</span>.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#39;entry.1234568&#39;</span>, <span style="color:#a6e22e">ua</span>);
+
+<span style="color:#75715e">// Get this from the URL when editing your Google Form
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">formId</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1FAI-12093-1203j-09sdfDSFLKJkLJ&#39;</span>
+
+<span style="color:#75715e">// Send the request to Google Forms, the response is inaccessible but we don&#39;t need it
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">url</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`https://docs.google.com/forms/d/e/</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">formId</span><span style="color:#e6db74">}</span><span style="color:#e6db74">/formResponse`</span>
+<span style="color:#a6e22e">fetch</span>(<span style="color:#a6e22e">url</span>, {
+  <span style="color:#a6e22e">method</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;POST&#39;</span>,
+  <span style="color:#a6e22e">mode</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;no-cors&#39;</span>,
+  <span style="color:#a6e22e">body</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">body</span>
+})
+</code></pre></div><p>Load this on some page then head over to your Google Form responses Sheet to see the results! In all this approach gives you the site owner a measure of control over exactly what data is being exfiltrated to a third-party and who that third-party is (Google Forms is used here but other free forms could easily take its place).</p>
+<h2 id="caveats">Caveats</h2>
+<p>Obviously this is a hacky solution and has a host of issues, namely that anyone can also trivially access the form and submit whatever they want. If this is a problem for you then you&rsquo;re probably better off dropping the $10 a month for an alternative service. JavaScript and access to the Google Forms domain (<code>docs.google.com</code>) is also required so certain clients may block the analytics script from running properly.</p>
+
+</div>
+<script src="https://goatmobile.github.io/blog/copy.js"></script></article>
+    </div>
+  </body>
+</html>

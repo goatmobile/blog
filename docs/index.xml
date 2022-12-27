@@ -6,7 +6,16 @@
     <description>Recent content on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 23 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 26 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Fake Google Analytics</title>
+      <link>https://goatmobile.github.io/blog/posts/forms-analytics/</link>
+      <pubDate>Mon, 26 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://goatmobile.github.io/blog/posts/forms-analytics/</guid>
+      <description>There are dozens of alternatives to Google Analytics out there (Plausible for example), but these unfortunately cost money to run and therefore money to use since your data isn&amp;rsquo;t being used to target ads. At the end of the day a basic page-views type analytics service is a key-value database that every page visit adds an entry to, which plenty of free online services let you mimic. Google Forms here is a middle ground between the two options: it&amp;rsquo;s free (like Google Analytics) and you don&amp;rsquo;t have to download a JavaScript blob from Google to use it (stay tuned), but the data is still going to Google in the end.</description>
+    </item>
+    
     <item>
       <title>Self Hosted Reddit</title>
       <link>https://goatmobile.github.io/blog/posts/selfhosteddit/</link>
