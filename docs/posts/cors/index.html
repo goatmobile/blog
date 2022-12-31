@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  <meta name="generator" content="Hugo 0.80.0" /> 
+  <meta name="description" content="Some description" />
+   
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="https://goatmobile.github.io/blog/apple-touch-icon.png"
+  />
+
+  <meta
+    name="msapplication-TileColor"
+    content="#da532c"
+  />
+
+  <meta name="theme-color" content="#ffffff" />
+
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
+  <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
+  <script
+    type="text/javascript"
+    async
+    src="https://goatmobile.github.io/blog/analytics.js"
+  ></script>
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Martel';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/Martel400.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Martel';
+      font-style: normal;
+      font-weight: 700;
+      src: url(https://goatmobile.github.io/blog/Martel700.ttf) format('truetype');
+    }
+
+    body {
+      font-family: 'Martel', sans-serif;
+    }
+  </style>
+
+    
+    <title>Let Users Decide To Allow CORS</title>
+    
+
+  
+
+  <style>
+  body {
+    min-width: 300px;
+    padding: 20px;
+  }
+
+  .custom-navbar {
+    margin-bottom: 1em;
+    height: 60px;
+  }
+
+  .custom-navbar a {
+    display: inline-block;
+    padding: 18px 0;
+    margin-right: 1em;
+    font-weight: bold;
+  }
+
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    text-decoration: none;
+  }
+
+  @media print {
+    .custom-navbar {
+      display: none;
+    }
+  }
+
+  article {
+    padding-bottom: 1em;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  
+  body {
+    background-color: #fff;
+  }
+  
+
+  
+  body {
+    color: #212529;
+  }
+  
+
+  
+  a {
+    color: #007bff;
+  }
+  
+
+  
+  a:hover,
+  a:focus {
+    color: #0056b3;
+  }
+  
+
+  
+  .custom-navbar {
+    background-color: #212529;
+  }
+  
+
+  
+  .custom-navbar a {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  
+
+  
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    color: rgba(255, 255, 255, 1);
+  }
+  
+
+  
+  .container {
+    max-width: 800px;
+  }
+  
+
+  
+  pre {
+    display: block;
+    padding: 9.5px;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  pre code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  code {
+    padding: 2px 4px;
+    color: inherit;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: .9em;
+  }
+  
+
+  @import url('https://rsms.me/inter/inter.css');
+  html { font-family: 'Inter', sans-serif; }
+  @supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
+  }
+
+  code {
+    font-family: 'Ubuntu Mono', monospace, serif;
+  }
+
+  
+  blockquote,
+  .blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 1em;
+    border-left: 5px solid #6c757d;
+  }
+  
+</style>
+
+</head>
+
+
+  <body>
+    <div class="">
+      <article><div class="prose max-w-2xl mx-auto">
+    <a href="https://goatmobile.github.io/blog">
+        <span class="mt-3">posts</span>
+    </a>
+    <h1 class="mt-3">Let Users Decide To Allow CORS</h1>
+    <p>Cross-origin resource sharing (<a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">CORS</a>) is entirely server controlled today. The server says what the clients can do with the returned data to prevent horrendous security issues via the <code>Access-Control-Allow-Origin</code> HTTP header. If a server doesn&rsquo;t want its data used outside of its domains, it&rsquo;s pretty trivial to configure a web server to make it so. This has the downside of preventing whole classes of client applications that use web-hosted data in ways originally unintended by the hosters. Things that can easily exist as standalone applications or mobile apps cannot be ported to websites, which have a far lower barrier to entry and more widespread distribution.</p>
+<p>How can CORS be bypassed while maintaining security? It all revolves around the trust between a user and the client website, which right now is presumed to be none across the board. The aptly named Chromium flag <code>--disable-web-security</code> disables CORS globally which is not a feasible solution for general web browsing. Clients should be in control of the data returned from servers, not the other way around, but users still should be protected from malicious sites. The mental model of the web today includes strong sandboxing guarantees that are usually trustable given the existence of CORS and things like XSRF prevention. Eroding these to enable more applications is not desirable, as <code>--disable-web-security</code> does.</p>
+<p>Instead, a per-site permission for CORS would allow users to decide for themselves on a case-by-case basis whether the client site should be allowed to access another domain, even if that domain restricts access to the client domain via the <code>Access-Control-Allow-Origin</code> header. The permissions pop up could be sufficiently scary to warn users, something like &ldquo;XYZ.com wants to: access data on ABC.com, which may include sensitive information. Do not allow this unless you trust XYZ.com.&rdquo; Just like microphone or camera permissions, browsers could store this per-site as a toggleable permission. It may be prudent to also disallow the inclusion of cookies in all CORS-violating requests as an added measure.</p>
+<p><img src="popup.png" alt="An example CORS popup"></p>
+<p>There is clearly a demand for this kind of thing. The current enabling technologies are browser extensions (e.g. <a href="https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf?hl=en">Allow CORS</a> with 600,000+ users) or proxy servers (e.g. <a href="https://github.com/Rob--W/cors-anywhere">cors-anywhere</a>, which has 7k+ GitHub stars and a publicly accessible instance). Both of these have issues, namely the complexity involved. Browser extensions are platform limited and require an install, while servers require servers, which cost money. Security is also an issue with both as a likely-unvetted platform has cleartext access to all the data going through it, meaning any secrets can be swiped and response data can be altered.</p>
+
+</div>
+<script src="https://goatmobile.github.io/blog/copy.js"></script></article>
+    </div>
+  </body>
+</html>
