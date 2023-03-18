@@ -1149,6 +1149,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: #272727;
 }
 
+.highlight:hover .copy-button {
+  opacity: 1;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -1273,6 +1277,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .mt-2 {
   margin-top: 0.5rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
 }
 
 .mb-0 {
@@ -2896,6 +2904,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .copy-button {
   position: absolute;
+  opacity: 0;
   top: 0.8em;
   right: 0.8em;
   border: 1px solid gray;

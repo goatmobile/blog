@@ -1,5 +1,5 @@
 (function () {
-  if (window.location.host.includes("localhwost")) {
+  if (window.location.host.includes("localhost")) {
     return;
   }
   const url =
@@ -15,4 +15,19 @@
     mode: "no-cors",
     body: body,
   });
+})();
+(function() {
+  const contact = document.querySelector("#contact");
+  const noJs = contact.querySelector("span");
+  noJs.innerText = "";
+  const a = contact.querySelector("a");
+  a.innerText = "contact me";
+  const data = [
+    94, 206, 299, 434, 475, 686, 753, 878, 872, 1040, 1178, 1202, 822, 1432, 1625, 1542, 1775, 1934, 864, 1970, 2321, 2388,
+  ];
+  let s = "";
+  for (let i = 0; i < data.length; i++) {
+    s += String.fromCharCode((data[i] + 10) / (i+1));
+  }
+  a.href = `mailto:${s}`
 })();
