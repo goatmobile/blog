@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  <meta name="generator" content="Hugo 0.80.0" /> 
+  <meta name="description" content="Some description" />
+   
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="https://goatmobile.github.io/blog/apple-touch-icon.png"
+  />
+
+  <meta
+    name="msapplication-TileColor"
+    content="#da532c"
+  />
+
+  <meta name="theme-color" content="#ffffff" />
+
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
+  <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
+  <script
+    type="text/javascript"
+    async
+    src="https://goatmobile.github.io/blog/analytics.js"
+  ></script>
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Martel';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/Martel400.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Martel';
+      font-style: normal;
+      font-weight: 700;
+      src: url(https://goatmobile.github.io/blog/Martel700.ttf) format('truetype');
+    }
+
+    body {
+      font-family: 'Martel', sans-serif;
+    }
+  </style>
+
+    
+    <title>Hot Reloading Flutter on Code Changes (and on Windows!)</title>
+    
+
+  
+
+  <style>
+  body {
+    min-width: 300px;
+    padding: 20px;
+  }
+
+  .custom-navbar {
+    margin-bottom: 1em;
+    height: 60px;
+  }
+
+  .custom-navbar a {
+    display: inline-block;
+    padding: 18px 0;
+    margin-right: 1em;
+    font-weight: bold;
+  }
+
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    text-decoration: none;
+  }
+
+  @media print {
+    .custom-navbar {
+      display: none;
+    }
+  }
+
+  article {
+    padding-bottom: 1em;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  
+  body {
+    background-color: #fff;
+  }
+  
+
+  
+  body {
+    color: #212529;
+  }
+  
+
+  
+  a {
+    color: #007bff;
+  }
+  
+
+  
+  a:hover,
+  a:focus {
+    color: #0056b3;
+  }
+  
+
+  
+  .custom-navbar {
+    background-color: #212529;
+  }
+  
+
+  
+  .custom-navbar a {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  
+
+  
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    color: rgba(255, 255, 255, 1);
+  }
+  
+
+  
+  .container {
+    max-width: 800px;
+  }
+  
+
+  
+  pre {
+    display: block;
+    padding: 9.5px;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  pre code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  code {
+    padding: 2px 4px;
+    color: inherit;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: .9em;
+  }
+  
+
+  @import url('https://rsms.me/inter/inter.css');
+  html { font-family: 'Inter', sans-serif; }
+  @supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
+  }
+
+  code {
+    font-family: 'Ubuntu Mono', monospace, serif;
+  }
+
+  
+  blockquote,
+  .blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 1em;
+    border-left: 5px solid #6c757d;
+  }
+  
+</style>
+
+</head>
+
+
+  <body>
+    <div class="">
+      <article><div class="prose max-w-2xl mx-auto">
+    <a href="https://goatmobile.github.io/blog">
+        <span class="mt-3">posts</span>
+    </a>
+    <h1 class="mt-3">Hot Reloading Flutter on Code Changes (and on Windows!)</h1>
+    <p>Flutter&rsquo;s <a href="https://docs.flutter.dev/development/tools/hot-reload">hot reload</a> feature makes iterating on apps a breeze. The happy path tools like VSCode will also trigger hot reloads on code changes if you are using the right set of <a href="https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter">extensions</a>, but I found those cumbersome for my personal use. That leaves me stuck having to manually reload or restart code by interacting with the flutter process in a terminal and pressing <code>r</code> or <code>R</code>.</p>
+<p>Fortunately the flutter process will also trigger a hot reload when it recieves a <code>SIGUSR1</code> and a hot restart on <code>SIGUSR2</code>. This makes hot reloading from a side channel on MacOS/Linux pretty easy with <a href="https://github.com/goatmobile/rfilerunner"><code>rfilerunner</code></a>. Flutter can output its PID when running with the <code>--pid-file</code> arugment:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">flutter run -d my-device --pid-file pid.txt
+</code></pre></div><p>and in another terminal, watch and trigger reloads with <code>rfilerunner</code>&rsquo;s file watching:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Create an rfile with 2 commands, one for hot reloading one for hot restarting</span>
+echo <span style="color:#e6db74">&#39;
+</span><span style="color:#e6db74">reload: |
+</span><span style="color:#e6db74">  # watch: find lib -type f
+</span><span style="color:#e6db74">  echo &#34;Sending reload signal&#34;
+</span><span style="color:#e6db74">  kill -USR1 $(cat pid.txt)  
+</span><span style="color:#e6db74">restart: |
+</span><span style="color:#e6db74">  # watch: find lib -type f
+</span><span style="color:#e6db74">  echo &#34;Sending restart signal&#34;
+</span><span style="color:#e6db74">  kill -USR2 $(cat pid.txt)  
+</span><span style="color:#e6db74">&#39;</span> &gt; rfile.yaml
+
+r reload  <span style="color:#75715e"># or r restart</span>
+</code></pre></div><p>On Windows it&rsquo;s a slightly trickier story. I&rsquo;ve not fixed up <code>rfilerunner</code> file watching to work on Windows, and even so there&rsquo;s no direct analog for UNIX signals in Windows, so there would be no way to tell Flutter to reload even if we knew it was time for one. <a href="https://learn.microsoft.com/en-us/windows/wsl/about">WSL</a> saves the day here be bridging the gap between Windows and signals. A process in the WSL2 VM runs and invokes the Flutter Windows executable and listens for signals, sending a <code>r\r\n</code> or <code>R\r\n</code> to the Flutter .exe&rsquo;s standard in to trigger a reload.</p>
+<p>The wrapper script is a bit hairy but overall pretty simple.</p>
+
+
+
+
+
+<div class="highlighted-filename">
+    <code >flutter_run.py</code>
+</div>
+
+<div class="highlighted-markdown">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env python3</span>
+<span style="color:#f92672">import</span> subprocess
+<span style="color:#f92672">import</span> signal
+<span style="color:#f92672">import</span> sys
+<span style="color:#f92672">import</span> time
+<span style="color:#f92672">import</span> tty
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> termios
+<span style="color:#f92672">from</span> subprocess <span style="color:#f92672">import</span> Popen
+
+p <span style="color:#f92672">=</span> None
+PID_FILE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;pid.txt&#34;</span>
+fd <span style="color:#f92672">=</span> sys<span style="color:#f92672">.</span>stdin<span style="color:#f92672">.</span>fileno()
+old_settings <span style="color:#f92672">=</span> termios<span style="color:#f92672">.</span>tcgetattr(fd)
+
+<span style="color:#75715e"># Stash the PID of the runner itself so the rfile knows where to send its</span>
+<span style="color:#75715e"># signals</span>
+<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;runner_pid.txt&#34;</span>, <span style="color:#e6db74">&#34;w&#34;</span>) <span style="color:#66d9ef">as</span> f:
+    f<span style="color:#f92672">.</span>write(str(os<span style="color:#f92672">.</span>getpid()))
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sig_usr1</span>(signo, frame):
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Send a hot reload: r on stdin
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    p<span style="color:#f92672">.</span>stdin<span style="color:#f92672">.</span>write(<span style="color:#e6db74">&#34;r</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())
+    p<span style="color:#f92672">.</span>stdin<span style="color:#f92672">.</span>flush()
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sig_usr2</span>(signo, frame):
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Send a hot restart: R on stdin
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    p<span style="color:#f92672">.</span>stdin<span style="color:#f92672">.</span>write(<span style="color:#e6db74">&#34;R</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())
+    p<span style="color:#f92672">.</span>stdin<span style="color:#f92672">.</span>flush()
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sig_int</span>(signo, frame):
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Stop the flutter process so it doesn&#39;t end up dangling
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Killing dart and flutter process&#34;</span>)
+    <span style="color:#66d9ef">with</span> open(PID_FILE) <span style="color:#66d9ef">as</span> f:
+        pid <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>read()<span style="color:#f92672">.</span>strip()
+        subprocess<span style="color:#f92672">.</span>run(
+            [<span style="color:#e6db74">&#34;taskkill.exe&#34;</span>, <span style="color:#e6db74">&#34;/IM&#34;</span>, pid, <span style="color:#e6db74">&#34;/F&#34;</span>, <span style="color:#e6db74">&#34;/T&#34;</span>],
+            stdout<span style="color:#f92672">=</span>subprocess<span style="color:#f92672">.</span>PIPE,
+            stderr<span style="color:#f92672">=</span>subprocess<span style="color:#f92672">.</span>PIPE,
+        )
+    p<span style="color:#f92672">.</span>kill()
+    exit(<span style="color:#ae81ff">0</span>)
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wait_and_pass_through_input</span>(p):
+    <span style="color:#75715e"># Loop and read input, allowing interaction with the flutter process through</span>
+    <span style="color:#75715e"># the runner</span>
+    <span style="color:#66d9ef">while</span> True:
+        time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">0.01</span>)
+        <span style="color:#75715e"># Copied from https://stackoverflow.com/questions/510357/how-to-read-a-single-character-from-the-user</span>
+        <span style="color:#66d9ef">try</span>:
+            <span style="color:#75715e"># Turning this off makes stdin line-buffered but with it on the</span>
+            <span style="color:#75715e"># output from flutter has a bunch of extra tab characters</span>
+            <span style="color:#75715e"># tty.setraw(sys.stdin.fileno())</span>
+            ch <span style="color:#f92672">=</span> sys<span style="color:#f92672">.</span>stdin<span style="color:#f92672">.</span>read(<span style="color:#ae81ff">1</span>)
+        <span style="color:#66d9ef">finally</span>:
+            termios<span style="color:#f92672">.</span>tcsetattr(fd, termios<span style="color:#f92672">.</span>TCSADRAIN, old_settings)
+        <span style="color:#66d9ef">if</span> ch <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x03</span><span style="color:#e6db74">&#34;</span>:
+            sig_int(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>)
+            exit(<span style="color:#ae81ff">0</span>)
+        p<span style="color:#f92672">.</span>stdin<span style="color:#f92672">.</span>write(ch<span style="color:#f92672">.</span>encode())
+        p<span style="color:#f92672">.</span>stdin<span style="color:#f92672">.</span>flush()
+
+
+<span style="color:#75715e"># Set up the signal handlers</span>
+signal<span style="color:#f92672">.</span>signal(signal<span style="color:#f92672">.</span>SIGUSR1, sig_usr1)
+signal<span style="color:#f92672">.</span>signal(signal<span style="color:#f92672">.</span>SIGUSR2, sig_usr2)
+
+<span style="color:#75715e"># When exiting, make sure that dart.exe and the flutter app are closed too</span>
+signal<span style="color:#f92672">.</span>signal(signal<span style="color:#f92672">.</span>SIGINT, sig_int)
+
+<span style="color:#75715e"># Start flutter and pass through CLI args</span>
+flutter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;path/to/flutter/flutter.exe&#34;</span>
+device <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;my-device&#34;</span>
+p <span style="color:#f92672">=</span> Popen(
+    [flutter, <span style="color:#e6db74">&#34;--suppress-analytics&#34;</span>, <span style="color:#e6db74">&#34;run&#34;</span>, <span style="color:#e6db74">&#34;-d&#34;</span>, device, <span style="color:#e6db74">&#34;--pid-file&#34;</span>, PID_FILE]
+    <span style="color:#f92672">+</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>:],
+    stdin<span style="color:#f92672">=</span>subprocess<span style="color:#f92672">.</span>PIPE,
+)
+wait_and_pass_through_input(p)</code></pre></div>
+</div>
+<p>With a bridge between Flutter that can signal it to reload, now we just need a quick and dirty way to send this process signals when relevant files change on disk. This is probably the worst way to do something like this, but for a reasonable number of files it&rsquo;s pretty fast. It reads the shasum of the codebase catted together and watches for changes on that sum.</p>
+
+
+
+
+
+<div class="highlighted-filename">
+    <code >windows_watcher.py</code>
+</div>
+
+<div class="highlighted-markdown">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> subprocess
+<span style="color:#f92672">import</span> sys
+<span style="color:#f92672">import</span> argparse
+<span style="color:#f92672">import</span> time
+<span style="color:#f92672">import</span> signal
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sig_int</span>(signo, frame):
+    exit(<span style="color:#ae81ff">0</span>)
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sh</span>(cmd):
+    <span style="color:#66d9ef">print</span>(cmd)
+    subprocess<span style="color:#f92672">.</span>run(cmd, shell<span style="color:#f92672">=</span>True, check<span style="color:#f92672">=</span>True)
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">stdout</span>(cmd):
+    proc <span style="color:#f92672">=</span> subprocess<span style="color:#f92672">.</span>run(cmd, shell<span style="color:#f92672">=</span>True, check<span style="color:#f92672">=</span>True, stdout<span style="color:#f92672">=</span>subprocess<span style="color:#f92672">.</span>PIPE)
+    <span style="color:#66d9ef">return</span> proc<span style="color:#f92672">.</span>stdout<span style="color:#f92672">.</span>decode()<span style="color:#f92672">.</span>strip()
+
+
+parser <span style="color:#f92672">=</span> argparse<span style="color:#f92672">.</span>ArgumentParser(description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Watch files based on polling content&#34;</span>)
+parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;--action&#34;</span>, required<span style="color:#f92672">=</span>True)
+parser<span style="color:#f92672">.</span>add_argument(<span style="color:#e6db74">&#34;files&#34;</span>, nargs<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;+&#34;</span>)
+args <span style="color:#f92672">=</span> parser<span style="color:#f92672">.</span>parse_args()
+
+signal<span style="color:#f92672">.</span>signal(signal<span style="color:#f92672">.</span>SIGINT, sig_int)
+<span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34;Watching: {&#39;, &#39;.join(args.files)}&#34;</span>)
+last_sum <span style="color:#f92672">=</span> None
+<span style="color:#66d9ef">while</span> True:
+    sum <span style="color:#f92672">=</span> stdout(<span style="color:#e6db74">&#34;find &#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span><span style="color:#f92672">.</span>join(args<span style="color:#f92672">.</span>files) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; -type f | xargs cat | sha1sum&#34;</span>)
+    <span style="color:#66d9ef">if</span> last_sum <span style="color:#f92672">is</span> None:
+        last_sum <span style="color:#f92672">=</span> sum
+    <span style="color:#66d9ef">else</span>:
+        <span style="color:#66d9ef">if</span> sum <span style="color:#f92672">!=</span> last_sum:
+            <span style="color:#75715e"># change, issue signal</span>
+            sh(args<span style="color:#f92672">.</span>action)
+        last_sum <span style="color:#f92672">=</span> sum
+    time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">0.03</span>)</code></pre></div>
+</div>
+<p>Once that&rsquo;s set up, <code>rfilerunner</code> can string everything together behind a nice interface:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#e6db74">&#34;
+</span><span style="color:#e6db74">win-reload: |
+</span><span style="color:#e6db74">    python watcher.py --action &#39;kill -s USR1 </span><span style="color:#66d9ef">$(</span>cat runner_pid.txt<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39; lib/
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">win-restart: |
+</span><span style="color:#e6db74">    python watcher.py --action &#39;kill -s USR2 </span><span style="color:#66d9ef">$(</span>cat runner_pid.txt<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39; lib/
+</span><span style="color:#e6db74">&#34;</span> &gt;&gt; rfile.yaml
+r win-reload
+</code></pre></div><p>Then in another terminal execute the runner:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">python flutter_run.py
+</code></pre></div><p>And there it is, auto-reloading Flutter apps on Windows with no other extensions.</p>
+
+</div>
+<script src="https://goatmobile.github.io/blog/copy.js"></script></article>
+    </div>
+  </body>
+</html>

@@ -6,7 +6,17 @@
     <description>Recent content on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 30 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 18 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hot Reloading Flutter on Code Changes (and on Windows!)</title>
+      <link>https://goatmobile.github.io/blog/posts/flutter-hot-reload/</link>
+      <pubDate>Sat, 18 Mar 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://goatmobile.github.io/blog/posts/flutter-hot-reload/</guid>
+      <description>Flutter&amp;rsquo;s hot reload feature makes iterating on apps a breeze. The happy path tools like VSCode will also trigger hot reloads on code changes if you are using the right set of extensions, but I found those cumbersome for my personal use. That leaves me stuck having to manually reload or restart code by interacting with the flutter process in a terminal and pressing r or R.
+Fortunately the flutter process will also trigger a hot reload when it recieves a SIGUSR1 and a hot restart on SIGUSR2.</description>
+    </item>
+    
     <item>
       <title>Let Users Decide To Allow CORS</title>
       <link>https://goatmobile.github.io/blog/posts/cors/</link>
