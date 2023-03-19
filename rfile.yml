@@ -2,6 +2,7 @@ dev: |
   # parallel
   # dep: images
   # dep: notebooks_dev
+  # dep: js
   # dep: css
   # dep: hugo_dev
 
@@ -9,6 +10,7 @@ dist: |
   # dep: images
   # dep: notebooks
   # dep: css-once
+  r js --once
   set -eux
   rm -rf docs
   hugo -D
@@ -26,6 +28,10 @@ hugo_dev: |
 
 notebooks: |
   python make_notebooks.py
+
+js: |
+  # watch: find static-src/
+  ./node_modules/.bin/esbuild --minify --bundle --outdir=static static-src/analytics.js static-src/copy.js
 
 wordcount: |
   cd content
