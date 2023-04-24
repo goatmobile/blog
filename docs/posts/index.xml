@@ -6,7 +6,16 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 19 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 22 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SSL Certificates at Home</title>
+      <link>https://goatmobile.github.io/blog/posts/home-certs/</link>
+      <pubDate>Sat, 22 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://goatmobile.github.io/blog/posts/home-certs/</guid>
+      <description>This is a corollary to my earlier post about setting up self hosting. For a quick recap, some stuff is hosted on a computer in my local network, accessible with a domain name (call it mydomain.com for this post) which is publicly registered but points to a private IP (e.g. 192.168.1.50). The public registration part is really only necessary for getting an SSL certificate from Let&amp;rsquo;s Encrypt. Since I intend to host services via subdomains, I added two DNS records via my registrar:</description>
+    </item>
+    
     <item>
       <title>Roku TV Remote with apylaas</title>
       <link>https://goatmobile.github.io/blog/posts/roku-remote/</link>

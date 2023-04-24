@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  <meta name="generator" content="Hugo 0.80.0" /> 
+  <meta name="description" content="Some description" />
+   
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="https://goatmobile.github.io/blog/apple-touch-icon.png"
+  />
+
+  <meta
+    name="msapplication-TileColor"
+    content="#da532c"
+  />
+
+  <meta name="theme-color" content="#ffffff" />
+
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
+  <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
+  <script
+    type="text/javascript"
+    async
+    src="https://goatmobile.github.io/blog/analytics.js"
+  ></script>
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Martel';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/Martel400.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Martel';
+      font-style: normal;
+      font-weight: 700;
+      src: url(https://goatmobile.github.io/blog/Martel700.ttf) format('truetype');
+    }
+
+    body {
+      font-family: 'Martel', sans-serif;
+    }
+  </style>
+
+    
+    <title>SSL Certificates at Home</title>
+    
+
+  
+
+  <style>
+  body {
+    min-width: 300px;
+    padding: 20px;
+  }
+
+  .custom-navbar {
+    margin-bottom: 1em;
+    height: 60px;
+  }
+
+  .custom-navbar a {
+    display: inline-block;
+    padding: 18px 0;
+    margin-right: 1em;
+    font-weight: bold;
+  }
+
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    text-decoration: none;
+  }
+
+  @media print {
+    .custom-navbar {
+      display: none;
+    }
+  }
+
+  article {
+    padding-bottom: 1em;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  
+  body {
+    background-color: #fff;
+  }
+  
+
+  
+  body {
+    color: #212529;
+  }
+  
+
+  
+  a {
+    color: #007bff;
+  }
+  
+
+  
+  a:hover,
+  a:focus {
+    color: #0056b3;
+  }
+  
+
+  
+  .custom-navbar {
+    background-color: #212529;
+  }
+  
+
+  
+  .custom-navbar a {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  
+
+  
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    color: rgba(255, 255, 255, 1);
+  }
+  
+
+  
+  .container {
+    max-width: 800px;
+  }
+  
+
+  
+  pre {
+    display: block;
+    padding: 9.5px;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  pre code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  code {
+    padding: 2px 4px;
+    color: inherit;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: .9em;
+  }
+  
+
+  @import url('https://rsms.me/inter/inter.css');
+  html { font-family: 'Inter', sans-serif; }
+  @supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
+  }
+
+  code {
+    font-family: 'Ubuntu Mono', monospace, serif;
+  }
+
+  
+  blockquote,
+  .blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 1em;
+    border-left: 5px solid #6c757d;
+  }
+  
+</style>
+
+</head>
+
+
+  <body>
+    <div class="">
+      <article><div class="prose max-w-2xl mx-auto">
+    <a href="https://goatmobile.github.io/blog">
+        <span class="mt-3">posts</span>
+    </a>
+    <h1 class="mt-3">SSL Certificates at Home</h1>
+    <p>This is a corollary to my earlier post about setting up self hosting. For a quick recap, some stuff is hosted on a computer in my local network, accessible with a domain name (call it <code>mydomain.com</code> for this post) which is publicly registered but points to a private IP (e.g. <code>192.168.1.50</code>). The public registration part is really only necessary for getting an SSL certificate from Let&rsquo;s Encrypt. Since I intend to host services via subdomains, I added two DNS records via my registrar:</p>
+<ul>
+<li>An <code>A</code> record for host <code>@</code> pointing to <code>192.168.1.50</code> to host an index page</li>
+<li>A wildcard <code>A</code> record for host <code>*</code> pointing to <code>192.168.1.50</code> to host the individual services (Nginx takes care of the actual dispatching)</li>
+</ul>
+<p>Lastly since the domain is private, <code>certbot</code> from Let' Encrypt can&rsquo;t do it&rsquo;s normal trick of hosting a web server to verify domain ownership, so I had to use a DNS challenge:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export DOMAIN<span style="color:#f92672">=</span>mydomain.com
+<span style="color:#75715e"># Generate 1 certificate both for the domain and any subdomains (via a wildcard cert)</span>
+sudo certbot -d <span style="color:#e6db74">&#34;</span>$DOMAIN<span style="color:#e6db74">&#34;</span> -d <span style="color:#e6db74">&#34;*.</span>$DOMAIN<span style="color:#e6db74">&#34;</span> --manual --preferred-challenges dns certonly --register-unsafely-without-email --agree-tos
+</code></pre></div><p>I noticed a problem when trying to check if the DNS record had gone in yet when resolving with my local <a href="https://en.wikipedia.org/wiki/Dnsmasq"><code>dnsmasq</code></a> server:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nslookup -type<span style="color:#f92672">=</span>TXT _acme-challenge.mydomain.com
+</code></pre></div><p><code>nslookup</code> showed no results but online DNS tools showed that the record was available after just a few minutes. After much poking around, the culprit lied in my earlier assumption that I could remove the <code>/etc/hosts</code> entry on my router for <code>mydomain.com</code>. <code>dnsmasq</code> comes with an option to defend against <a href="https://en.wikipedia.org/wiki/DNS_rebinding">DNS rebinding attacks</a>, which it does by dropping any queries that have a suspicious answer. DNS rebinding attacks involve (1) a malicious site and (2) a malicious DNS resolver (in this case a malicious upstream DNS resolver that <code>dnsmasq</code> forwards queries to). Ordinarily if the malicious site makes requests to get data from somewhere that violates the <a href="https://en.wikipedia.org/wiki/Same-origin_policy">Same-origin policy</a>, the site would not be able to read it. However, since the DNS resolution is also under the attacker&rsquo;s control, they can make any IP to appear under the same domain, this passing any origin checks. Local services (i.e. those running at private IP addresses) often give higher credence to anonymous users by virtue of the fact that they can connect at all, trusting connections on the local network by default. The combination of these two opens up a security hole, which <code>dnsmasq</code> fixes by dropping any DNS answers that resolve to a private IP address.</p>
+<p><code>dnsmasq</code> is doing the right thing here and I want to keep it that way rather than <a href="https://serverfault.com/questions/419828/dnsmasq-swallows-local-a-entries">disable it</a>, so the fix is simple: just add a specific entry for the domain in the router&rsquo;s DNS settings and leave DNS rebinding protection turned on.</p>
+
+</div>
+<script src="https://goatmobile.github.io/blog/copy.js"></script></article>
+      <p class="text-center mt-4" id="contact"><a></a><span>enable js to see contact email</span></p>
+    </div>
+  </body>
+</html>
