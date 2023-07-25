@@ -6,7 +6,17 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 22 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 24 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Fast Conda Initialization</title>
+      <link>https://goatmobile.github.io/blog/posts/fast-conda/</link>
+      <pubDate>Mon, 24 Jul 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://goatmobile.github.io/blog/posts/fast-conda/</guid>
+      <description>Miniconda is a great tool to manage Python installations that solves most of the common problems dealing with Python dependencies. By default its installation inserts some code into your shell initialization to set up the environment and muck with the shell prompt that looks something like this (for fish shell in ~/.confish/fish/config.fish):
+&amp;gt;&amp;gt;&amp;gt; conda initialize &amp;gt;&amp;gt;&amp;gt; !! Contents within this block are managed by &amp;#39;conda init&amp;#39; !! if test -f /home/myusername/miniconda3/bin/conda eval /home/myusername/miniconda3/bin/conda &amp;#34;shell.</description>
+    </item>
+    
     <item>
       <title>SSL Certificates at Home</title>
       <link>https://goatmobile.github.io/blog/posts/home-certs/</link>

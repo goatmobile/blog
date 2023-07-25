@@ -217,10 +217,21 @@
 <li>An <code>A</code> record for host <code>@</code> pointing to <code>192.168.1.50</code> to host an index page</li>
 <li>A wildcard <code>A</code> record for host <code>*</code> pointing to <code>192.168.1.50</code> to host the individual services (Nginx takes care of the actual dispatching)</li>
 </ul>
-<p>Lastly since the domain is private, <code>certbot</code> from Let' Encrypt can&rsquo;t do it&rsquo;s normal trick of hosting a web server to verify domain ownership, so I had to use a DNS challenge:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export DOMAIN<span style="color:#f92672">=</span>mydomain.com
+<p>Lastly since the domain is private, <a href="https://certbot.eff.org/instructions?ws=apache&amp;os=pip"><code>certbot</code> from Let&rsquo;s Encrypt</a> can&rsquo;t do its normal trick of hosting a web server to verify domain ownership, so I had to use a DNS challenge. These online services can be used to check the DNS rather than relying on local DNS:</p>
+<ul>
+<li><a href="https://network-tools.webwiz.net/nslookup.htm">https://network-tools.webwiz.net/nslookup.htm</a></li>
+<li><a href="https://toolbox.googleapps.com/apps/dig/">https://toolbox.googleapps.com/apps/dig/</a></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Install certbot if necessary</span>
+conda create -n certbot python<span style="color:#f92672">=</span>3.9
+pip install certbot
+
+export DOMAIN<span style="color:#f92672">=</span>mydomain.com
 <span style="color:#75715e"># Generate 1 certificate both for the domain and any subdomains (via a wildcard cert)</span>
-sudo certbot -d <span style="color:#e6db74">&#34;</span>$DOMAIN<span style="color:#e6db74">&#34;</span> -d <span style="color:#e6db74">&#34;*.</span>$DOMAIN<span style="color:#e6db74">&#34;</span> --manual --preferred-challenges dns certonly --register-unsafely-without-email --agree-tos
+<span style="color:#75715e"># NOTE: This may fail the first time since &#39;certbot&#39; appears to check both domains only</span>
+<span style="color:#75715e"># after the 2nd is set, which fails since _acme-challenge.&lt;domain&gt; can only have one</span>
+<span style="color:#75715e"># TXT record. It should work after a second try on the first challenge.</span>
+sudo <span style="color:#66d9ef">$(</span>which certbot<span style="color:#66d9ef">)</span> -d <span style="color:#e6db74">&#34;</span>$DOMAIN<span style="color:#e6db74">&#34;</span> -d <span style="color:#e6db74">&#34;*.</span>$DOMAIN<span style="color:#e6db74">&#34;</span> --manual --preferred-challenges dns certonly --register-unsafely-without-email --agree-tos
 </code></pre></div><p>I noticed a problem when trying to check if the DNS record had gone in yet when resolving with my local <a href="https://en.wikipedia.org/wiki/Dnsmasq"><code>dnsmasq</code></a> server:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nslookup -type<span style="color:#f92672">=</span>TXT _acme-challenge.mydomain.com
 </code></pre></div><p><code>nslookup</code> showed no results but online DNS tools showed that the record was available after just a few minutes. After much poking around, the culprit lied in my earlier assumption that I could remove the <code>/etc/hosts</code> entry on my router for <code>mydomain.com</code>. <code>dnsmasq</code> comes with an option to defend against <a href="https://en.wikipedia.org/wiki/DNS_rebinding">DNS rebinding attacks</a>, which it does by dropping any queries that have a suspicious answer. DNS rebinding attacks involve (1) a malicious site and (2) a malicious DNS resolver (in this case a malicious upstream DNS resolver that <code>dnsmasq</code> forwards queries to). Ordinarily if the malicious site makes requests to get data from somewhere that violates the <a href="https://en.wikipedia.org/wiki/Same-origin_policy">Same-origin policy</a>, the site would not be able to read it. However, since the DNS resolution is also under the attacker&rsquo;s control, they can make any IP to appear under the same domain, this passing any origin checks. Local services (i.e. those running at private IP addresses) often give higher credence to anonymous users by virtue of the fact that they can connect at all, trusting connections on the local network by default. The combination of these two opens up a security hole, which <code>dnsmasq</code> fixes by dropping any DNS answers that resolve to a private IP address.</p>

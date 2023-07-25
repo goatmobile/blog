@@ -8,12 +8,22 @@ This is a corollary to my earlier post about setting up self hosting. For a quic
 * An `A` record for host `@` pointing to `192.168.1.50` to host an index page
 * A wildcard `A` record for host `*` pointing to `192.168.1.50` to host the individual services (Nginx takes care of the actual dispatching)
 
-Lastly since the domain is private, `certbot` from Let' Encrypt can't do it's normal trick of hosting a web server to verify domain ownership, so I had to use a DNS challenge:
+Lastly since the domain is private, [`certbot` from Let's Encrypt](https://certbot.eff.org/instructions?ws=apache&os=pip) can't do its normal trick of hosting a web server to verify domain ownership, so I had to use a DNS challenge. These online services can be used to check the DNS rather than relying on local DNS:
+
+* [https://network-tools.webwiz.net/nslookup.htm](https://network-tools.webwiz.net/nslookup.htm)
+* [https://toolbox.googleapps.com/apps/dig/](https://toolbox.googleapps.com/apps/dig/)
 
 ```bash
+# Install certbot if necessary
+conda create -n certbot python=3.9
+pip install certbot
+
 export DOMAIN=mydomain.com
 # Generate 1 certificate both for the domain and any subdomains (via a wildcard cert)
-sudo certbot -d "$DOMAIN" -d "*.$DOMAIN" --manual --preferred-challenges dns certonly --register-unsafely-without-email --agree-tos
+# NOTE: This may fail the first time since 'certbot' appears to check both domains only
+# after the 2nd is set, which fails since _acme-challenge.<domain> can only have one
+# TXT record. It should work after a second try on the first challenge.
+sudo $(which certbot) -d "$DOMAIN" -d "*.$DOMAIN" --manual --preferred-challenges dns certonly --register-unsafely-without-email --agree-tos
 ```
 
 I noticed a problem when trying to check if the DNS record had gone in yet when resolving with my local [`dnsmasq`](https://en.wikipedia.org/wiki/Dnsmasq) server:
