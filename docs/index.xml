@@ -6,7 +6,16 @@
     <description>Recent content on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 24 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 01 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://goatmobile.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Automating `&lt;input type=&#34;file&#34; /&gt;`</title>
+      <link>https://goatmobile.github.io/blog/posts/auto-input/</link>
+      <pubDate>Tue, 01 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://goatmobile.github.io/blog/posts/auto-input/</guid>
+      <description>The MDN docs spell out pretty clearly that the only way to access files in the browser is for the user to manually select them from a &amp;lt;input type=&amp;quot;file /&amp;gt; dialog box. This is well and good for sandboxing but makes development and testing a web page that relies on a user-selected file a big pain. For small files this isn&amp;rsquo;t a big deal, just put them straight in the code as bytes or stuff them into localStorage if you&amp;rsquo;re lucky enough to be within the 5 MB limit and IndexedDB if not.</description>
+    </item>
+    
     <item>
       <title>Fast Conda Initialization</title>
       <link>https://goatmobile.github.io/blog/posts/fast-conda/</link>

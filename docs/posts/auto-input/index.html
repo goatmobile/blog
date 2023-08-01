@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  <meta name="generator" content="Hugo 0.80.0" /> 
+  <meta name="description" content="Some description" />
+   
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="https://goatmobile.github.io/blog/apple-touch-icon.png"
+  />
+
+  <meta
+    name="msapplication-TileColor"
+    content="#da532c"
+  />
+
+  <meta name="theme-color" content="#ffffff" />
+
+  
+  <link rel="stylesheet" href="https://goatmobile.github.io/blog/css/style.dist.css" />
+  <link rel="icon" type="image/x-icon" href="https://goatmobile.github.io/blog/favicon.ico">
+  <script
+    type="text/javascript"
+    async
+    src="https://goatmobile.github.io/blog/analytics.js"
+  ></script>
+
+  <style>
+    @font-face {
+      font-family: 'Ubuntu Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/UbuntuMono.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Martel';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://goatmobile.github.io/blog/Martel400.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Martel';
+      font-style: normal;
+      font-weight: 700;
+      src: url(https://goatmobile.github.io/blog/Martel700.ttf) format('truetype');
+    }
+
+    body {
+      font-family: 'Martel', sans-serif;
+    }
+  </style>
+
+    
+    <title>Automating `&lt;input type=&#34;file&#34; /&gt;`</title>
+    
+
+  
+
+  <style>
+  body {
+    min-width: 300px;
+    padding: 20px;
+  }
+
+  .custom-navbar {
+    margin-bottom: 1em;
+    height: 60px;
+  }
+
+  .custom-navbar a {
+    display: inline-block;
+    padding: 18px 0;
+    margin-right: 1em;
+    font-weight: bold;
+  }
+
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    text-decoration: none;
+  }
+
+  @media print {
+    .custom-navbar {
+      display: none;
+    }
+  }
+
+  article {
+    padding-bottom: 1em;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  
+  body {
+    background-color: #fff;
+  }
+  
+
+  
+  body {
+    color: #212529;
+  }
+  
+
+  
+  a {
+    color: #007bff;
+  }
+  
+
+  
+  a:hover,
+  a:focus {
+    color: #0056b3;
+  }
+  
+
+  
+  .custom-navbar {
+    background-color: #212529;
+  }
+  
+
+  
+  .custom-navbar a {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  
+
+  
+  .custom-navbar a:hover,
+  .custom-navbar a:focus {
+    color: rgba(255, 255, 255, 1);
+  }
+  
+
+  
+  .container {
+    max-width: 800px;
+  }
+  
+
+  
+  pre {
+    display: block;
+    padding: 9.5px;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  pre code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  code {
+    padding: 2px 4px;
+    color: inherit;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: .9em;
+  }
+  
+
+  @import url('https://rsms.me/inter/inter.css');
+  html { font-family: 'Inter', sans-serif; }
+  @supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
+  }
+
+  code {
+    font-family: 'Ubuntu Mono', monospace, serif;
+  }
+
+  
+  blockquote,
+  .blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 1em;
+    border-left: 5px solid #6c757d;
+  }
+  
+</style>
+
+</head>
+
+
+  <body>
+    <div class="">
+      <article><div class="prose max-w-2xl mx-auto">
+    <a href="https://goatmobile.github.io/blog">
+        <span class="mt-3">posts</span>
+    </a>
+    <h1 class="mt-3">Automating <code>&lt;input type=&quot;file&quot; /&gt;</code></h1>
+    <p>The MDN docs <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileList">spell out pretty clearly</a> that the only way to access files in the browser is for the user to manually select them from a <code>&lt;input type=&quot;file /&gt;</code> dialog box. This is well and good for sandboxing but makes development and testing a web page that relies on a user-selected file a big pain. For small files this isn&rsquo;t a big deal, just put them straight in the code as bytes or stuff them into <code>localStorage</code> if you&rsquo;re lucky enough to be within the 5 MB limit and <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API">IndexedDB</a> if not. These both require you to load the entirety of the file in JavaScript, which in my case with a 5 GB file was met with a friendly out-of-memory error.</p>
+<p>The workaround relies on the non-standard (works in Chrome and Firefox though) <a href="https://developer.mozilla.org/en-US/docs/Web/API/File_and_Directory_Entries_API">File System API</a>. Select the file once, store it in the JavaScript-accessible file system, and access it on later page loads automatically.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+  &lt;<span style="color:#f92672">body</span>&gt;
+    &lt;<span style="color:#f92672">span</span>&gt;Update testing file:&lt;/<span style="color:#f92672">span</span>&gt;&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;file&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test-file-input&#34;</span> /&gt;
+    &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;script.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+  &lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p>See the annotated JavaScript code below for a working example.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// Set up an event handler for when the user selects a file
+</span><span style="color:#75715e"></span>document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;test-file-input&#34;</span>).<span style="color:#a6e22e">onchange</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span>() {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">file</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">files</span>[<span style="color:#ae81ff">0</span>];
+
+    <span style="color:#75715e">// Access the filesystem API
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">root</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">navigator</span>.<span style="color:#a6e22e">storage</span>.<span style="color:#a6e22e">getDirectory</span>();
+
+    <span style="color:#75715e">// Create a file with the same name as the selected one (note: this may
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// lead to name collisions so be careful when dealing with different
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// directories)
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">handle</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">root</span>.<span style="color:#a6e22e">getFileHandle</span>(<span style="color:#a6e22e">file</span>.<span style="color:#a6e22e">name</span>, {<span style="color:#a6e22e">create</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>});
+
+    <span style="color:#75715e">// Write the data to the filesystem API file
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">`Writing to file </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">file</span>.<span style="color:#a6e22e">name</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>)
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">stream</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">handle</span>.<span style="color:#a6e22e">createWritable</span>();
+    <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">stream</span>.<span style="color:#a6e22e">write</span>(<span style="color:#a6e22e">file</span>);
+    <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">stream</span>.<span style="color:#a6e22e">close</span>();
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Done&#34;</span>);
+}
+
+<span style="color:#75715e">// This function loads a file from the filesystem or errors out
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">loadTestingFile</span>(<span style="color:#a6e22e">filename</span>, <span style="color:#a6e22e">callback</span>) {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">root</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">navigator</span>.<span style="color:#a6e22e">storage</span>.<span style="color:#a6e22e">getDirectory</span>();
+    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">handle</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+
+    <span style="color:#75715e">// Try to load the file
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">try</span> {
+        <span style="color:#a6e22e">handle</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">root</span>.<span style="color:#a6e22e">getFileHandle</span>(<span style="color:#a6e22e">filename</span>);
+    } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">e</span>) {
+        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">toString</span>().<span style="color:#a6e22e">includes</span>(<span style="color:#e6db74">&#34;A requested file or directory could not be found&#34;</span>)) {
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">`File &#39;</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">filename</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#39; does not exist`</span>);
+        } <span style="color:#66d9ef">else</span> {
+            <span style="color:#66d9ef">throw</span> <span style="color:#a6e22e">e</span>;
+        }
+    }
+
+    <span style="color:#75715e">// Got the file, send it to the user-provided callback
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">file</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">handle</span>.<span style="color:#a6e22e">getFile</span>();
+    <span style="color:#a6e22e">callback</span>(<span style="color:#a6e22e">file</span>);
+}
+
+<span style="color:#75715e">// Lastly, load the file for testing!
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">loadTestingFile</span>(<span style="color:#e6db74">&#39;myfile.txt&#39;</span>, (<span style="color:#a6e22e">file</span>) =&gt; {
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">`&#34;Loaded file: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">file</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>);
+
+    <span style="color:#75715e">// read the file as usual (note: this crashes with large files for the same
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// reason as above, but that is expected here since it must reify the whole
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// thing all at once)
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">data</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">file</span>.<span style="color:#a6e22e">arrayBuffer</span>();
+})
+</code></pre></div>
+</div>
+<script src="https://goatmobile.github.io/blog/copy.js"></script></article>
+      <p class="text-center mt-4" id="contact"><a></a><span>enable js to see contact email</span></p>
+    </div>
+  </body>
+</html>
