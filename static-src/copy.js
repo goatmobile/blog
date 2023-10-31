@@ -34,28 +34,31 @@ function copyToClipboard(string) {
   }
   return true;
 }
-const pres = document.querySelectorAll("div.highlight pre");
-pres.forEach((pre) => {
-  const div = document.createElement("button");
-  div.classList.add("copy-button");
-  div.innerText = "Copy";
-  pre.appendChild(div);
-  const code = pre.querySelector("code");
-  div.addEventListener("click", () => {
-    if (code.innerText.startsWith("$ ")) {
-      let stripped = [];
-      for (const line of code.innerText.split("\n")) {
-        if (line.startsWith("$ ")) {
-          stripped.push(line.slice(2));
+
+document.addEventListener("DOMContentLoaded", () => {
+  const pres = document.querySelectorAll("div.highlight pre");
+  pres.forEach((pre) => {
+    const div = document.createElement("button");
+    div.classList.add("copy-button");
+    div.innerText = "Copy";
+    pre.appendChild(div);
+    const code = pre.querySelector("code");
+    div.addEventListener("click", () => {
+      if (code.innerText.startsWith("$ ")) {
+        let stripped = [];
+        for (const line of code.innerText.split("\n")) {
+          if (line.startsWith("$ ")) {
+            stripped.push(line.slice(2));
+          }
         }
+        copyToClipboard(stripped.join("\n"));
+      } else {
+        copyToClipboard(code.innerText);
       }
-      copyToClipboard(stripped.join("\n"));
-    } else {
-      copyToClipboard(code.innerText);
-    }
-    div.innerText = "Copied!";
-    setTimeout(() => {
-      div.innerText = "Copy";
-    }, 1000);
+      div.innerText = "Copied!";
+      setTimeout(() => {
+        div.innerText = "Copy";
+      }, 1000);
+    });
   });
 });
